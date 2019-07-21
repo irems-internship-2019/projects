@@ -27,7 +27,7 @@ public class Calculator {
 	private Label label; 
 	/**
 	 * Launch the application.
-	 * @param args
+	   * @param args
 	 * 
 	 */
 	public static void main(String[] args) {
@@ -75,7 +75,7 @@ public class Calculator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				   memoryInput=0;
-				   calculatorInput.setText("");
+				   calculatorInput.setText("  ");
 			}
 		});
 		clearButton.setText("C");
