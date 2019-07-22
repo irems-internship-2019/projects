@@ -8,7 +8,7 @@ public class Operation extends ButtonClass {
 	  
 	 public static String plus()
 	 {
-		 if(operation.get(0) == "+")
+		 if(operation.get(0) == " + ")
 			 plus_minus = operators.get(0) + operators.get(1);
 		     result = Integer.toString(plus_minus);
 		     
@@ -18,12 +18,29 @@ public class Operation extends ButtonClass {
 	 
 	 public static String minus()
 	 {
-		 if(operation.get(0) == "-")
+		 if(operation.get(0) == " - ")
 			 plus_minus = operators.get(0) - operators.get(1);
 		     result = Integer.toString(plus_minus);
 		        
 		     return result;
 	 }
 	 
+	 public static String multiple()
+	 {
+		 if(operation.get(0) == " x ")
+			 plus_minus = operators.get(0) * operators.get(1);
+		     result = Integer.toString(plus_minus);
+		        
+		     return result;
+	 }
+	 
+	 public static String divide()
+	 {
+		 if(operation.get(0) == " ÷ ")
+			 divide = operators.get(0) / operators.get(1);
+		     result = Double.toString(divide);
+		        
+		     return result;
+	 }
 
 }

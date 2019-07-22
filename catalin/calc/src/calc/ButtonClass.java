@@ -9,13 +9,18 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class ButtonClass {
 	
+	
+	int maxOperation = -1;
+	int maxOperators = -1;
+	int maxTextBox = -1;
 	static public ArrayList<String> operation = new ArrayList<>();
-	static public ArrayList<Integer> operators = new ArrayList<>(); 
+	static public ArrayList<Integer> operators = new ArrayList<>();
+	static public ArrayList<String> textBox = new ArrayList<>();
 	
 	public void buttons(Shell shell)
 	{
@@ -28,8 +33,8 @@ public class ButtonClass {
 			GridData dataSecond = new GridData(SWT.FILL,SWT.FILL,true,true);
 			GridData dataThird = new GridData(SWT.FILL,SWT.FILL,true,true,2,1);
 		    
-		    List list = new List(composite, SWT.BORDER |SWT.RIGHT_TO_LEFT);
-			list.setLayoutData(dataFirst);
+		    Text text = new Text(composite, SWT.BORDER |SWT.LEFT_TO_RIGHT);
+			text.setLayoutData(dataFirst);
 			
 			Button buttonBack = new Button(composite, SWT.NONE);
 			buttonBack.setLayoutData(dataThird);
@@ -38,19 +43,24 @@ public class ButtonClass {
 			buttonBack.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonBack.getText());
+	           	 textBox.remove(maxTextBox);
+	           	 updateText(text);
+	           	
 	            }
 	        });
 				
 			Button buttonDivide = new Button(composite, SWT.NONE);
 			buttonDivide.setLayoutData(dataThird);
-			buttonDivide.setText("÷");	
+			buttonDivide.setText(" ÷ ");	
 			
 			buttonDivide.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonDivide.getText());
+	            	text.append(buttonDivide.getText());
 	                operation.add(0,buttonDivide.getText());
+	                textBox.add(buttonDivide.getText());
+	                maxOperation++;
+	                maxTextBox++;
 	            }
 	        });
 				
@@ -62,9 +72,13 @@ public class ButtonClass {
 			button7.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button7.getText());
+	            	text.append(button7.getText());
 	                if(check() == true) operators.add(0,7);
-	                else operators.add(1,7);	            }
+	                else operators.add(1,7);
+	                textBox.add(button7.getText());
+	                maxOperators++;
+	                maxTextBox++;
+	                }
 	        });
 				
 			Button button8 = new Button(composite, SWT.NONE);
@@ -74,9 +88,12 @@ public class ButtonClass {
 			button8.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button8.getText());
+	            	text.append(button8.getText());
 	                if(check() == true) operators.add(0,8);
 	                else operators.add(1,8);
+	                textBox.add(button8.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -87,21 +104,27 @@ public class ButtonClass {
 			button9.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button9.getText());
+	            	text.append(button9.getText());
 	                if(check() == true) operators.add(0,9);
 	                else operators.add(1,9);
+	                textBox.add(button9.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
 			Button buttonMultiple = new Button(composite, SWT.NONE);
 			buttonMultiple.setLayoutData(dataSecond);
-			buttonMultiple.setText("x");
+			buttonMultiple.setText(" x ");
 			
 			buttonMultiple.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonMultiple.getText());
+	            	text.append(buttonMultiple.getText());
 	                operation.add(0,buttonMultiple.getText());
+	                textBox.add(0,buttonMultiple.getText());
+	                maxOperation++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -112,9 +135,12 @@ public class ButtonClass {
 			button4.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button4.getText());
+	            	text.append(button4.getText());
 	                if(check() == true) operators.add(0,4);
 	                else operators.add(1,4);
+	                textBox.add(button4.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -125,9 +151,12 @@ public class ButtonClass {
 			button5.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button5.getText());
+	            	text.append(button5.getText());
 	                if(check() == true) operators.add(0,5);
 	                else operators.add(1,5);
+	                textBox.add(button5.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -138,21 +167,27 @@ public class ButtonClass {
 			button6.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button6.getText());
+	            	text.append(button6.getText());
 	                if(check() == true) operators.add(0,6);
 	                else operators.add(1,6);
+	                textBox.add(button6.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
 			Button buttonMinus = new Button(composite, SWT.NONE);
 			buttonMinus.setLayoutData(dataSecond);
-			buttonMinus.setText("-");
+			buttonMinus.setText(" - ");
 			
 			buttonMinus.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonMinus.getText());
+	            	text.append(buttonMinus.getText());
 	                operation.add(0,buttonMinus.getText());
+	                textBox.add(0,buttonMinus.getText());
+	                maxOperation++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -163,9 +198,12 @@ public class ButtonClass {
 			button1.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button1.getText());
+	            	text.append(button1.getText());
 	                if(check() == true) operators.add(0,1);
 	                else operators.add(1,1);
+	                textBox.add(button1.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -176,9 +214,12 @@ public class ButtonClass {
 			button2.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button2.getText());
+	            	text.append(button2.getText());
 	                if(check() == true) operators.add(0,2);
 	                else operators.add(1,2);
+	                textBox.add(button2.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -189,21 +230,27 @@ public class ButtonClass {
 			button3.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button3.getText());
+	            	text.append(button3.getText());
 	                if(check() == true) operators.add(0,3);
 	                else operators.add(1,3);
+	                textBox.add(button3.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
 			Button buttonPlus = new Button(composite, SWT.NONE);
 			buttonPlus.setLayoutData(dataSecond);
-			buttonPlus.setText("+");
+			buttonPlus.setText(" + ");
 			
 			buttonPlus.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonPlus.getText());
+	            	text.append(buttonPlus.getText());
 	                operation.add(0,buttonPlus.getText());
+	                textBox.add(0,buttonPlus.getText());
+	                maxOperation++;
+	                maxTextBox++;
 	            }
 	        });
 			
@@ -214,7 +261,7 @@ public class ButtonClass {
 			buttonPunct.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonPunct.getText());
+	            	text.append(buttonPunct.getText());
 	            }
 	        });
 			
@@ -225,24 +272,38 @@ public class ButtonClass {
 			button0.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(button0.getText());
+	            	text.append(button0.getText());
+	                if(check() == true) operators.add(0,0);
+	                else operators.add(1,0);
+	                textBox.add(button0.getText());
+	                maxOperators++;
+	                maxTextBox++;
 	            }
 	        });
 			
 			Button buttonEqual = new Button(composite, SWT.NONE);
 			buttonEqual.setLayoutData(dataThird);
-			buttonEqual.setText("=");
+			buttonEqual.setText(" = ");
 			
 			buttonEqual.addSelectionListener(new SelectionAdapter() {
 	            @Override
 	            public void widgetSelected(SelectionEvent e) {
-	                list.add(buttonEqual.getText());
+	            	text.append(buttonEqual.getText());
 	                operation.add(buttonEqual.getText());
-	                decide(list,buttonEqual);
+	                textBox.add(buttonEqual.getText());
+	                decide(text,buttonEqual);
+	                maxOperation++;
+	                maxTextBox++;
 	                
 	            }
 	        });
 			
+	}
+	
+	public void updateText(Text text)
+	{
+		for(String text1 : textBox)
+			text.setText(text1);
 	}
 	
 	public boolean check()
@@ -256,14 +317,20 @@ public class ButtonClass {
 		return check;
 	}
 	
-	public void decide(List list,Button buttonEqual)
+	public void decide(Text text,Button buttonEqual)
 	{
 		
-		 if(operation.get(operation.indexOf(buttonEqual.getText() ) - 1) == "+")
-         	list.add(Operation.plus());
+		 if(operation.get(operation.indexOf(buttonEqual.getText() ) - 1) == " + ")
+         	text.append(Operation.plus());
          
-         if(operation.get(operation.indexOf(buttonEqual.getText() ) - 1) == "-")
-         	list.add(Operation.minus());
+         if(operation.get(operation.indexOf(buttonEqual.getText() ) - 1) == " - ")
+         	text.append(Operation.minus());
+         
+         if(operation.get(operation.indexOf(buttonEqual.getText() ) - 1) == " x ")
+          	text.append(Operation.multiple());
+         
+         if(operation.get(operation.indexOf(buttonEqual.getText() ) - 1) == " ÷ ")
+           	text.append(Operation.divide());
 		
 	}
 	
