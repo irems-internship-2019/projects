@@ -8,20 +8,18 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
 
-public class Calculator {
+public class Calculator extends Operations {
 
 	protected Shell shell;
 	private Text calculatorInput;
 	private Label label;
 	private float data=0;
-	private String operation;
+	private String operation="";
+	 
 	/**
 	 * Launch the application.
 	 * @param args
@@ -56,22 +54,23 @@ public class Calculator {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(343, 316);
+		shell.setSize(355, 316);
 		shell.setText("SWT Calculator");
+		Color operationscolor = new Color(shell.getDisplay(), new RGB(200, 20,200));
 		
 		shell.setLayout(new GridLayout(4, false));
 		
 		calculatorInput = new Text(shell, SWT.BORDER);
+		calculatorInput.setEditable(false);
 		calculatorInput.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
-	
-		
-		
+			
 		
 		Button clearButton = new Button(shell, SWT.NONE);
 		clearButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			
+			       data=0;
+			      
 				   calculatorInput.setText("");
 			}
 		});
@@ -79,8 +78,7 @@ public class Calculator {
 		       clearButton.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
 		         Color clearColor = new Color(shell.getDisplay(), new RGB(0, 0, 255));
 		         clearButton.setBackground(clearColor);
-		
-		
+			
 		
 		Button deleteButton = new Button(shell, SWT.NONE);				
 		deleteButton.addSelectionListener(new SelectionAdapter() {
@@ -93,44 +91,76 @@ public class Calculator {
 		});
 		deleteButton.setText("DEL");
 		           deleteButton.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));	
-		
+		           Color deleteColor = new Color(shell.getDisplay(), new RGB(0, 0, 255));
+		           deleteButton.setBackground(deleteColor);
+		           
 		          
 		Button division = new Button(shell, SWT.NONE);
 		division.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-							
-			     data=Float.parseFloat(calculatorInput.getText());			                 
-                 operation="division";
-               calculatorInput.setText("");
-                 label.setText(operation);				      
-			    
-              calculatorInput.setText("");
-		            label.setText("divison");
+			
+		 		float secondOperand = 0;
+		 		
+	 if(  (data!=0) && Operations.IsNumber(calculatorInput.getText())==true  )
+	             {
+			           secondOperand = Float.parseFloat(calculatorInput.getText());		
+
+		 	            Float result = data / secondOperand;	 		
+		 	           calculatorInput.setText(String.valueOf(result));
+		 	           data=0;
+	             }  
+	             else         
+	if( Operations.IsNumber(calculatorInput.getText())==true  )
+	{            
+                data=Float.parseFloat( calculatorInput.getText() );		
+           	  calculatorInput.setText("");               
+	}else 
+		if( Operations.IsNumber(calculatorInput.getText()) == false )
+			  calculatorInput.setText("");  
+			 	          
+	  operation="division";
+	    label.setText(operation);
 			}
 		});
 		      division.setText("/");
-		         
-		               division.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1)); 
+		      division.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1)); 
+			 division.setBackground(operationscolor);
 		               
-		               
-		               	                
+		              		               	                
 		Button multiply = new Button(shell, SWT.NONE);
 		multiply.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-	 	   
-				  data=Float.parseFloat(calculatorInput.getText());			                 
-                  operation="multiplication";
-                calculatorInput.setText("");
-                  label.setText(operation);
+		 		float secondOperand = 0;
+		 		
+	             if( (data!=0) && Operations.IsNumber(calculatorInput.getText())==true  )
+	             {
+			           secondOperand = Float.parseFloat(calculatorInput.getText());		
+
+		 	            Float result = data * secondOperand;	 		
+		 	           calculatorInput.setText(String.valueOf(result));
+		 	           data=0;		 	         
+	             }  
+	             else         
+	if( Operations.IsNumber(calculatorInput.getText())==true  )
+	{            
+                data=Float.parseFloat( calculatorInput.getText() );		
+           	  calculatorInput.setText("");               
+	}
+	else 
+		if( Operations.IsNumber(calculatorInput.getText()) == false )
+			  calculatorInput.setText("");  
+	           
+	             
+	  operation="multiplication";
+	    label.setText(operation);
 			}
 		});
 		multiply.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
 		multiply.setText("X"); 
-		
-		
-		 
+        multiply.setBackground(operationscolor);
+			 
 		   Button seven =new Button(shell,SWT.NONE);
 		   seven.addSelectionListener(new SelectionAdapter() {
 		   	@Override
@@ -157,7 +187,6 @@ public class Calculator {
 		    	@Override
 		    	public void widgetSelected(SelectionEvent e) {
 		    		
-
 		    		 calculatorInput.setText( calculatorInput.getText() + 9 );
 		    	}
 		    });
@@ -168,21 +197,40 @@ public class Calculator {
 		    minus.addSelectionListener(new SelectionAdapter() {
 		    	@Override
 		    	public void widgetSelected(SelectionEvent e) {
-		    		
-		    		  data=Float.parseFloat(calculatorInput.getText());			                 
-	                   operation="subtraction";
-	                 calculatorInput.setText("");
-	                   label.setText(operation);
+		    	
+		     		float secondOperand = 0;
+			 		
+		             if(  (data!=0) && Operations.IsNumber(calculatorInput.getText())==true  )
+		             {
+				           secondOperand = Float.parseFloat(calculatorInput.getText());		
+
+			 	            Float result = data - secondOperand;	 		
+			 	           calculatorInput.setText(String.valueOf(result));
+			 	           data=0;
+		             }  
+		             else         
+		if( Operations.IsNumber(calculatorInput.getText())==true  )
+		{            
+	                 data=Float.parseFloat( calculatorInput.getText() );		
+	            	  calculatorInput.setText("");               
+		}
+		else 
+			if( Operations.IsNumber(calculatorInput.getText()) == false )
+ 			  calculatorInput.setText("");  
+		
+		
+		  operation="subtraction";
+		    label.setText(operation);
 		    	}
 		    });
 			minus.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
 			minus.setText("-");  
-			
+			minus.setBackground(operationscolor);
+						
 			 Button four =new Button(shell,SWT.NONE);
 			 four.addSelectionListener(new SelectionAdapter() {
 			 	@Override
-			 	public void widgetSelected(SelectionEvent e) {
-			 		
+			 	public void widgetSelected(SelectionEvent e) {			 		
 			 		 calculatorInput.setText(calculatorInput.getText() + 4 );
 			 	}
 			 });
@@ -205,7 +253,6 @@ public class Calculator {
 					 	@Override
 					 	public void widgetSelected(SelectionEvent e) {
 					 		
-
 					 		 calculatorInput.setText( calculatorInput.getText() + 6 );
 					 	}
 					 });
@@ -217,22 +264,40 @@ public class Calculator {
 						 
 					 	@Override					 	
 					 	public void widgetSelected(SelectionEvent e) { 
+					 		float secondOperand = 0;
 					 		
-			                 data=Float.parseFloat(calculatorInput.getText());			                 
-			                   operation="addition";
-			                 calculatorInput.setText("");
-			                   label.setText(operation);
-					 	}
+				if( (data!=0) && Operations.IsNumber(calculatorInput.getText())==true )
+				             {
+						           secondOperand = Float.parseFloat(calculatorInput.getText());		
+
+					 	            Float result = data + secondOperand;	 		
+					 	           calculatorInput.setText(String.valueOf(result));
+					 	           data=0;
+				             }  
+				      else         
+				if( Operations.IsNumber( calculatorInput.getText()) == true )
+				{            
+			                 data=Float.parseFloat( calculatorInput.getText() );		
+			            	  calculatorInput.setText("");               
+				}		
+				else 
+					if( Operations.IsNumber(calculatorInput.getText()) == false )
+		 			  calculatorInput.setText("");  
+				
+				  operation="addition";
+				    label.setText(operation);				 	 
+					 		
+					 }
 					 });
 					 adittion.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
 					 adittion.setText("+"); 
+                adittion.setBackground(operationscolor);
 					 
 					 Button one =new Button(shell,SWT.NONE);
 					 one.addSelectionListener(new SelectionAdapter() {
 					 	@Override
 					 	public void widgetSelected(SelectionEvent e) {
-					 		 calculatorInput.setText(calculatorInput.getText() + 1);
-					 		     				 		 
+					 		 calculatorInput.setText(calculatorInput.getText() + 1);					 		     				 		 
 					 	}
 					 });
 					 one.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
@@ -266,32 +331,16 @@ public class Calculator {
 					 	@Override
 					 	public void widgetSelected(SelectionEvent e) {
 					 		
-					 	            Float secondOperand = Float.parseFloat(calculatorInput.getText());
-					 	            switch (operation) {
-									case "addition": 
-										            Float result = data + secondOperand;
-										           calculatorInput.setText(String.valueOf(result));
-										break;
-										
-									case"subtraction":
-									    result =data - secondOperand;	
-                                              calculatorInput.setText(String.valueOf(result));									    
-									 break;
-									 
-									case "multiplication":
-									    result =data * secondOperand;	
-                                              calculatorInput.setText(String.valueOf(result));									    
-									 break;
-									    
-									 
-									case "division":
-									    result =data / secondOperand;	
-                                              calculatorInput.setText(String.valueOf(result));									    
-									 break;
-									 
-									default:
-										break;
-									}
+							 		float secondOperand = 0;
+							 		
+             if(Operations.IsNumber(calculatorInput.getText())==true)
+            	 
+		         secondOperand = Float.parseFloat(calculatorInput.getText());	
+            
+
+		 calculatorInput.setText( String.valueOf( Operations.AllOperations(operation, data, secondOperand) ));						
+					 	           data=0;
+					 	          secondOperand = 0;
 					 	}
 					 });
 					 equal.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
@@ -299,35 +348,32 @@ public class Calculator {
 					 Color equalColor = new Color(shell.getDisplay(), new RGB(0, 255, 0));
 					 equal.setBackground(equalColor);
 					 
+					 
 					 Button zero =new Button(shell,SWT.NONE);
 					 zero.addSelectionListener(new SelectionAdapter() {
 					 	@Override
-					 	public void widgetSelected(SelectionEvent e) {
-					 		
+					 	public void widgetSelected(SelectionEvent e) {					 		
 
 					 		 calculatorInput.setText(calculatorInput.getText( )+ 0 );
 					 	}
 					 });
 					 zero.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,2,1));
 					 zero.setText("0");  
-				        		
+				   				 
 					 Button comma =new Button(shell,SWT.NONE);
 					 comma.addSelectionListener(new SelectionAdapter() {
 					 	@Override
-					 	public void widgetSelected(SelectionEvent e) {
-					 		
+					 	public void widgetSelected(SelectionEvent e) {				 		
 
 					 		 calculatorInput.setText(calculatorInput.getText( )+ "." );
 					 	}
 					 });
 					 comma.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,1,1));
-					 comma.setText(".");  
-				        		
+				  	 comma.setText(".");  	        		
 					 
-				        		 label = new Label(shell, SWT.FILL);
-				        		 label.setText("Operation");	 
-
-
+				        	  label = new Label(shell, SWT.NONE);
+				        	  label.setLayoutData((new GridData(SWT.FILL,SWT.FILL,true,true,1,1)));
+				        	  label.setText("");	 
 
 	}
 }
