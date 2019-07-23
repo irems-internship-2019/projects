@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Text;
 public class ButtonClass {
 
 	int maxTextBox = -1;
+	boolean checkEquals;
 
 	static public ArrayList<String> textBox = new ArrayList<>();
 	public ArrayList<Character> numbers = new ArrayList<>();
@@ -60,22 +61,24 @@ public class ButtonClass {
 		buttonBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				textBox.remove(maxTextBox);
-				maxTextBox--;
-				updateText(text);
+				if (maxTextBox > -1) {
+					textBox.remove(maxTextBox);
+					maxTextBox--;
+					updateText(text);
+				}
 
 			}
 		});
 
 		Button buttonDivide = new Button(composite, SWT.PUSH);
 		buttonDivide.setLayoutData(dataThird);
-		buttonDivide.setText("÷");
+		buttonDivide.setText("/");
 
 		buttonDivide.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				text.append(buttonDivide.getText());
-				numbersCondition(text, '÷');
+				numbersCondition(text, '/');
 
 			}
 		});
@@ -256,55 +259,59 @@ public class ButtonClass {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				numbersCondition(text, '=');
-				decide(text);
+				if (checkEquals == true) {
+					decide(text);
+					updateMaxTextBox("=");
+				}
 
 			}
 		});
 
 	}
 
+	public void updateMaxTextBox(String string) {
+		maxTextBox = textBox.indexOf(string);
+	}
+
 	public void numbersCondition(Text text, Character elementString) {
 
 		StringBuilder string = new StringBuilder();
-
-		if (!elementString.equals('x') && !elementString.equals('÷') && !elementString.equals('+')
+		checkEquals = false;
+		if (!elementString.equals('x') && !elementString.equals('/') && !elementString.equals('+')
 				&& !elementString.equals('-') && !elementString.equals('='))
 			numbers.add(elementString);
 		else {
-			for (Character newCharacters : numbers) {
-				string.append(newCharacters);
+			if (!numbers.isEmpty()) {
+				for (Character newCharacters : numbers) {
+					string.append(newCharacters);
+				}
+				String result = string.toString();
+				textBox.add(result);
+				updateMaxTextBox(result);
+				numbers.clear();
+				string = null;
 			}
-			String result = string.toString();
-			textBox.add(result);
-			maxTextBox++;
-			textBox.add(elementString.toString());
-			maxTextBox++;
-			numbers.clear();
-			string = null;
+			// here are restrictions for operators
+			if (!textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
+					&& !textBox.get(maxTextBox).equals("+") && !textBox.get(maxTextBox).equals("-")
+					&& !textBox.get(maxTextBox).equals("=")) {
+				textBox.add(elementString.toString());
+				updateMaxTextBox(elementString.toString());
+				if (textBox.get(maxTextBox).equals("="))
+					checkEquals = true;
+			}
 			updateText(text);
 		}
-	}
-
-	public void restrictionAdd(Text text) {
-
-		if (textBox.get(maxTextBox - 1).equals("x") || textBox.get(maxTextBox - 1).equals("÷")
-				|| textBox.get(maxTextBox - 1).equals("+")
-				|| textBox.get(maxTextBox - 1).equals("-") && textBox.get(maxTextBox - 1).equals(".")) {
-			textBox.remove(maxTextBox);
-			updateText(text);
-			maxTextBox--;
-		}
-
 	}
 
 	public void decide(Text text) {
 
-		while (textBox.contains("x") || textBox.contains("÷") || textBox.contains("+") || textBox.contains("-")) {
+		while (textBox.contains("x") || textBox.contains("/") || textBox.contains("+") || textBox.contains("-")) {
 
 			if (textBox.contains("x"))
 				Operation.multiple(text);
 			{
-				if (textBox.contains("÷"))
+				if (textBox.contains("/"))
 					Operation.divide(text);
 				{
 					if (textBox.contains("+"))

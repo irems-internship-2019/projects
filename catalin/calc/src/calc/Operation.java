@@ -40,7 +40,7 @@ public class Operation extends ButtonClass {
 	}
 
 	public static void divide(Text text) {
-		int numberIndex = textBox.indexOf("÷");
+		int numberIndex = textBox.indexOf("/");
 		double firstNumber = Double.parseDouble(textBox.get(numberIndex - 1));
 		double secondNumber = Double.parseDouble(textBox.get(numberIndex + 1));
 		double result = firstNumber / secondNumber;
