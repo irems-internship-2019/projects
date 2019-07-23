@@ -182,11 +182,15 @@ class ToCalculate {
 	    
 	    public static boolean Verify(String right, String left) {
 	    
-	    	//The order if these conditions is critical
+	    	//The order for these conditions, is critical
 	    	//the ones that are specific, have to be on top
 	    	//the ones that are not specific, eg. !isNumeric MUST be LOWER 
 	    	//Specifics
-	    	if(left.equals("dorel")){return true;}                        //init stack
+	    	
+	    	if(left.equals("dorel") && isNumeric(right)) {return true;}          // dorel  1
+	    	else if(left.equals("dorel") && isOpenB(right)) {return true;}       // dorel  (
+	    	else if(left.equals("dorel") && isCloseB(right)) {return false;}     // dorel  )
+	        else if(left.equals("dorel") && !isNumeric(right)) {return false;}   // dorel  +
 	    	else if(isNumeric(left) && isNumeric(right)) {return true;}   // 1  1
 	    	else if(isNumeric(left) && isCloseB(right)){return true;}     // 1  )
 	    	else if(isNumeric(left) && isOpenB(right)){return false;}     // 1  (

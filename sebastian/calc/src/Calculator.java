@@ -76,12 +76,6 @@ public static void main(String[] args) {
   theText.setLayoutData(span_colums);
   theText.setFont(font);
 
-  
-  Button btnHistory = new Button(shell, SWT.PUSH);
-  btnHistory.setText("History");
-  btnHistory.setLayoutData(col_1);
-  
-  
   Button btn_openBrackets = new Button(shell, SWT.PUSH);
   btn_openBrackets.setText("(");
   btn_openBrackets.setLayoutData(col_1);
@@ -108,12 +102,30 @@ public static void main(String[] args) {
 	    }
 	});
   
+  Button btnClear = new Button(shell, SWT.PUSH);
+  btnClear.setText("C");
+  btnClear.setLayoutData(col_1);
+  btnClear.addSelectionListener(new SelectionAdapter() {
+	    @Override
+	    public void widgetSelected(SelectionEvent e) {
+	    	operands.clear();
+	    	operands.push("dorel");
+	    	theText.setText("");
+	    }
+	});
+  
   Button btnBackspace = new Button(shell, SWT.PUSH);
   btnBackspace.setText("DEL");
-  //btnBackspace.setImage(backImage);
-  //new Image(getDisplay(), getClass().getResourceAsStream("the.png_folder/backspace.png"));
   btnBackspace.setLayoutData(col_1);
-  
+  btnBackspace.addSelectionListener(new SelectionAdapter() {
+	    @Override
+	    public void widgetSelected(SelectionEvent e) {
+	    	operands.pop();
+	    	if(operands.isEmpty()) {operands.push("dorel");}
+	    	else {theText.setText(theText.getText().substring(0, theText.getText().length()-1));}
+	    	
+	    }
+	});
   
   Button btn_7 = new Button(shell, SWT.PUSH);
   btn_7.setText("7");
@@ -309,7 +321,7 @@ public static void main(String[] args) {
 	    public void widgetSelected(SelectionEvent e) {
 
 	         	operands.remove(0);
-	         	operands.push("dorel");
+	         	operands.push(null);
 				int operandsSize = operands.size();	
 				String[] infix = new String[operandsSize];
 				int j = 0;
@@ -327,7 +339,10 @@ public static void main(String[] args) {
 						 //infix[j] = operands.get(i)+""+operands.get(i+1); j++; i++;
 					 }else {
 						 if(!multipleDigitStack.isEmpty()) {
-				    	   infix[j] = multipleDigitStack.toString().replace(",", "").replace(" ","");
+				    	   infix[j] = multipleDigitStack.toString().replace(",", "")
+				    			                                   .replace(" ","")
+				    			                                   .replace("[","")
+				    			                                   .replace("]","");
 				    	   j++; i--;
 				    	   multipleDigitStack.clear();
 						 }
@@ -341,19 +356,22 @@ public static void main(String[] args) {
 					 }
 				}
 				
-//		           System.arraycopy(infix, 0, results, 0, infix.length);
-//					results.remove("dorel");
-//					System.arraycopy(results, 0, infix, 0, results.size());
-
-				
-				
-//				 System.out.print(multipleDigitStack.toString());
-//				 multipleDigitStack.clear();
-//				 System.out.print(multipleDigitStack.toString()+"\n\n");
+                 int numberOfcharacters = 0;
+				 for(String str : infix) 
+				 {
+					if(str != null && !str.isEmpty()) {numberOfcharacters++;}
+				 }
+				 String[] infixFinal = new String[numberOfcharacters];
 				 
-				 for(String str : infix) {System.out.println(str);}
+				 for(int count = 0; count < numberOfcharacters; count++) 
+				 {
+					 infixFinal[count] = infix[count];
+				 }
 				 
-				 //for(String str : multipleDigitStack) {System.out.println(str);}
+				 
+				 //for(String str : infixFinal) {System.out.println(str);}
+				 
+				
 				
 				
 				
@@ -373,9 +391,9 @@ public static void main(String[] args) {
 				 
 				 
 	    	 	
-//	       int infixCount = infix.length;
-//	       //System.out.println(ToCalculate.PostFixCalculator(ToCalculate.InfixToPostfixConverter(infix, infixCount)));
-//	       theText.setText(theText.getText()+"="+ToCalculate.PostFixCalculator(ToCalculate.InfixToPostfixConverter(infix, infixCount)));
+	       int infixCount = infixFinal.length;
+//         System.out.println(ToCalculate.PostFixCalculator(ToCalculate.InfixToPostfixConverter(infix, infixCount)));
+	       theText.setText(theText.getText()+"="+ToCalculate.PostFixCalculator(ToCalculate.InfixToPostfixConverter(infixFinal, infixCount)));
 	    }
 	});
   
