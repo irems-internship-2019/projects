@@ -335,6 +335,7 @@ public static void main(String[] args) {
 						 {
 							 infix[j] = operands.get(i); 
 							 j++;
+							 
 						 }
 						 
 					 }
