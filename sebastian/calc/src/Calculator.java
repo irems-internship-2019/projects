@@ -1,13 +1,13 @@
-//STILL NEED TO BE DONE ###############################################
-//open closed brackets counter aka. "(5+4))))" not good 
-//after a calculation is done reset Display IF a number or ( is pressed
-//after a calculation is done IF u press "=" program dies
+//STILL NEED TO BE DONE ########################################################################
+//brackets counter aka. "(5+4))))" or "(((1+2)" not good - DONE
+//after a calculation is done, reset Display IF, a "number" or "(" is pressed
+//calculation is done IF you press "=" program dies - FIXED return ERROR...still need proper Verification
 //remove decimals if number doesn't need it aka. 12.0000000000 not good
-//#####################################################################
+//if cases where 1.1. is inputed, display ERROR message - FIXED...still need proper Verification
+//##############################################################################################
 
 //no package... NOT GOOD
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import org.eclipse.swt.SWT;
@@ -26,8 +26,7 @@ class Calculator {
 
 	static Stack<String> inputStack = new Stack<>();
 	static Stack<String> multipleDigitStack = new Stack<>();
-	static ArrayList<String> results = new ArrayList<String>();
-	static int res = 0;
+	static int numberOfBrackets = 0;
 
 	public static void main(String[] args) {
 
@@ -337,6 +336,19 @@ class Calculator {
 			public void widgetSelected(SelectionEvent e) {
 
 				try {
+					numberOfBrackets = ConditionsAndVerification.checkNumberOfBrackets(inputStack);
+					if (numberOfBrackets != 0 && numberOfBrackets > 0) {
+						for (int i = 0; i < numberOfBrackets; i++) {
+							inputStack.push(")");
+							theText.setText(theText.getText() + ")");
+						}
+					} else if (numberOfBrackets < 0) {
+						numberOfBrackets *= (-1);
+						for (int i = 1; i <= numberOfBrackets; i++) {
+							inputStack.add(i, "(");
+							theText.setText("(" + theText.getText());
+						}
+					}
 
 					// firstly ComplexNumbers unites multiple digit numbrs eg [1,1,1] will werge as
 					// [111]
@@ -362,6 +374,8 @@ class Calculator {
 					// the stack can't be empty
 					inputStack.push("dorel");
 					theText.setText("- ERROR -");
+					// delete this line for final
+					System.out.println(exception);
 				}
 			}
 		});

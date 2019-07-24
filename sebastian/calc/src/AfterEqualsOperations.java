@@ -35,8 +35,6 @@ public class AfterEqualsOperations {
 			}
 		}
 
-		// method to remove all null values
-
 		String[] infixFinal = new String[numberOfcharacters];
 		int FinalCount = 0;
 		for (int i = 0; i < count; i++) {

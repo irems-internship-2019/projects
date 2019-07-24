@@ -1,3 +1,4 @@
+import java.util.Stack;
 
 public class ConditionsAndVerification {
 
@@ -103,5 +104,22 @@ public class ConditionsAndVerification {
 		return false;
 		// should add more conditions
 		// with 3 parameters eg. 1.1. or
+	}
+	
+	public static int checkNumberOfBrackets(Stack<String> infixStack) {
+		int numberOfOpenBrackets = 0;
+		int numberOfClosedBrackets = 0;
+		for (String str : infixStack) {
+			if (str.equals("(")) {
+				numberOfOpenBrackets++;
+			}
+		}
+
+		for (String str : infixStack) {
+			if (str.equals(")")) {
+				numberOfClosedBrackets++;
+			}
+		}
+		return numberOfOpenBrackets - numberOfClosedBrackets;
 	}
 }
