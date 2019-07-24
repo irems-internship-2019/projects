@@ -33,7 +33,7 @@ public class ButtonClass {
 		GridData dataSecond = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GridData dataThird = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 
-		Text text = new Text(composite, SWT.BORDER | SWT.RIGHT_TO_LEFT);
+		Text text = new Text(composite, SWT.BORDER);
 		text.setLayoutData(dataFirst);
 
 		Button buttonClear = new Button(composite, SWT.PUSH);
@@ -242,7 +242,7 @@ public class ButtonClass {
 				checkConditions(text, '=');
 				if (equalsChecker == true) {
 					decide(text);
-					updateMaxTextBox("=");
+					maxTextBox = 0;
 				}
 
 			}
@@ -255,7 +255,6 @@ public class ButtonClass {
 	}
 
 	public void checkConditions(Text text, Character elementString) {
-
 		StringBuilder string = new StringBuilder();
 		equalsChecker = false;
 		if (elementString.equals('.'))
@@ -285,8 +284,10 @@ public class ButtonClass {
 					&& !textBox.get(maxTextBox).equals("=")) {
 				textBox.add(elementString.toString());
 				updateMaxTextBox(elementString.toString());
-				if (textBox.get(maxTextBox).equals("="))
+				if (textBox.get(maxTextBox).equals("=")) {
 					equalsChecker = true;
+					textBox.remove(maxTextBox);
+				}
 			}
 			numbers.clear();
 			string = null;
@@ -297,24 +298,24 @@ public class ButtonClass {
 
 	public void decide(Text text) {
 
-		while (textBox.contains("x") || textBox.contains("/") || textBox.contains("+") || textBox.contains("-")) {
+		while (textBox.contains("x") || textBox.contains("/")) {
 
-			if (textBox.contains("x"))
+			if (textBox.contains("x") && (textBox.indexOf("x") <= textBox.indexOf("/") || textBox.indexOf("x") == 1
+					|| !textBox.contains("/")))
 				Operation.multiple(text);
-			{
-				if (textBox.contains("/"))
-					Operation.divide(text);
-				{
-					if (textBox.contains("+"))
-						Operation.plus(text);
-					{
-						if (textBox.contains("-"))
-							Operation.minus(text);
-					}
-				}
-			}
+			if (textBox.contains("/") && (textBox.indexOf("/") <= textBox.indexOf("x") || textBox.indexOf("/") == 1
+					|| !textBox.contains("x")))
+				Operation.divide(text);
 		}
 
+		while (textBox.contains("+") || textBox.contains("-")) {
+			if (textBox.contains("+") && (textBox.indexOf("+") <= textBox.indexOf("-") || textBox.indexOf("+") == 1
+					|| !textBox.contains("-")))
+				Operation.plus(text);
+			if (textBox.contains("-") && (textBox.indexOf("-") <= textBox.indexOf("+") || textBox.indexOf("-") == 1
+					|| !textBox.contains("+")))
+				Operation.minus(text);
+		}
 	}
 
 	public static void updateText(Text text) {
