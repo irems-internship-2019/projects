@@ -25,6 +25,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
+//Mai trebuie sa fac sa mearga cu decimal si sa ai un ( ) checker + counter
+//Dupe ce ai facut un calcul si pui imediat pe un numar ... pusca
+ 
 
 class Calculator {
 	
@@ -109,6 +112,7 @@ public static void main(String[] args) {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 	    	operands.clear();
+	    	//the stack can't be empty
 	    	operands.push("dorel");
 	    	theText.setText("");
 	    }
@@ -121,8 +125,10 @@ public static void main(String[] args) {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 	    	operands.pop();
-	    	if(operands.isEmpty()) {operands.push("dorel");}
-	    	else {theText.setText(theText.getText().substring(0, theText.getText().length()-1));}
+	    	if(operands.isEmpty()) 
+	    	operands.push("dorel");
+	    	if(!theText.getText().isEmpty())
+	    	theText.setText(theText.getText().substring(0, theText.getText().length()-1));
 	    	
 	    }
 	});
@@ -319,81 +325,14 @@ public static void main(String[] args) {
   btn_equals.addSelectionListener(new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
-
-	         	operands.remove(0);
-	         	operands.push(null);
-				int operandsSize = operands.size();	
-				String[] infix = new String[operandsSize];
-				int j = 0;
-				for(int i = 0; i < operandsSize; i++) {
-					if(ToCalculate.isNumeric(operands.get(i)))
-					 {
-						
-							 multipleDigitStack.push(operands.get(i));
-//						 mulipleDigitArray.add(operands.get(i)+""+operands.get(i+1));
-//						 i++;
-//						 if(ToCalculate.VerifyIfDoubleDigit(operands.get(i), operands.get(i+1))) {
-//							 mulipleDigitArray.add(operands.get(i)+""+operands.get(i+1));
-//							 i++;
-//						 }
-						 //infix[j] = operands.get(i)+""+operands.get(i+1); j++; i++;
-					 }else {
-						 if(!multipleDigitStack.isEmpty()) {
-				    	   infix[j] = multipleDigitStack.toString().replace(",", "")
-				    			                                   .replace(" ","")
-				    			                                   .replace("[","")
-				    			                                   .replace("]","");
-				    	   j++; i--;
-				    	   multipleDigitStack.clear();
-						 }
-						 else 
-						 {
-							 infix[j] = operands.get(i); 
-							 j++;
-							 
-						 }
-						 
-					 }
-				}
-				
-                 int numberOfcharacters = 0;
-				 for(String str : infix) 
-				 {
-					if(str != null && !str.isEmpty()) {numberOfcharacters++;}
-				 }
-				 String[] infixFinal = new String[numberOfcharacters];
-				 
-				 for(int count = 0; count < numberOfcharacters; count++) 
-				 {
-					 infixFinal[count] = infix[count];
-				 }
-				 
-				 
-				 //for(String str : infixFinal) {System.out.println(str);}
-				 
-				
-				
-				
-				
-//                
-//				 for(String str : operands) 
-//		    	 {
-//					 if(ToCalculate.VerifyIfDoubleDigit(str, str+1))
-//					 {
-//						 
-//					 }
-//					 //infix[i] = str; i++;
-//		    	 }
-				 
-				
-				  
-				 
-				 
-				 
-	    	 	
+	    	String[] infixDecimalDouble = ToCalculate.CheckifDecimal( AfterEqualsOperations.ComplexNumbers(operands, operands.size()), operands.size());;
+            //infixDecimalDouble = ToCalculate.CheckifDecimal( AfterEqualsOperations.ComplexNumbers(operands, operands.size()), operands.size());
+            String[] infixFinal = AfterEqualsOperations.RemoveNull(infixDecimalDouble, operands.size()); 	
 	       int infixCount = infixFinal.length;
-//         System.out.println(ToCalculate.PostFixCalculator(ToCalculate.InfixToPostfixConverter(infix, infixCount)));
 	       theText.setText(theText.getText()+"="+ToCalculate.PostFixCalculator(ToCalculate.InfixToPostfixConverter(infixFinal, infixCount)));
+	       operands.clear();
+	      //the stack can't be empty
+	       operands.push("dorel");
 	    }
 	});
   

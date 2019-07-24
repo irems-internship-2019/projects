@@ -228,6 +228,37 @@ class ToCalculate {
 	    	if(isNumeric(left) && !isNumeric(right)){return true;}   // 1  +
 	    	else return false;
 	    }
+	    
+	    public static String[] CheckifDecimal(String[] exp, int count) 
+	    {
+			for(int i = 0; i < count; i++) 
+			{
+			  if(exp[i] != null && !exp[i].isEmpty()) 
+			  {
+				  if(isNumeric(exp[i])) 
+				  {
+				    if(exp[i+1]!= null && !exp[i+1].isEmpty()) 
+				    {
+					  if(exp[i+1].equals(".")) 
+					   {
+						 if(exp[i+2]!= null && !exp[i+2].isEmpty())
+						 {
+						 exp[i] = exp[i] + "" +exp[i+1]+""+exp[i+2].toString().replace(",", "")
+                                 .replace(" ","")
+                                 .replace("[","")
+                                 .replace("]","");
+						 exp[i+1] = null;
+						 exp[i+2] = null;
+						 i+=2;
+						 
+						 }
+					   }
+					}
+				  }
+			 }
+		   }
+		  return exp;
+	    }
 	        
 	    
 }
