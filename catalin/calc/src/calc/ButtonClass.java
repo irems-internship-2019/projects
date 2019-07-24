@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Text;
 public class ButtonClass {
 
 	int maxTextBox = -1;
-	int maxNumbers = -1;
 	int countPoint = 0;
 	boolean equalsChecker;
 
@@ -266,7 +265,6 @@ public class ButtonClass {
 			if (countPoint <= 1) {
 				numbers.add(elementString);
 				text.append(elementString.toString());
-				maxNumbers++;
 			}
 		} else {
 			if (!numbers.isEmpty()) {
@@ -279,7 +277,7 @@ public class ButtonClass {
 
 			}
 			// here are restrictions for operators
-			if (!textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
+			if (maxTextBox >= 0 && !textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
 					&& !textBox.get(maxTextBox).equals("+") && !textBox.get(maxTextBox).equals("-")
 					&& !textBox.get(maxTextBox).equals("=")) {
 				textBox.add(elementString.toString());
