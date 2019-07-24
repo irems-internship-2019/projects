@@ -59,13 +59,11 @@ public class ButtonClass {
 		buttonBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(maxNumbers > -1)
-				{
-				numbers.remove(maxNumbers);
-				maxNumbers--;
-				updateText(text);
-				}
-				else if (maxTextBox > -1) {
+				if (maxNumbers > -1) {
+					numbers.remove(maxNumbers);
+					maxNumbers--;
+					updateText(text);
+				} else if (maxTextBox > -1) {
 					textBox.remove(maxTextBox);
 					maxTextBox--;
 					updateText(text);
@@ -336,12 +334,10 @@ public class ButtonClass {
 
 	public static void updateText(Text text) {
 		text.setText("");
-		for (String text1 : textBox)
-		{
+		for (String text1 : textBox) {
 			text.append(text1);
 		}
-		for(Character text2 : numbers)
-		{
+		for (Character text2 : numbers) {
 			text.append(text2.toString());
 		}
 	}
