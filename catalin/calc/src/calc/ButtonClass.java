@@ -15,18 +15,14 @@ import org.eclipse.swt.widgets.Text;
 public class ButtonClass {
 
 	int maxTextBox = -1;
-	boolean checkEquals;
+	int maxNumbers = -1;
+	int countPoint = 0;
+	boolean equalsChecker;
 
-	static public ArrayList<String> textBox = new ArrayList<>();
 	public ArrayList<Character> numbers = new ArrayList<>();
+	public static ArrayList<String> textBox = new ArrayList<>();
 
-	public static void updateText(Text text) {
-		text.setText("");
-		for (String text1 : textBox)
-			text.append(text1);
-	}
-
-	public void buttons(Shell shell) {
+	public void createButtons(Shell shell) {
 
 		Composite composite = new Composite(shell, SWT.NONE);
 
@@ -77,8 +73,7 @@ public class ButtonClass {
 		buttonDivide.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(buttonDivide.getText());
-				numbersCondition(text, '/');
+				checkConditions(text, '/');
 
 			}
 		});
@@ -90,8 +85,7 @@ public class ButtonClass {
 		button7.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button7.getText());
-				numbersCondition(text, '7');
+				checkConditions(text, '7');
 			}
 		});
 
@@ -102,8 +96,7 @@ public class ButtonClass {
 		button8.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button8.getText());
-				numbersCondition(text, '8');
+				checkConditions(text, '8');
 			}
 		});
 
@@ -114,8 +107,7 @@ public class ButtonClass {
 		button9.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button9.getText());
-				numbersCondition(text, '9');
+				checkConditions(text, '9');
 			}
 		});
 
@@ -126,8 +118,7 @@ public class ButtonClass {
 		buttonMultiple.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(buttonMultiple.getText());
-				numbersCondition(text, 'x');
+				checkConditions(text, 'x');
 			}
 		});
 
@@ -138,8 +129,7 @@ public class ButtonClass {
 		button4.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button4.getText());
-				numbersCondition(text, '4');
+				checkConditions(text, '4');
 			}
 		});
 
@@ -150,8 +140,7 @@ public class ButtonClass {
 		button5.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button5.getText());
-				numbersCondition(text, '5');
+				checkConditions(text, '5');
 			}
 		});
 
@@ -162,8 +151,7 @@ public class ButtonClass {
 		button6.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button6.getText());
-				numbersCondition(text, '6');
+				checkConditions(text, '6');
 			}
 		});
 
@@ -174,8 +162,7 @@ public class ButtonClass {
 		buttonMinus.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(buttonMinus.getText());
-				numbersCondition(text, '-');
+				checkConditions(text, '-');
 			}
 		});
 
@@ -186,8 +173,7 @@ public class ButtonClass {
 		button1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button1.getText());
-				numbersCondition(text, '1');
+				checkConditions(text, '1');
 			}
 		});
 
@@ -198,8 +184,7 @@ public class ButtonClass {
 		button2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button2.getText());
-				numbersCondition(text, '2');
+				checkConditions(text, '2');
 			}
 		});
 
@@ -210,8 +195,7 @@ public class ButtonClass {
 		button3.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button3.getText());
-				numbersCondition(text, '3');
+				checkConditions(text, '3');
 			}
 		});
 
@@ -222,8 +206,7 @@ public class ButtonClass {
 		buttonPlus.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(buttonPlus.getText());
-				numbersCondition(text, '+');
+				checkConditions(text, '+');
 			}
 		});
 
@@ -234,8 +217,7 @@ public class ButtonClass {
 		buttonPunct.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(buttonPunct.getText());
-				numbersCondition(text, '.');
+				checkConditions(text, '.');
 			}
 		});
 
@@ -246,8 +228,7 @@ public class ButtonClass {
 		button0.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.append(button0.getText());
-				numbersCondition(text, '0');
+				checkConditions(text, '0');
 			}
 		});
 
@@ -258,8 +239,8 @@ public class ButtonClass {
 		buttonEqual.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				numbersCondition(text, '=');
-				if (checkEquals == true) {
+				checkConditions(text, '=');
+				if (equalsChecker == true) {
 					decide(text);
 					updateMaxTextBox("=");
 				}
@@ -273,14 +254,22 @@ public class ButtonClass {
 		maxTextBox = textBox.indexOf(string);
 	}
 
-	public void numbersCondition(Text text, Character elementString) {
+	public void checkConditions(Text text, Character elementString) {
 
 		StringBuilder string = new StringBuilder();
-		checkEquals = false;
+		equalsChecker = false;
+		if (elementString.equals('.'))
+			countPoint++;
+		else
+			countPoint = 0;
 		if (!elementString.equals('x') && !elementString.equals('/') && !elementString.equals('+')
-				&& !elementString.equals('-') && !elementString.equals('='))
-			numbers.add(elementString);
-		else {
+				&& !elementString.equals('-') && !elementString.equals('=')) {
+			if (countPoint <= 1) {
+				numbers.add(elementString);
+				text.append(elementString.toString());
+				maxNumbers++;
+			}
+		} else {
 			if (!numbers.isEmpty()) {
 				for (Character newCharacters : numbers) {
 					string.append(newCharacters);
@@ -288,8 +277,7 @@ public class ButtonClass {
 				String result = string.toString();
 				textBox.add(result);
 				updateMaxTextBox(result);
-				numbers.clear();
-				string = null;
+
 			}
 			// here are restrictions for operators
 			if (!textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
@@ -298,9 +286,12 @@ public class ButtonClass {
 				textBox.add(elementString.toString());
 				updateMaxTextBox(elementString.toString());
 				if (textBox.get(maxTextBox).equals("="))
-					checkEquals = true;
+					equalsChecker = true;
 			}
+			numbers.clear();
+			string = null;
 			updateText(text);
+
 		}
 	}
 
@@ -324,6 +315,12 @@ public class ButtonClass {
 			}
 		}
 
+	}
+
+	public static void updateText(Text text) {
+		text.setText("");
+		for (String text1 : textBox)
+			text.append(text1);
 	}
 
 }

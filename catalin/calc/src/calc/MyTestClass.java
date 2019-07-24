@@ -17,7 +17,7 @@ public class MyTestClass {
 
 		ButtonClass newbutton = new ButtonClass();
 
-		newbutton.buttons(shell);
+		newbutton.createButtons(shell);
 
 		shell.open();
 
