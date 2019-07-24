@@ -15,10 +15,11 @@ import org.eclipse.swt.widgets.Text;
 public class ButtonClass {
 
 	int maxTextBox = -1;
+	int maxNumbers = -1;
 	int countPoint = 0;
 	boolean equalsChecker;
 
-	public ArrayList<Character> numbers = new ArrayList<>();
+	public static ArrayList<Character> numbers = new ArrayList<>();
 	public static ArrayList<String> textBox = new ArrayList<>();
 
 	public void createButtons(Shell shell) {
@@ -44,6 +45,8 @@ public class ButtonClass {
 			public void widgetSelected(SelectionEvent e) {
 				textBox.clear();
 				maxTextBox = -1;
+				numbers.clear();
+				maxNumbers = -1;
 				updateText(text);
 
 			}
@@ -56,7 +59,13 @@ public class ButtonClass {
 		buttonBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (maxTextBox > -1) {
+				if(maxNumbers > -1)
+				{
+				numbers.remove(maxNumbers);
+				maxNumbers--;
+				updateText(text);
+				}
+				else if (maxTextBox > -1) {
 					textBox.remove(maxTextBox);
 					maxTextBox--;
 					updateText(text);
@@ -216,7 +225,8 @@ public class ButtonClass {
 		buttonPunct.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				checkConditions(text, '.');
+				if (checkPoint() == false)
+					checkConditions(text, '.');
 			}
 		});
 
@@ -249,8 +259,15 @@ public class ButtonClass {
 
 	}
 
-	public void updateMaxTextBox(String string) {
-		maxTextBox = textBox.indexOf(string);
+	public boolean checkPoint() {
+		boolean pointChecker = true;
+
+		if (maxNumbers >= 0
+				|| (maxTextBox >= 0 && !textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
+						&& !textBox.get(maxTextBox).equals("+") && !textBox.get(maxTextBox).equals("-"))) {
+			pointChecker = false;
+		}
+		return pointChecker;
 	}
 
 	public void checkConditions(Text text, Character elementString) {
@@ -264,33 +281,34 @@ public class ButtonClass {
 				&& !elementString.equals('-') && !elementString.equals('=')) {
 			if (countPoint <= 1) {
 				numbers.add(elementString);
+				maxNumbers++;
 				text.append(elementString.toString());
 			}
 		} else {
-			if (!numbers.isEmpty()) {
+			if (!numbers.isEmpty() && maxNumbers > -1 && !numbers.get(maxNumbers).equals('.')) {
 				for (Character newCharacters : numbers) {
 					string.append(newCharacters);
 				}
 				String result = string.toString();
 				textBox.add(result);
-				updateMaxTextBox(result);
+				maxTextBox++;
 
-			}
-			// here are restrictions for operators
-			if (maxTextBox >= 0 && !textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
-					&& !textBox.get(maxTextBox).equals("+") && !textBox.get(maxTextBox).equals("-")
-					&& !textBox.get(maxTextBox).equals("=")) {
-				textBox.add(elementString.toString());
-				updateMaxTextBox(elementString.toString());
-				if (textBox.get(maxTextBox).equals("=")) {
-					equalsChecker = true;
-					textBox.remove(maxTextBox);
+				// here are restrictions for operators
+				if (maxTextBox >= 0 && !textBox.get(maxTextBox).equals("x") && !textBox.get(maxTextBox).equals("/")
+						&& !textBox.get(maxTextBox).equals("+") && !textBox.get(maxTextBox).equals("-")
+						&& !textBox.get(maxTextBox).equals("=")) {
+					textBox.add(elementString.toString());
+					maxTextBox++;
+					if (textBox.get(maxTextBox).equals("=")) {
+						equalsChecker = true;
+						textBox.remove(maxTextBox);
+					}
 				}
+				numbers.clear();
+				maxNumbers = -1;
+				string = null;
+				updateText(text);
 			}
-			numbers.clear();
-			string = null;
-			updateText(text);
-
 		}
 	}
 
@@ -319,7 +337,13 @@ public class ButtonClass {
 	public static void updateText(Text text) {
 		text.setText("");
 		for (String text1 : textBox)
+		{
 			text.append(text1);
+		}
+		for(Character text2 : numbers)
+		{
+			text.append(text2.toString());
+		}
 	}
 
 }
