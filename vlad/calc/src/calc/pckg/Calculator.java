@@ -355,7 +355,8 @@ public class Calculator extends Operations {
 				calculatorInput.setText(String.valueOf(Operations.allOperations(operation, data, secondOperand)));
 
 				data = 0;
-				secondOperand = 0;
+				secondOperand = 0; 
+				
 			}
 		});
 	}
