@@ -1,3 +1,4 @@
+package calc.pckg;
 import java.util.Stack;
 
 public class ConditionsAndVerification {

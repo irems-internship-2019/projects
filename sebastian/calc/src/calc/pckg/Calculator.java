@@ -1,3 +1,4 @@
+package calc.pckg;
 //STILL NEED TO BE DONE ########################################################################
 //brackets counter aka. "(5+4))))" or "(((1+2)" not good - DONE
 //after a calculation is done, reset Display IF, a "number" or "(" is pressed
@@ -22,7 +23,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-class Calculator {
+class Calculator 
+{
 
 	static Stack<String> inputStack = new Stack<>();
 	static Stack<String> multipleDigitStack = new Stack<>();
