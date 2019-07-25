@@ -13,13 +13,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Label;
 
-public class Calculator extends Operations {
+public class Calculator {
 
-	protected Shell shell;
+	private static final String EMPTY_STRING = "";
+
+	private Shell shell;
 	private Text calculatorInput;
-	private Label label;
-	private float data = 0;
-	private String operation = "";
+	private float lastOperationResult = 0;
 
 	/**
 	 * Launch the application.
@@ -58,7 +58,7 @@ public class Calculator extends Operations {
 		shell = new Shell();
 		shell.setSize(355, 316);
 		shell.setText("SWT Calculator");
-		Color operationscolor = new Color(shell.getDisplay(), new RGB(200, 20, 200));
+		Color operationsColor = new Color(shell.getDisplay(), new RGB(200, 20, 200));
 
 		shell.setLayout(new GridLayout(4, false));
 
@@ -81,12 +81,12 @@ public class Calculator extends Operations {
 		Button divisionButton = new Button(shell, SWT.NONE);
 		divisionButton.setText("/");
 		divisionButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		divisionButton.setBackground(operationscolor);
+		divisionButton.setBackground(operationsColor);
 
 		Button multiplyButton = new Button(shell, SWT.NONE);
 		multiplyButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		multiplyButton.setText("X");
-		multiplyButton.setBackground(operationscolor);
+		multiplyButton.setBackground(operationsColor);
 
 		Button buttonSeven = new Button(shell, SWT.NONE);
 		buttonSeven.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -103,7 +103,7 @@ public class Calculator extends Operations {
 		Button minusButton = new Button(shell, SWT.NONE);
 		minusButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		minusButton.setText("-");
-		minusButton.setBackground(operationscolor);
+		minusButton.setBackground(operationsColor);
 
 		Button buttonFour = new Button(shell, SWT.NONE);
 		buttonFour.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -120,7 +120,7 @@ public class Calculator extends Operations {
 		Button adittionButton = new Button(shell, SWT.NONE);
 		adittionButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		adittionButton.setText("+");
-		adittionButton.setBackground(operationscolor);
+		adittionButton.setBackground(operationsColor);
 
 		Button buttonOne = new Button(shell, SWT.NONE);
 		buttonOne.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -148,9 +148,9 @@ public class Calculator extends Operations {
 		commaButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		commaButton.setText(".");
 
-		label = new Label(shell, SWT.NONE);
+		Label label = new Label(shell, SWT.NONE);
 		label.setLayoutData((new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1)));
-		label.setText("");
+		label.setText(EMPTY_STRING);
 
 		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -165,9 +165,9 @@ public class Calculator extends Operations {
 		clearButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				data = 0;
+				lastOperationResult = 0;
 
-				calculatorInput.setText("");
+				calculatorInput.setText(EMPTY_STRING);
 			}
 		});
 
@@ -177,20 +177,19 @@ public class Calculator extends Operations {
 
 				float secondOperand = 0;
 
-				if ((data != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
+				if ((lastOperationResult != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
 					secondOperand = Float.parseFloat(calculatorInput.getText());
 
-					Float result = data / secondOperand;
+					Float result = lastOperationResult / secondOperand;
 					calculatorInput.setText(String.valueOf(result));
-					data = 0;
+					lastOperationResult = 0;
 				} else if (Operations.IsNumber(calculatorInput.getText()) == true) {
-					data = Float.parseFloat(calculatorInput.getText());
-					calculatorInput.setText("");
+					lastOperationResult = Float.parseFloat(calculatorInput.getText());
+					calculatorInput.setText(EMPTY_STRING);
 				} else if (Operations.IsNumber(calculatorInput.getText()) == false)
-					calculatorInput.setText("");
+					calculatorInput.setText(EMPTY_STRING);
 
-				operation = "division";
-				label.setText(operation);
+				label.setText(OperationsTypes.DIVISION.getName());
 			}
 		});
 
@@ -199,20 +198,19 @@ public class Calculator extends Operations {
 			public void widgetSelected(SelectionEvent e) {
 				float secondOperand = 0;
 
-				if ((data != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
+				if ((lastOperationResult != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
 					secondOperand = Float.parseFloat(calculatorInput.getText());
 
-					Float result = data * secondOperand;
+					Float result = lastOperationResult * secondOperand;
 					calculatorInput.setText(String.valueOf(result));
-					data = 0;
+					lastOperationResult = 0;
 				} else if (Operations.IsNumber(calculatorInput.getText()) == true) {
-					data = Float.parseFloat(calculatorInput.getText());
-					calculatorInput.setText("");
+					lastOperationResult = Float.parseFloat(calculatorInput.getText());
+					calculatorInput.setText(EMPTY_STRING);
 				} else if (Operations.IsNumber(calculatorInput.getText()) == false)
-					calculatorInput.setText("");
+					calculatorInput.setText(EMPTY_STRING);
 
-				operation = "multiplication";
-				label.setText(operation);
+				label.setText(OperationsTypes.MULTIPLICATION.getName());
 			}
 		});
 
@@ -222,20 +220,18 @@ public class Calculator extends Operations {
 
 				float secondOperand = 0;
 
-				if ((data != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
+				if ((lastOperationResult != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
 					secondOperand = Float.parseFloat(calculatorInput.getText());
-
-					Float result = data - secondOperand;
+					Float result = lastOperationResult - secondOperand;
 					calculatorInput.setText(String.valueOf(result));
-					data = 0;
+					lastOperationResult = 0;
 				} else if (Operations.IsNumber(calculatorInput.getText()) == true) {
-					data = Float.parseFloat(calculatorInput.getText());
-					calculatorInput.setText("");
+					lastOperationResult = Float.parseFloat(calculatorInput.getText());
+					calculatorInput.setText(EMPTY_STRING);
 				} else if (Operations.IsNumber(calculatorInput.getText()) == false)
-					calculatorInput.setText("");
+					calculatorInput.setText(EMPTY_STRING);
 
-				operation = "subtraction";
-				label.setText(operation);
+				label.setText(OperationsTypes.SUBSTRACTION.getName());
 			}
 		});
 
@@ -245,22 +241,19 @@ public class Calculator extends Operations {
 			public void widgetSelected(SelectionEvent e) {
 				float secondOperand = 0;
 
-				if ((data != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
+				if ((lastOperationResult != 0) && Operations.IsNumber(calculatorInput.getText()) == true) {
 					secondOperand = Float.parseFloat(calculatorInput.getText());
 
-					Float result = data + secondOperand;
+					Float result = lastOperationResult + secondOperand;
 					calculatorInput.setText(String.valueOf(result));
-					data = 0;
+					lastOperationResult = 0;
 				} else if (Operations.IsNumber(calculatorInput.getText()) == true) {
-					data = Float.parseFloat(calculatorInput.getText());
-					calculatorInput.setText("");
+					lastOperationResult = Float.parseFloat(calculatorInput.getText());
+					calculatorInput.setText(EMPTY_STRING);
 				} else if (Operations.IsNumber(calculatorInput.getText()) == false)
-					calculatorInput.setText("");
+					calculatorInput.setText(EMPTY_STRING);
 
-				operation = "addition";
-
-				label.setText(operation);
-
+				label.setText(OperationsTypes.ADDITION.getName());
 			}
 		});
 
@@ -271,12 +264,14 @@ public class Calculator extends Operations {
 				calculatorInput.setText(calculatorInput.getText() + 7);
 			}
 		});
+
 		buttonEight.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				calculatorInput.setText(calculatorInput.getText() + 8);
 			}
 		});
+
 		buttonNine.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -284,12 +279,14 @@ public class Calculator extends Operations {
 				calculatorInput.setText(calculatorInput.getText() + 9);
 			}
 		});
+
 		buttonFour.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				calculatorInput.setText(calculatorInput.getText() + 4);
 			}
 		});
+
 		buttonFive.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -320,6 +317,7 @@ public class Calculator extends Operations {
 				calculatorInput.setText(calculatorInput.getText() + 2);
 			}
 		});
+
 		buttonThree.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -335,13 +333,17 @@ public class Calculator extends Operations {
 				calculatorInput.setText(calculatorInput.getText() + 0);
 			}
 		});
+
 		commaButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
+				
+				   long multipleCommaChecker = calculatorInput.getText().chars().filter(ch -> ch == '.').count();
+                if(multipleCommaChecker <1 )
 				calculatorInput.setText(calculatorInput.getText() + ".");
 			}
 		});
+
 		equalButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -352,11 +354,11 @@ public class Calculator extends Operations {
 
 					secondOperand = Float.parseFloat(calculatorInput.getText());
 
-				calculatorInput.setText(String.valueOf(Operations.allOperations(operation, data, secondOperand)));
+				calculatorInput.setText(
+						String.valueOf(Operations.allOperations(label.getText(), lastOperationResult, secondOperand)));
 
-				data = 0;
-				secondOperand = 0; 
-				
+				lastOperationResult = 0;
+				secondOperand = 0;
 			}
 		});
 	}

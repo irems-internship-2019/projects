@@ -1,15 +1,8 @@
 package calc.pckg;
 
-public class Operations {
+class Operations {
 
-	protected static boolean isNull(String input) {
-		if (input != null && !input.isEmpty())
-			return false;
-		else
-			return true;
-	}
-
-	protected static boolean IsNumber(String input) {
+	static boolean IsNumber(String input) {
 		try {
 			Float.parseFloat(input);
 		} catch (NumberFormatException | NullPointerException nfe) {
@@ -18,16 +11,15 @@ public class Operations {
 		return true;
 	}
 
-	public static Float allOperations(String operation, float data, float secondOperand) {
+	static Float allOperations(String operation, float data, float secondOperand) {
 
 		float result = 0;
 		switch (operation) {
 		case "addition":
 			result = data + secondOperand;
-
 			return result;
 
-		case "subtraction":
+		case "substraction":
 			result = data - secondOperand;
 			return result;
 
