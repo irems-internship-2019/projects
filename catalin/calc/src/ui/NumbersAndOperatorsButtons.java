@@ -40,7 +40,7 @@ class NumbersAndOperatorsButtons {
 	}
 
 	private Button createButton(Composite composite, Text text, String string, Character character) {
-		Button button = new Button(composite, SWT.PUSH);
+		final Button button = new Button(composite, SWT.PUSH);
 		RestrictionConditions conditions = new RestrictionConditions();
 
 		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
