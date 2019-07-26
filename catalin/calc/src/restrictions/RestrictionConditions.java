@@ -75,7 +75,7 @@ public class RestrictionConditions extends UserInterface {
 				&& !elementString.equals(Operations.SUBSTRACTION.getCharacterOfOperation())
 				&& !elementString.equals(ResetPointEqual.EQUAL.getCharacterOfResetPointEqual())) {
 			numbers.add(elementString);
-			text.append(elementString.toString());
+			updateText(text);
 		} else
 			insertOperators(text, elementString);
 	}
