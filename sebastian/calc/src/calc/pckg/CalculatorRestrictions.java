@@ -1,10 +1,9 @@
 package calc.pckg;
-import java.util.Stack;
 
-public class CalculatorRestrictions 
+class CalculatorRestrictions 
 {
 
-	public static boolean restrictions(String stackPeek, String beforePeek) 
+	static boolean inputRestrictions(String stackPeek, String beforePeek) 
 	{
 		// The order for these conditions, is critical
 		// the ones that are specific, have to be on top
@@ -58,25 +57,5 @@ public class CalculatorRestrictions
 		return false;
 		// should add more conditions
 		// with 3 parameters eg. 1.1. or
-	}
-	
-	public static int checkNumberOfBrackets(Stack<String> infixStack) 
-	{
-		int numberOfOpenBrackets = 0;
-		int numberOfClosedBrackets = 0;
-		
-		for (String str : infixStack) 
-		{
-			if (str.equals("(")) 
-				numberOfOpenBrackets++;
-		}
-
-		for (String str : infixStack) {
-			if (str.equals(")")) {
-				numberOfClosedBrackets++;
-			}
-		}
-		
-		return numberOfOpenBrackets - numberOfClosedBrackets;
 	}
 }

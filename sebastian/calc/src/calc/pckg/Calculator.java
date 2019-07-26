@@ -1,13 +1,9 @@
 package calc.pckg;
 //STILL NEED TO BE DONE ########################################################################
-//brackets counter aka. "(5+4))))" or "(((1+2)" not good - DONE
 //after a calculation is done, reset Display IF, a "number" or "(" is pressed
 //calculation is done IF you press "=" program dies - FIXED return ERROR...still need proper Verification
-//remove decimals if number doesn't need it aka. 12.0000000000 not good
 //if cases where 1.1. is inputed, display ERROR message - FIXED...still need proper Verification
 //##############################################################################################
-
-//no package... NOT GOOD
 
 import java.util.Stack;
 
@@ -26,9 +22,8 @@ import org.eclipse.swt.widgets.Text;
 class Calculator 
 {
 
-	private static Stack<String> inputStack = new Stack<>();
-	//static Stack<String> multipleDigitStack = new Stack<>();
-	//static int numberOfBrackets = 0;
+	static Stack<String> inputStack = new Stack<>();
+	static Text calculatorDisplay;
 
 	public static void main(String[] args) 
 	{
@@ -38,58 +33,32 @@ class Calculator
 		shell.setText("Calculator");
 		shell.setSize(300, 400);
 
-		// Seteaza dimensiunea gridului, nr linii si coloane
 		GridLayout gridLayout = new GridLayout(4, false);
-		// gridLayout.verticalSpacing = 5;
 		shell.setLayout(gridLayout);
 
 		Font font = new Font(shell.getDisplay(), new FontData("Arial", 20, SWT.NONE));
 
-		// GridDAta pentru butoane
-		GridData col_1 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		col_1.horizontalSpan = 1;
-
-		// first String in the stack
-		inputStack.push("null");
-
-		Text calculatorDisplay = new Text(shell, SWT.LEFT_TO_RIGHT);
+		GridData oneColumn = new GridData(SWT.FILL, SWT.FILL, true, true);
+		oneColumn.horizontalSpan = 1;
+		
+		calculatorDisplay = new Text(shell, SWT.LEFT_TO_RIGHT);
+		
 		GridData span_colums = new GridData(SWT.FILL, SWT.FILL, true, true);
 		span_colums.horizontalSpan = 4;
 
 		calculatorDisplay.setLayoutData(span_colums);
 		calculatorDisplay.setFont(font);
 
-		Button btnOpenBrackets = CreateUi.makeButton(shell, "(", col_1);
-		btnOpenBrackets.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("(");
+		//the stack can't be empty
+		inputStack.push("null");
 
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "(");
-			}
-		});
-		
-		Button btnClosedBrackets = CreateUi.makeButton(shell, ")", col_1);
-		btnClosedBrackets.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push(")");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + ")");
-			}
-		});
+		Button btnOpenBrackets = CreateUi.makeButton(shell, "(", oneColumn);
+		btnOpenBrackets.addSelectionListener(CreateUi.getButtonSelectionListner("("));
 
-		Button btnClear = CreateUi.makeButton(shell, "C", col_1);
+		Button btnClosedBrackets = CreateUi.makeButton(shell, ")", oneColumn);
+		btnClosedBrackets.addSelectionListener(CreateUi.getButtonSelectionListner(")"));
+
+		Button btnClear = CreateUi.makeButton(shell, "C", oneColumn);
 		btnClear.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -101,7 +70,8 @@ class Calculator
 				calculatorDisplay.setText("");
 			}
 		});
-		Button btnBackspace = CreateUi.makeButton(shell, "DEL", col_1);
+
+		Button btnBackspace = CreateUi.makeButton(shell, "DEL", oneColumn);
 		btnBackspace.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -110,285 +80,66 @@ class Calculator
 				inputStack.pop();
 				if (inputStack.isEmpty())
 					inputStack.push("null");
-				
+
 				if (!calculatorDisplay.getText().isEmpty())
 					calculatorDisplay.setText(calculatorDisplay.getText().substring(0, calculatorDisplay.getText().length() - 1));
 			}
 		});
-		
-		Button btn_7 = CreateUi.makeButton(shell, "7", col_1);
-		btn_7.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("7");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "7");
-			}
-		});
-		
-		Button btn_8 = CreateUi.makeButton(shell, "8", col_1);
-		btn_8.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("8");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "8");
-			}
-		});
-		
-		Button btn_9 = CreateUi.makeButton(shell, "9", col_1);
-		btn_9.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("9");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "9");
-			}
-		});
 
-		Button btnDivide = CreateUi.makeButton(shell, "/", col_1);
-		btnDivide.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("/");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "/");
-			}
-		});
+		Button btn_7 = CreateUi.makeButton(shell, "7", oneColumn);
+		btn_7.addSelectionListener(CreateUi.getButtonSelectionListner("7"));
 
-		Button btn_4 = CreateUi.makeButton(shell, "4", col_1);
-		btn_4.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("4");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "4");
-			}
-		});
+		Button btn_8 = CreateUi.makeButton(shell, "8", oneColumn);
+		btn_8.addSelectionListener(CreateUi.getButtonSelectionListner("8"));
 
-		Button btn_5 = CreateUi.makeButton(shell, "5", col_1);
-		btn_5.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("5");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "5");
-			}
-		});
+		Button btn_9 = CreateUi.makeButton(shell, "9", oneColumn);
+		btn_9.addSelectionListener(CreateUi.getButtonSelectionListner("9"));
 
-		Button btn_6 = CreateUi.makeButton(shell, "6", col_1);
-		btn_6.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				inputStack.push("6");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "6");
+		Button btnDivide = CreateUi.makeButton(shell, "/", oneColumn);
+		btnDivide.addSelectionListener(CreateUi.getButtonSelectionListner("/"));
 
-			}
-		});
+		Button btn_4 = CreateUi.makeButton(shell, "4", oneColumn);
+		btn_4.addSelectionListener(CreateUi.getButtonSelectionListner("4"));
 
-		Button btnMultiply = CreateUi.makeButton(shell, "*", col_1);
-		btnMultiply.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				inputStack.push("*");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "*");
-			}
-		});
+		Button btn_5 = CreateUi.makeButton(shell, "5", oneColumn);
+		btn_5.addSelectionListener(CreateUi.getButtonSelectionListner("5"));
 
-		Button btn_1 = CreateUi.makeButton(shell, "1", col_1);
-		btn_1.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("1");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2)))
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "1");
-			}
-		});
+		Button btn_6 = CreateUi.makeButton(shell, "6", oneColumn);
+		btn_6.addSelectionListener(CreateUi.getButtonSelectionListner("6"));
 
-		Button btn_2 = CreateUi.makeButton(shell, "2", col_1);
-		btn_2.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("2");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "2");
-			}
-		});
+		Button btnMultiply = CreateUi.makeButton(shell, "*", oneColumn);
+		btnMultiply.addSelectionListener(CreateUi.getButtonSelectionListner("*"));
 
-		Button btn_3 = CreateUi.makeButton(shell, "3", col_1);
-		btn_3.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("3");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "3");
-			}
-		});
-		
-		Button btnMinus = CreateUi.makeButton(shell, "-", col_1);
-		btnMinus.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("-");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "-");
-			}
-		});
+		Button btn_1 = CreateUi.makeButton(shell, "1", oneColumn);
+		btn_1.addSelectionListener(CreateUi.getButtonSelectionListner("1"));
 
-		Button btn_0 = CreateUi.makeButton(shell, "0", col_1);
-		btn_0.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("0");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "0");
-			}
-		});
+		Button btn_2 = CreateUi.makeButton(shell, "2", oneColumn);
+		btn_2.addSelectionListener(CreateUi.getButtonSelectionListner("2"));
 
-		Button btnDot = CreateUi.makeButton(shell, ".", col_1);
-		btnDot.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push(".");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + ".");
-			}
-		});
+		Button btn_3 = CreateUi.makeButton(shell, "3", oneColumn);
+		btn_3.addSelectionListener(CreateUi.getButtonSelectionListner("3"));
 
-		Button btnEquals = CreateUi.makeButton(shell, "=", col_1);
+		Button btnMinus = CreateUi.makeButton(shell, "-", oneColumn);
+		btnMinus.addSelectionListener(CreateUi.getButtonSelectionListner("-"));
+
+		Button btn_0 = CreateUi.makeButton(shell, "0", oneColumn);
+		btn_0.addSelectionListener(CreateUi.getButtonSelectionListner("0"));
+
+		Button btnDot = CreateUi.makeButton(shell, ".", oneColumn);
+		btnDot.addSelectionListener(CreateUi.getButtonSelectionListner("."));
+
+		Button btnEquals = CreateUi.makeButton(shell, "=", oneColumn);
 		btnEquals.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-
-				try {
-					int numberOfBrackets = 0;
-					numberOfBrackets = CalculatorRestrictions.checkNumberOfBrackets(inputStack);
-					if (numberOfBrackets != 0 && numberOfBrackets > 0) 
-					{
-						for (int i = 0; i < numberOfBrackets; i++) 
-						{
-							inputStack.push(")");
-							calculatorDisplay.setText(calculatorDisplay.getText() + ")");
-						}
-					} else if (numberOfBrackets < 0) {
-						numberOfBrackets *= (-1);
-						for (int i = 1; i <= numberOfBrackets; i++) 
-						{
-							inputStack.add(i, "(");
-							calculatorDisplay.setText("(" + calculatorDisplay.getText());
-						}
-					}
-
-					String[] infixDecimalDouble = Operations.checkIfDecimal(
-							Operations.complexNumbers(inputStack, inputStack.size()), inputStack.size());
-					String[] infixFinal = Operations.removeNull(infixDecimalDouble, inputStack.size());
-					int infixCount = infixFinal.length;
-					calculatorDisplay.setText(calculatorDisplay.getText() + "=" + Operations
-							.postFixCalculator(Operations.infixToPostfixConverter(infixFinal, infixCount)));
-
-					inputStack.clear();
-					inputStack.push("null");
-
-				} catch (Exception exception) 
-				{
-					inputStack.clear();
-					// the stack can't be empty
-					inputStack.push("null");
-					calculatorDisplay.setText("- ERROR -");
-					// delete this line for final
-					System.out.println(exception);
-				}
+            CalculatorOperations.calculateFinalValue();
 			}
 		});
-		
-		Button btnPlus = CreateUi.makeButton(shell, "+", col_1);
-		btnPlus.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				inputStack.push("+");
-				
-				if (!CalculatorRestrictions.restrictions(inputStack.peek(), inputStack.get(inputStack.size() - 2))) 
-					inputStack.pop();
-				 else 
-					calculatorDisplay.setText(calculatorDisplay.getText() + "+");
-			}
-		});
+
+		Button btnPlus = CreateUi.makeButton(shell, "+", oneColumn);
+		btnPlus.addSelectionListener(CreateUi.getButtonSelectionListner("+"));
 
 		shell.open();
 		while (!shell.isDisposed()) 

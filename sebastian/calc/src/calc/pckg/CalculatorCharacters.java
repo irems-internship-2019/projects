@@ -7,14 +7,14 @@ public enum CalculatorCharacters {
 	MULTIPLICATION("*"),
 	DIVISION("/");
 	
-	private final String CalculatorCharactersName;
+	private final String calculatorCharactersName;
 	
 	CalculatorCharacters(final String name)
 	{
-		this.CalculatorCharactersName = name;
+		this.calculatorCharactersName = name;
 	}
 	public String getName() 
 	{
-		return CalculatorCharactersName;
+		return calculatorCharactersName;
 	}
 }
