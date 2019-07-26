@@ -74,7 +74,8 @@ public class ResetPointEqualButtons extends UserInterface {
 		buttonPunct.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (conditions.checkPoint() == false)
+				if (conditions.checkPoint() == true
+						&& !numbers.contains(ResetPointEqual.POINT.getCharacterOfResetPointEqual()))
 					conditions.insertElements(text, ResetPointEqual.POINT.getCharacterOfResetPointEqual());
 			}
 		});

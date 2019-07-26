@@ -54,7 +54,7 @@ public class RestrictionConditions extends UserInterface {
 	}
 
 	public boolean checkPoint() {
-		boolean pointChecker = true;
+		boolean pointChecker = false;
 
 		if (!numbers.isEmpty()
 				&& !numbers.get(numbers.size() - 1).equals(ResetPointEqual.POINT.getCharacterOfResetPointEqual())
@@ -63,7 +63,7 @@ public class RestrictionConditions extends UserInterface {
 						&& !allTexts.get(allTexts.size() - 1).equals(Operations.DIVISION.getSignOfOperation())
 						&& !allTexts.get(allTexts.size() - 1).equals(Operations.ADDITON.getSignOfOperation())
 						&& !allTexts.get(allTexts.size() - 1).equals(Operations.SUBSTRACTION.getSignOfOperation()))) {
-			pointChecker = false;
+			pointChecker = true;
 		}
 		return pointChecker;
 	}
