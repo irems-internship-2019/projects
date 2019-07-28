@@ -12,7 +12,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class UserInterface {
-
 	protected static ArrayList<Character> numbers = new ArrayList<>();
 	protected static ArrayList<String> allTexts = new ArrayList<>();
 

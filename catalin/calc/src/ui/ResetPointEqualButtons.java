@@ -88,11 +88,13 @@ public class ResetPointEqualButtons extends UserInterface {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				RestrictionConditions operatorsChecker = new RestrictionConditions();
-				if (operatorsChecker.checkForOperators() == true || !numbers.isEmpty() && !numbers
-						.get(numbers.size() - 1).equals(ResetPointEqual.POINT.getCharacterOfResetPointEqual())) {
+				if (!allTexts.isEmpty() && (operatorsChecker.checkForLastOperators() == true
+						|| !numbers.isEmpty() && !numbers.get(numbers.size() - 1)
+								.equals(ResetPointEqual.POINT.getCharacterOfResetPointEqual()))) {
 					conditions.insertElements(text, ResetPointEqual.EQUAL.getCharacterOfResetPointEqual());
 					OperationsOrder operation = new OperationsOrder();
 					operation.decideOperations(text);
+					allTexts.clear();
 				}
 			}
 		});

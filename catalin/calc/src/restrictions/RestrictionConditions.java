@@ -10,8 +10,8 @@ public class RestrictionConditions extends UserInterface {
 	private boolean checkForEqual(Character element) {
 		boolean equalChecker = false;
 
-		if (element.equals(ResetPointEqual.EQUAL.getCharacterOfResetPointEqual()) == true || checkForOperators() == true
-				|| (!numbers.isEmpty() && !numbers.get(numbers.size() - 1)
+		if (element.equals(ResetPointEqual.EQUAL.getCharacterOfResetPointEqual()) == true
+				|| checkForLastOperators() == true || (!numbers.isEmpty() && !numbers.get(numbers.size() - 1)
 						.equals(ResetPointEqual.POINT.getCharacterOfResetPointEqual())))
 			equalChecker = true;
 
@@ -40,7 +40,7 @@ public class RestrictionConditions extends UserInterface {
 		}
 	}
 
-	public boolean checkForOperators() {
+	public boolean checkForLastOperators() {
 		boolean conditionChecker = false;
 
 		if (!allTexts.isEmpty()
