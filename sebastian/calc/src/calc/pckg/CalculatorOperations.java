@@ -6,15 +6,19 @@ import java.util.Stack;
 
 public class CalculatorOperations {
 
-	//	final static CalculatorCharacters plus = CalculatorCharacters.ADDITION;
+	//	final static String addition = CalculatorCharacters.ADDITION.getName();
 	//	final static CalculatorCharacters minus = CalculatorCharacters.SUBSTRACTION;
 	//	final static CalculatorCharacters multiply = CalculatorCharacters.MULTIPLICATION;
 	//	final static CalculatorCharacters division = CalculatorCharacters.DIVISION;
 
-	private static final String plus = "+";
-	private static final String minus = "-";
-	private static final String multiply = "*";
-	private static final String divide = "/";
+	private static final String PLUS = "+";
+	private static final String MINUS = "-";
+	private static final String MULTIPLY = "*";
+	private static final String DIVIDE = "/";
+	private static final String OPENBRACKET ="(";
+	private static final String CLOSEDBRACKET =")";
+	private static final String NULL= "null";
+
 	private static int i = 0, j = 0;
 
 	private static String[] resultString;
@@ -30,29 +34,29 @@ public class CalculatorOperations {
 			if (str != null)
 				switch (str) {
 				// If there is one of these characters ID'd, the loop will pop last 2 operators
-				case plus:
-				case minus:
-				case multiply:
-				case divide:
+				case PLUS:
+				case MINUS:
+				case MULTIPLY:
+				case DIVIDE:
 					double stackPeek = operandsStack.pop();
 					double beforePeek = operandsStack.pop();
 					double value = 0;
 
 					switch (str) 
 					{
-					case plus:
+					case PLUS:
 						value = beforePeek + stackPeek;
 						break;
 
-					case minus:
+					case MINUS:
 						value = beforePeek - stackPeek;
 						break;
 
-					case multiply:
+					case MULTIPLY:
 						value = beforePeek * stackPeek;
 						break;
 
-					case divide:
+					case DIVIDE:
 						value = beforePeek / stackPeek;
 						break;
 
@@ -68,7 +72,6 @@ public class CalculatorOperations {
 					break;
 				}
 		}
-
 		return BigDecimal.valueOf(operandsStack.pop()).setScale(3, RoundingMode.HALF_UP).doubleValue();
 	}
 
@@ -76,12 +79,12 @@ public class CalculatorOperations {
 	{
 		switch (operator) 
 		{
-		case plus:
-		case minus:
+		case PLUS:
+		case MINUS:
 			return 1;
 
-		case multiply:
-		case divide:
+		case MULTIPLY:
+		case DIVIDE:
 			return 2;
 		}
 		return -1;
@@ -91,7 +94,6 @@ public class CalculatorOperations {
 	// to postfix expression.
 	private static String[] infixToPostfixConverter(String[] infixString, int nrOfElemnts)
 	{
-
 		resultString = new String[nrOfElemnts];
 
 		for (j =0; j < nrOfElemnts; j++) 
@@ -103,21 +105,14 @@ public class CalculatorOperations {
 				i++;
 			}
 			// If the scanned string is an '(', push it to the stack.
-			else if (infixString[j].equals("(")) 
+			else if (infixString[j].equals(OPENBRACKET)) 
 				temporaryStack.push(infixString[j]);
 			// If the scanned String is an ')', pop and output from the stack
 			// until an '(' is encountered.
-			else if (infixString[j].equals(")")) {
-				while (!temporaryStack.isEmpty() && !temporaryStack.peek().equals("(")) 
-				{
-					resultString[i] = temporaryStack.pop();
-					i++;
-				}
-
-				if (!temporaryStack.isEmpty() && !temporaryStack.peek().equals("("))
-					return null; // invalid expression
-				else
-					temporaryStack.pop();
+			else if (infixString[j].equals(CLOSEDBRACKET)) 
+			{
+				if(!aBracketIsEncountered()) 
+					return null;
 			} 
 			else 
 			{
@@ -125,7 +120,6 @@ public class CalculatorOperations {
 					temporaryStack.push(infixString[j]);
 				else 
 					return null;
-
 			}
 		}
 
@@ -136,7 +130,22 @@ public class CalculatorOperations {
 		}
 		else
 			return null;
+	}
 
+
+	private static boolean aBracketIsEncountered() 
+	{
+		while (!temporaryStack.isEmpty() && !temporaryStack.peek().equals(OPENBRACKET)) 
+		{
+			resultString[i] = temporaryStack.pop();
+			i++;
+		}
+
+		if (!temporaryStack.isEmpty() && !temporaryStack.peek().equals(OPENBRACKET))
+			return false; // invalid expression
+		else
+			temporaryStack.pop();
+		return true;
 	}
 
 	// an operator is encountered
@@ -144,9 +153,10 @@ public class CalculatorOperations {
 	{
 		while (!temporaryStack.isEmpty() && operatorPriority(infixElement) <= operatorPriority(temporaryStack.peek())) 
 		{
-			if (temporaryStack.peek().equals("(")) 
+			if (temporaryStack.peek().equals(OPENBRACKET)) 
 				return false;
-			else {
+			else 
+			{
 				resultString[i] = temporaryStack.pop();
 				i++;
 			}
@@ -159,8 +169,7 @@ public class CalculatorOperations {
 	{
 		while (!temporaryStack.isEmpty()) 
 		{
-
-			if (temporaryStack.peek().equals("(")) 
+			if (temporaryStack.peek().equals(OPENBRACKET)) 
 				return false;
 			else
 			{
@@ -171,30 +180,30 @@ public class CalculatorOperations {
 		return true;
 	}
 
-
-
-
 	static void calculateFinalValue() 
 	{
 		try {
+			//int size = StackOperations.stackSize();
 			Verify.fixBracketCount();
 
 			String[] infixDecimalDouble = StringOperations.checkIfDecimal(
-					StringOperations.complexNumbers(Calculator.inputStack, Calculator.inputStack.size()), Calculator.inputStack.size());
-			String[] infixFinal = StringOperations.removeNull(infixDecimalDouble, Calculator.inputStack.size());
-			int infixCount = infixFinal.length;
-			Double finalValue = postFixCalculator(infixToPostfixConverter(infixFinal, infixCount));
-			Calculator.calculatorDisplay.setText(Calculator.calculatorDisplay.getText() + "=" + finalValue);
+					StringOperations.complexNumbers(), StackOperations.stackSize());
 
-			Calculator.inputStack.clear();
-			Calculator.inputStack.push("null");
-			//Calculator.inputStack.push(Double.toString(finalValue));
+			String[] infixFinal = StringOperations.removeNull(infixDecimalDouble, StackOperations.stackSize());
+
+			Double finalValue = postFixCalculator(infixToPostfixConverter(infixFinal, infixFinal.length));
+
+			TextWidget.setDisplayFinalValue(finalValue);
+
+			StackOperations.clearStack();
+			StackOperations.pushStack(NULL);
+			//CreateCalculatorUi.inputStack.push(Double.toString(finalValue));
 
 		} catch (Exception exception) 
 		{
-			Calculator.inputStack.clear();
-			Calculator.inputStack.push("null");
-			Calculator.calculatorDisplay.setText("- ERROR -");
+			StackOperations.clearStack();
+			StackOperations.pushStack(NULL);
+			TextWidget.setDisplayToError();
 			//System.out.println(exception);
 		}
 	}

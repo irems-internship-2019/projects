@@ -3,7 +3,6 @@ package calc.pckg;
 //import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 class StringOperations 
 {
@@ -12,34 +11,42 @@ class StringOperations
 
 	private static List<String> multipleDigitArray = new ArrayList<>();
 
-	static String[] complexNumbers(Stack<String> operandsStack, int count) 
+	static String[] complexNumbers() 
 	{
-		operandsStack.remove(0);
-		operandsStack.push(null);
+		StackOperations.removeFromStack(0);
+		StackOperations.pushStack(null);
+
+		int count = StackOperations.stackSize();
 
 		infix = new String[count];
+
 		for (i = 0; i < count; i++) 
 		{
-			if (Verify.isNumeric(operandsStack.get(i))) 			
-				multipleDigitArray.add(operandsStack.get(i));
+			if (Verify.isNumeric(StackOperations.getStack(i))) 			
+				multipleDigitArray.add(StackOperations.getStack(i));
 			else 
-				addComplexNumbersToInfix(operandsStack);
+				addComplexNumbersToInfix();
 		}
+
 		j=0;
 		return infix;
 	}
 
-	static void addComplexNumbersToInfix(Stack<String> operandsStack)
+	private static void addComplexNumbersToInfix()
 	{
-		if (!multipleDigitArray.isEmpty()) {
+		if (!multipleDigitArray.isEmpty()) 
+		{
 			infix[j] = multipleDigitArray.toString().replace(",", "").replace(" ", "").replace("[", "")
 					.replace("]", "");
 			j++;
 			i--;
 
 			multipleDigitArray.clear();
-		} else {
-			infix[j] = operandsStack.get(i);
+
+		} 
+		else 
+		{
+			infix[j] = StackOperations.getStack(i);
 			j++;
 		}
 	}
@@ -56,6 +63,7 @@ class StringOperations
 		}
 
 		final String[] infixFinal = new String[numberOfCharacters];
+
 		int FinalCount = 0;
 		for (int i = 0; i < count; i++) 
 		{

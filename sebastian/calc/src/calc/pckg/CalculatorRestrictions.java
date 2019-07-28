@@ -8,8 +8,8 @@ class CalculatorRestrictions
 		// The order for these conditions, is critical
 		// the ones that are specific, have to be on top
 		// the ones that are not specific, eg. !isNumeric MUST be LOWER
-		// Specifics
 
+		// Specifics
 		if (Verify.isNull(beforePeek) && Verify.isNumeric(stackPeek))                // null 1
 			return true;
 		else if (Verify.isNull(beforePeek) && Verify.isOpenBracket(stackPeek))       // null (
@@ -55,6 +55,7 @@ class CalculatorRestrictions
 		else if (!Verify.isNumeric(beforePeek) && !Verify.isNumeric(stackPeek))        // + +
 			return false;
 		return false;
+
 		// should add more conditions
 		// with 3 parameters eg. 1.1. or
 	}

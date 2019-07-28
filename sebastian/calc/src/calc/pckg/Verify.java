@@ -1,8 +1,9 @@
 package calc.pckg;
 
-import java.util.Stack;
-
 class Verify {
+
+	private final static String OPENBRACKET ="(";
+	private final static String CLOSEDBRACKET =")";
 
 	static boolean isNotNull(String strNum)
 	{
@@ -12,13 +13,13 @@ class Verify {
 	// if the String is "("
 	static boolean isOpenBracket(String strNum) 
 	{
-		return strNum.equals("(");
+		return strNum.equals(OPENBRACKET);
 	}
 
 	// if the String is ")"
 	static boolean isCloseBracket(String strNum) 
 	{
-		return strNum.equals(")");
+		return strNum.equals(CLOSEDBRACKET);
 	}
 
 	static boolean isNull(String strNum) 
@@ -42,41 +43,41 @@ class Verify {
 	static void fixBracketCount () 
 	{
 		int numberOfBrackets = 0;
-		numberOfBrackets = checkNumberOfBrackets(Calculator.inputStack);
+		numberOfBrackets = checkNumberOfBrackets(/*CreateCalculatorUi.inputStack*/);
+
 		if (numberOfBrackets != 0 && numberOfBrackets > 0) 
 		{
 			for (int i = 0; i < numberOfBrackets; i++) 
 			{
-				Calculator.inputStack.push(")");
-				Calculator.calculatorDisplay.setText(Calculator.calculatorDisplay.getText() + ")");
+				StackOperations.pushStack(CLOSEDBRACKET);
+				TextWidget.setDisplayAfter(CLOSEDBRACKET);
 			}
-		} else if (numberOfBrackets < 0) {
+		} 
+		else if (numberOfBrackets < 0) 
+		{
 			numberOfBrackets *= (-1);
 			for (int i = 1; i <= numberOfBrackets; i++) 
 			{
-				Calculator.inputStack.add(i, "(");
-				Calculator.calculatorDisplay.setText("(" + Calculator.calculatorDisplay.getText());
+				StackOperations.addToStack(i, OPENBRACKET);
+				TextWidget.setDisplayBefore(OPENBRACKET);
 			}
 		}
 	}
 
-	private static int checkNumberOfBrackets(Stack<String> infixStack) 
+	private static int checkNumberOfBrackets() 
 	{
+
+
 		int numberOfOpenBrackets = 0;
 		int numberOfClosedBrackets = 0;
 
-		for (String str : infixStack) 
+		for (int i =0; i < StackOperations.stackSize(); i++) 
 		{
-			if (str.equals("(")) 
+			if (StackOperations.isEqual(i, OPENBRACKET)) 
 				numberOfOpenBrackets++;
-		}
-
-		for (String str : infixStack) {
-			if (str.equals(")")) {
+			else if (StackOperations.isEqual(i, CLOSEDBRACKET)) 
 				numberOfClosedBrackets++;
-			}
 		}
-
 		return numberOfOpenBrackets - numberOfClosedBrackets;
 	}
 }
