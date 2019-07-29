@@ -12,7 +12,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class UserInterface {
-
 	protected static ArrayList<Character> numbers = new ArrayList<>();
 	protected static ArrayList<String> allTexts = new ArrayList<>();
 
@@ -45,12 +44,11 @@ public class UserInterface {
 		shell.setLayout(new FillLayout());
 
 		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(4, true);
 
 		Text text = new Text(composite, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		composite.setLayout(layout);
+		composite.setLayout(new GridLayout(4, true));
 
 		createButtonsUI(text, composite);
 
