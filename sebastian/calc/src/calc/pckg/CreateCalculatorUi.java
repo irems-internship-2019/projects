@@ -4,13 +4,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+//import org.eclipse.swt.graphics.Color;
+//import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-class CreateCalculatorUi {
+
+
+class CreateCalculatorUi extends StackOperations {
+
+	CalculatorRestrictions calculatorRestrictions = new CalculatorRestrictions();
 
 	private final static String NULL= "null";
 
@@ -24,6 +30,7 @@ class CreateCalculatorUi {
 		shell.setText("Calculator");
 		shell.setSize(300, 400);
 		shell.setLayout(new GridLayout(4, false));
+
 
 		createContent();
 
@@ -43,17 +50,8 @@ class CreateCalculatorUi {
 		newDisplay.createTextWidget(shell);
 		createButtons();
 
-		StackOperations.pushStack(NULL);
+		pushStack(NULL);
 	}
-
-	//	private void createTextWidget() 
-	//	{
-	//		calculatorDisplay = new Text(shell, SWT.LEFT_TO_RIGHT);
-	//		calculatorDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
-	//		
-	//		Font font = new Font(shell.getDisplay(), new FontData("Arial", 16, SWT.NONE));
-	//		calculatorDisplay.setFont(font);
-	//	}
 
 	private void createButtons() 
 	{
@@ -89,19 +87,22 @@ class CreateCalculatorUi {
 		btn.setText(strNum);
 		btn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		btn.addSelectionListener(makeButtonSelectionListner(strNum));
+		//		Color color = new Color(shell.getDisplay(), 230, 232, 235);
+		//      btn.setBackground(color);
 	}
 
 	private SelectionListener makeButtonSelectionListner(String strNum) 
 	{
 		return new SelectionAdapter() 
 		{
+			CalculatorOperations calcOperations = new CalculatorOperations();
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
 				switch (strNum) 
 				{
 				case "C":
-					clearStack();
+					clearTheStack();
 					break;
 
 				case "DEL":
@@ -109,14 +110,14 @@ class CreateCalculatorUi {
 					break;
 
 				case "=":
-					CalculatorOperations.calculateFinalValue();
+					calcOperations.calculateFinalValue();
 					break;
 
 				default:
-					StackOperations.pushStack(strNum);
+					pushStack(strNum);
 
-					if (!CalculatorRestrictions.inputRestrictions(StackOperations.stackPeek(), StackOperations.getStack(StackOperations.stackSize() - 2))) 
-						StackOperations.popStack();
+					if (!calculatorRestrictions.inputRestrictions(stackPeek(),getStack(stackSize() - 2))) 
+						popStack();
 					else 
 						TextWidget.setDisplayAfter(strNum);
 					break;
@@ -126,19 +127,19 @@ class CreateCalculatorUi {
 		};
 	}
 
-	private void clearStack()
+	private void clearTheStack()
 	{
-		StackOperations.clearStack();
+		clearStack();
 		// the stack can't be empty
-		StackOperations.pushStack(NULL);
+		pushStack(NULL);
 		TextWidget.clearDisplay();
 	}
 
 	private void deleteOneElement()
 	{
-		StackOperations.popStack();
-		if (StackOperations.isEmpty())
-			StackOperations.pushStack(NULL);
+		popStack();
+		if (isEmpty())
+			pushStack(NULL);
 
 		TextWidget.removeOneElement();
 

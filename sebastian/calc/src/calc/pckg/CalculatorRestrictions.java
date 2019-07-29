@@ -1,58 +1,58 @@
 package calc.pckg;
 
-class CalculatorRestrictions 
+class CalculatorRestrictions extends Verify
 {
 
-	static boolean inputRestrictions(String stackPeek, String beforePeek) 
+	boolean inputRestrictions(String stackPeek, String beforePeek) 
 	{
 		// The order for these conditions, is critical
 		// the ones that are specific, have to be on top
 		// the ones that are not specific, eg. !isNumeric MUST be LOWER
 
 		// Specifics
-		if (Verify.isNull(beforePeek) && Verify.isNumeric(stackPeek))                // null 1
+		if (isNull(beforePeek) && isNumeric(stackPeek))                // null 1
 			return true;
-		else if (Verify.isNull(beforePeek) && Verify.isOpenBracket(stackPeek))       // null (
+		else if (isNull(beforePeek) && isOpenBracket(stackPeek))       // null (
 			return true;
-		else if (Verify.isNull(beforePeek) && Verify.isCloseBracket(stackPeek))      // null )
+		else if (isNull(beforePeek) && isCloseBracket(stackPeek))      // null )
 			return false;
-		else if (Verify.isNull(beforePeek) && !Verify.isNumeric(stackPeek))          // null +
+		else if (isNull(beforePeek) && !isNumeric(stackPeek))          // null +
 			return false;
-		else if (Verify.isNumeric(beforePeek) && Verify.isNumeric(stackPeek))         // 1 1
+		else if (isNumeric(beforePeek) && isNumeric(stackPeek))         // 1 1
 			return true;
-		else if (Verify.isNumeric(beforePeek) && Verify.isCloseBracket(stackPeek))    // 1 )
+		else if (isNumeric(beforePeek) && isCloseBracket(stackPeek))    // 1 )
 			return true;
-		else if (Verify.isNumeric(beforePeek) && Verify.isOpenBracket(stackPeek))     // 1 (
+		else if (isNumeric(beforePeek) && isOpenBracket(stackPeek))     // 1 (
 			return false;
-		else if (Verify.isOpenBracket(beforePeek) && Verify.isCloseBracket(stackPeek))// ( )
+		else if (isOpenBracket(beforePeek) && isCloseBracket(stackPeek))// ( )
 			return false;
-		else if (Verify.isCloseBracket(beforePeek) && Verify.isOpenBracket(stackPeek))// ) (
+		else if (isCloseBracket(beforePeek) && isOpenBracket(stackPeek))// ) (
 			return false;
-		else if (Verify.isCloseBracket(beforePeek) && Verify.isNumeric(stackPeek))    // ) 1
+		else if (isCloseBracket(beforePeek) && isNumeric(stackPeek))    // ) 1
 			return false;
 		else if (beforePeek.equals("/") && stackPeek.equals("0"))                     // / 0
 			return false;
-		else if (Verify.isOpenBracket(beforePeek) && Verify.isNumeric(stackPeek))     // ( 1
+		else if (isOpenBracket(beforePeek) && isNumeric(stackPeek))     // ( 1
 			return true;
-		else if (Verify.isOpenBracket(beforePeek) && Verify.isOpenBracket(stackPeek)) // ( (
+		else if (isOpenBracket(beforePeek) && isOpenBracket(stackPeek)) // ( (
 			return true;
-		else if (Verify.isCloseBracket(beforePeek) && Verify.isCloseBracket(stackPeek))// ) )
+		else if (isCloseBracket(beforePeek) && isCloseBracket(stackPeek))// ) )
 			return true;
 
 		// non Specifics
-		else if (Verify.isCloseBracket(beforePeek) && !Verify.isNumeric(stackPeek))    // ) +
+		else if (isCloseBracket(beforePeek) && !isNumeric(stackPeek))    // ) +
 			return true;
-		else if (Verify.isNumeric(beforePeek) && !Verify.isNumeric(stackPeek))         // 1 +
+		else if (isNumeric(beforePeek) && !isNumeric(stackPeek))         // 1 +
 			return true;
-		else if (!Verify.isNumeric(beforePeek) && Verify.isOpenBracket(stackPeek))     // + (
+		else if (!isNumeric(beforePeek) && isOpenBracket(stackPeek))     // + (
 			return true;
-		else if (!Verify.isNumeric(beforePeek) && Verify.isNumeric(stackPeek))         // + 1
+		else if (!isNumeric(beforePeek) && isNumeric(stackPeek))         // + 1
 			return true;
-		else if (!Verify.isNumeric(beforePeek) && Verify.isCloseBracket(stackPeek))    // + )
+		else if (!isNumeric(beforePeek) && isCloseBracket(stackPeek))    // + )
 			return false;
-		else if (Verify.isOpenBracket(beforePeek) && !Verify.isNumeric(stackPeek))     // ( +
+		else if (isOpenBracket(beforePeek) && !isNumeric(stackPeek))     // ( +
 			return false;
-		else if (!Verify.isNumeric(beforePeek) && !Verify.isNumeric(stackPeek))        // + +
+		else if (!isNumeric(beforePeek) && !isNumeric(stackPeek))        // + +
 			return false;
 		return false;
 

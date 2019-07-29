@@ -6,52 +6,52 @@ class StackOperations {
 
 	private static Stack<String> inputStack = new Stack<>();
 
-	static void  pushStack(String strNum)
+	void  pushStack(String strNum)
 	{
 		inputStack.push(strNum);
 	}
 
-	static void  addToStack(int i, String strNum)
+	void  addToStack(int i, String strNum)
 	{
 		inputStack.add(i, strNum);
 	}
 
-	static String popStack()
+	String popStack()
 	{
 		return inputStack.pop();
 	}
 
-	static void  clearStack()
+	void  clearStack()
 	{
 		inputStack.clear();
 	}
 
-	static String getStack(int i) 
+	String getStack(int i) 
 	{
 		return inputStack.get(i);
 	}
 
-	static int stackSize() 
+	int stackSize() 
 	{
 		return inputStack.size();
 	}
 
-	static String stackPeek() 
+	String stackPeek() 
 	{
 		return inputStack.peek();
 	}
 
-	static boolean isEmpty() 
+	boolean isEmpty() 
 	{
 		return inputStack.isEmpty();
 	}
 
-	static boolean isEqual(int i, String strNum) 
+	boolean isEqual(int i, String strNum) 
 	{
 		return inputStack.get(i).equals(strNum);
 	}
 
-	static void removeFromStack(int i) 
+	void removeFromStack(int i) 
 	{
 		inputStack.remove(i);
 	}

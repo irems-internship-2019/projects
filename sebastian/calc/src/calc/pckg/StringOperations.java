@@ -4,26 +4,28 @@ package calc.pckg;
 import java.util.ArrayList;
 import java.util.List;
 
-class StringOperations 
+class StringOperations extends StackOperations
 {
 	private static String[] infix;
 	private static int i=0,j=0;
 
 	private static List<String> multipleDigitArray = new ArrayList<>();
 
-	static String[] complexNumbers() 
-	{
-		StackOperations.removeFromStack(0);
-		StackOperations.pushStack(null);
+	Verify newVerify = new Verify();
 
-		int count = StackOperations.stackSize();
+	String[] complexNumbers() 
+	{
+		removeFromStack(0);
+		pushStack(null);
+
+		int count = stackSize();
 
 		infix = new String[count];
 
 		for (i = 0; i < count; i++) 
 		{
-			if (Verify.isNumeric(StackOperations.getStack(i))) 			
-				multipleDigitArray.add(StackOperations.getStack(i));
+			if (newVerify.isNumeric(getStack(i))) 			
+				multipleDigitArray.add(getStack(i));
 			else 
 				addComplexNumbersToInfix();
 		}
@@ -32,7 +34,7 @@ class StringOperations
 		return infix;
 	}
 
-	private static void addComplexNumbersToInfix()
+	private  void addComplexNumbersToInfix()
 	{
 		if (!multipleDigitArray.isEmpty()) 
 		{
@@ -46,13 +48,13 @@ class StringOperations
 		} 
 		else 
 		{
-			infix[j] = StackOperations.getStack(i);
+			infix[j] = getStack(i);
 			j++;
 		}
 	}
 
 
-	static String[] removeNull(String[] operandsStack, int count) 
+	String[] removeNull(String[] operandsStack, int count) 
 	{
 		int numberOfCharacters = 0;
 
@@ -76,11 +78,11 @@ class StringOperations
 		return infixFinal;
 	}
 
-	static String[] checkIfDecimal(String[] operandsStack, int count) 
+	String[] checkIfDecimal(String[] operandsStack, int count) 
 	{
 		for (i = 0; i < count; i++) 
-			if (Verify.isNotNull(operandsStack[i])&& Verify.isNotNull(operandsStack[i+1])&& Verify.isNotNull(operandsStack[i+2])) 
-				if (Verify.isNumeric(operandsStack[i])) 
+			if (newVerify.isNotNull(operandsStack[i])&& newVerify.isNotNull(operandsStack[i+1])&& newVerify.isNotNull(operandsStack[i+2])) 
+				if (newVerify.isNumeric(operandsStack[i])) 
 					if (operandsStack[i + 1].equals("."))
 					{
 						operandsStack[i] = operandsStack[i] + "" + operandsStack[i + 1] + ""+ operandsStack[i + 2].toString().replace(",", "").replace(" ", "").replace("[", "").replace("]", "");
