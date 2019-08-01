@@ -1,31 +1,32 @@
 package calc.pckg;
 
-import java.util.Stack;
+class Verify extends StackOperations {
 
-class Verify {
+	private final static String OPENBRACKET ="(";
+	private final static String CLOSEDBRACKET =")";
 
-	static boolean isNotNull(String strNum)
+	boolean isNotNull(String strNum)
 	{
 		return strNum != null;
 	}
 
 	// if the String is "("
-	static boolean isOpenBracket(String strNum) 
+	boolean isOpenBracket(String strNum) 
 	{
-		return strNum.equals("(");
+		return strNum.equals(OPENBRACKET);
 	}
 
 	// if the String is ")"
-	static boolean isCloseBracket(String strNum) 
+	boolean isCloseBracket(String strNum) 
 	{
-		return strNum.equals(")");
+		return strNum.equals(CLOSEDBRACKET);
 	}
 
-	static boolean isNull(String strNum) 
+	boolean isNull(String strNum) 
 	{
 		return strNum == null;
 	}
-	static boolean isNumeric(String strNum) 
+	boolean isNumeric(String strNum) 
 	{
 		try 
 		{
@@ -39,44 +40,44 @@ class Verify {
 		}
 	}
 
-	static void fixBracketCount () 
+	void fixBracketCount () 
 	{
 		int numberOfBrackets = 0;
-		numberOfBrackets = checkNumberOfBrackets(Calculator.inputStack);
+		numberOfBrackets = checkNumberOfBrackets(/*CreateCalculatorUi.inputStack*/);
+
 		if (numberOfBrackets != 0 && numberOfBrackets > 0) 
 		{
 			for (int i = 0; i < numberOfBrackets; i++) 
 			{
-				Calculator.inputStack.push(")");
-				Calculator.calculatorDisplay.setText(Calculator.calculatorDisplay.getText() + ")");
+				pushStack(CLOSEDBRACKET);
+				TextWidget.setDisplayAfter(CLOSEDBRACKET);
 			}
-		} else if (numberOfBrackets < 0) {
+		} 
+		else if (numberOfBrackets < 0) 
+		{
 			numberOfBrackets *= (-1);
 			for (int i = 1; i <= numberOfBrackets; i++) 
 			{
-				Calculator.inputStack.add(i, "(");
-				Calculator.calculatorDisplay.setText("(" + Calculator.calculatorDisplay.getText());
+				addToStack(i, OPENBRACKET);
+				TextWidget.setDisplayBefore(OPENBRACKET);
 			}
 		}
 	}
 
-	private static int checkNumberOfBrackets(Stack<String> infixStack) 
+	private  int checkNumberOfBrackets() 
 	{
+
+
 		int numberOfOpenBrackets = 0;
 		int numberOfClosedBrackets = 0;
 
-		for (String str : infixStack) 
+		for (int i =0; i < stackSize(); i++) 
 		{
-			if (str.equals("(")) 
+			if (isEqual(i, OPENBRACKET)) 
 				numberOfOpenBrackets++;
-		}
-
-		for (String str : infixStack) {
-			if (str.equals(")")) {
+			else if (isEqual(i, CLOSEDBRACKET)) 
 				numberOfClosedBrackets++;
-			}
 		}
-
 		return numberOfOpenBrackets - numberOfClosedBrackets;
 	}
 }

@@ -4,23 +4,31 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Stack;
 
-public class CalculatorOperations {
+public class CalculatorOperations extends StringOperations {
 
-	//	final static CalculatorCharacters plus = CalculatorCharacters.ADDITION;
+	//	final static String addition = CalculatorCharacters.ADDITION.getName();
 	//	final static CalculatorCharacters minus = CalculatorCharacters.SUBSTRACTION;
 	//	final static CalculatorCharacters multiply = CalculatorCharacters.MULTIPLICATION;
 	//	final static CalculatorCharacters division = CalculatorCharacters.DIVISION;
 
-	private static final String plus = "+";
-	private static final String minus = "-";
-	private static final String multiply = "*";
-	private static final String divide = "/";
+	private static final String PLUS = "+";
+	private static final String MINUS = "-";
+	private static final String MULTIPLY = "*";
+	private static final String DIVIDE = "/";
+	private static final String OPENBRACKET ="(";
+	private static final String CLOSEDBRACKET =")";
+	private static final String NULL= "null";
+
 	private static int i = 0, j = 0;
 
 	private static String[] resultString;
 	private static Stack<String> temporaryStack = new Stack<>();
 
-	private static double postFixCalculator(String[] postFixString) 
+	Verify verify = new Verify();
+
+	StackOperations stackOP = new StackOperations();
+
+	private double postFixCalculator(String[] postFixString) 
 	{
 		Stack<Double> operandsStack = new Stack<Double>();
 
@@ -30,29 +38,29 @@ public class CalculatorOperations {
 			if (str != null)
 				switch (str) {
 				// If there is one of these characters ID'd, the loop will pop last 2 operators
-				case plus:
-				case minus:
-				case multiply:
-				case divide:
+				case PLUS:
+				case MINUS:
+				case MULTIPLY:
+				case DIVIDE:
 					double stackPeek = operandsStack.pop();
 					double beforePeek = operandsStack.pop();
 					double value = 0;
 
 					switch (str) 
 					{
-					case plus:
+					case PLUS:
 						value = beforePeek + stackPeek;
 						break;
 
-					case minus:
+					case MINUS:
 						value = beforePeek - stackPeek;
 						break;
 
-					case multiply:
+					case MULTIPLY:
 						value = beforePeek * stackPeek;
 						break;
 
-					case divide:
+					case DIVIDE:
 						value = beforePeek / stackPeek;
 						break;
 
@@ -68,20 +76,19 @@ public class CalculatorOperations {
 					break;
 				}
 		}
-
 		return BigDecimal.valueOf(operandsStack.pop()).setScale(3, RoundingMode.HALF_UP).doubleValue();
 	}
 
-	private static int operatorPriority(String operator) 
+	private  int operatorPriority(String operator) 
 	{
 		switch (operator) 
 		{
-		case plus:
-		case minus:
+		case PLUS:
+		case MINUS:
 			return 1;
 
-		case multiply:
-		case divide:
+		case MULTIPLY:
+		case DIVIDE:
 			return 2;
 		}
 		return -1;
@@ -89,35 +96,27 @@ public class CalculatorOperations {
 
 	// The main method that converts given infix expression
 	// to postfix expression.
-	private static String[] infixToPostfixConverter(String[] infixString, int nrOfElemnts)
+	private  String[] infixToPostfixConverter(String[] infixString, int nrOfElemnts)
 	{
-
 		resultString = new String[nrOfElemnts];
 
 		for (j =0; j < nrOfElemnts; j++) 
 		{
 			// If the scanned string is an operand, add it to output.
-			if (Verify.isNumeric(infixString[j])) 
+			if (newVerify.isNumeric(infixString[j])) 
 			{
 				resultString[i] = infixString[j];
 				i++;
 			}
 			// If the scanned string is an '(', push it to the stack.
-			else if (infixString[j].equals("(")) 
+			else if (infixString[j].equals(OPENBRACKET)) 
 				temporaryStack.push(infixString[j]);
 			// If the scanned String is an ')', pop and output from the stack
 			// until an '(' is encountered.
-			else if (infixString[j].equals(")")) {
-				while (!temporaryStack.isEmpty() && !temporaryStack.peek().equals("(")) 
-				{
-					resultString[i] = temporaryStack.pop();
-					i++;
-				}
-
-				if (!temporaryStack.isEmpty() && !temporaryStack.peek().equals("("))
-					return null; // invalid expression
-				else
-					temporaryStack.pop();
+			else if (infixString[j].equals(CLOSEDBRACKET)) 
+			{
+				if(!aBracketIsEncountered()) 
+					return null;
 			} 
 			else 
 			{
@@ -125,7 +124,6 @@ public class CalculatorOperations {
 					temporaryStack.push(infixString[j]);
 				else 
 					return null;
-
 			}
 		}
 
@@ -136,17 +134,33 @@ public class CalculatorOperations {
 		}
 		else
 			return null;
+	}
 
+
+	private  boolean aBracketIsEncountered() 
+	{
+		while (!temporaryStack.isEmpty() && !temporaryStack.peek().equals(OPENBRACKET)) 
+		{
+			resultString[i] = temporaryStack.pop();
+			i++;
+		}
+
+		if (!temporaryStack.isEmpty() && !temporaryStack.peek().equals(OPENBRACKET))
+			return false; // invalid expression
+		else
+			temporaryStack.pop();
+		return true;
 	}
 
 	// an operator is encountered
-	private static boolean  anOperatorIsEncountered(String infixElement) 
+	private  boolean  anOperatorIsEncountered(String infixElement) 
 	{
 		while (!temporaryStack.isEmpty() && operatorPriority(infixElement) <= operatorPriority(temporaryStack.peek())) 
 		{
-			if (temporaryStack.peek().equals("(")) 
+			if (temporaryStack.peek().equals(OPENBRACKET)) 
 				return false;
-			else {
+			else 
+			{
 				resultString[i] = temporaryStack.pop();
 				i++;
 			}
@@ -155,12 +169,11 @@ public class CalculatorOperations {
 	}
 
 	// pop all the operators from the stack aka the higher priority operands
-	private static boolean popAllOperatorFromTheStack() 
+	private boolean popAllOperatorFromTheStack() 
 	{
 		while (!temporaryStack.isEmpty()) 
 		{
-
-			if (temporaryStack.peek().equals("(")) 
+			if (temporaryStack.peek().equals(OPENBRACKET)) 
 				return false;
 			else
 			{
@@ -171,30 +184,31 @@ public class CalculatorOperations {
 		return true;
 	}
 
-
-
-
-	static void calculateFinalValue() 
+	void calculateFinalValue() 
 	{
 		try {
-			Verify.fixBracketCount();
 
-			String[] infixDecimalDouble = StringOperations.checkIfDecimal(
-					StringOperations.complexNumbers(Calculator.inputStack, Calculator.inputStack.size()), Calculator.inputStack.size());
-			String[] infixFinal = StringOperations.removeNull(infixDecimalDouble, Calculator.inputStack.size());
-			int infixCount = infixFinal.length;
-			Double finalValue = postFixCalculator(infixToPostfixConverter(infixFinal, infixCount));
-			Calculator.calculatorDisplay.setText(Calculator.calculatorDisplay.getText() + "=" + finalValue);
+			//int size = StackOperations.stackSize();
+			verify.fixBracketCount();
 
-			Calculator.inputStack.clear();
-			Calculator.inputStack.push("null");
-			//Calculator.inputStack.push(Double.toString(finalValue));
+			String[] infixDecimalDouble = checkIfDecimal(
+					complexNumbers(), stackOP.stackSize());
+
+			String[] infixFinal = removeNull(infixDecimalDouble, stackOP.stackSize());
+
+			Double finalValue = postFixCalculator(infixToPostfixConverter(infixFinal, infixFinal.length));
+
+			TextWidget.setDisplayFinalValue(finalValue);
+
+			stackOP.clearStack();
+			stackOP.pushStack(NULL);
+			//CreateCalculatorUi.inputStack.push(Double.toString(finalValue));
 
 		} catch (Exception exception) 
 		{
-			Calculator.inputStack.clear();
-			Calculator.inputStack.push("null");
-			Calculator.calculatorDisplay.setText("- ERROR -");
+			stackOP.clearStack();
+			stackOP.pushStack(NULL);
+			TextWidget.setDisplayToError();
 			//System.out.println(exception);
 		}
 	}

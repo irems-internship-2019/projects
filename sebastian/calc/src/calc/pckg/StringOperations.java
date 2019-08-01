@@ -3,49 +3,58 @@ package calc.pckg;
 //import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
-class StringOperations 
+class StringOperations extends StackOperations
 {
 	private static String[] infix;
 	private static int i=0,j=0;
 
 	private static List<String> multipleDigitArray = new ArrayList<>();
 
-	static String[] complexNumbers(Stack<String> operandsStack, int count) 
+	Verify newVerify = new Verify();
+
+	String[] complexNumbers() 
 	{
-		operandsStack.remove(0);
-		operandsStack.push(null);
+		removeFromStack(0);
+		pushStack(null);
+
+		int count = stackSize();
 
 		infix = new String[count];
+
 		for (i = 0; i < count; i++) 
 		{
-			if (Verify.isNumeric(operandsStack.get(i))) 			
-				multipleDigitArray.add(operandsStack.get(i));
+			if (newVerify.isNumeric(getStack(i))) 			
+				multipleDigitArray.add(getStack(i));
 			else 
-				addComplexNumbersToInfix(operandsStack);
+				addComplexNumbersToInfix();
 		}
+
 		j=0;
 		return infix;
 	}
 
-	static void addComplexNumbersToInfix(Stack<String> operandsStack)
+	private  void addComplexNumbersToInfix()
 	{
-		if (!multipleDigitArray.isEmpty()) {
+		if (!multipleDigitArray.isEmpty()) 
+		{
 			infix[j] = multipleDigitArray.toString().replace(",", "").replace(" ", "").replace("[", "")
 					.replace("]", "");
 			j++;
 			i--;
 
 			multipleDigitArray.clear();
-		} else {
-			infix[j] = operandsStack.get(i);
+
+		} 
+		else 
+		{
+			infix[j] = getStack(i);
 			j++;
 		}
 	}
 
 
-	static String[] removeNull(String[] operandsStack, int count) 
+	String[] removeNull(String[] operandsStack, int count) 
 	{
 		int numberOfCharacters = 0;
 
@@ -56,6 +65,7 @@ class StringOperations
 		}
 
 		final String[] infixFinal = new String[numberOfCharacters];
+
 		int FinalCount = 0;
 		for (int i = 0; i < count; i++) 
 		{
@@ -68,11 +78,11 @@ class StringOperations
 		return infixFinal;
 	}
 
-	static String[] checkIfDecimal(String[] operandsStack, int count) 
+	String[] checkIfDecimal(String[] operandsStack, int count) 
 	{
 		for (i = 0; i < count; i++) 
-			if (Verify.isNotNull(operandsStack[i])&& Verify.isNotNull(operandsStack[i+1])&& Verify.isNotNull(operandsStack[i+2])) 
-				if (Verify.isNumeric(operandsStack[i])) 
+			if (newVerify.isNotNull(operandsStack[i])&& newVerify.isNotNull(operandsStack[i+1])&& newVerify.isNotNull(operandsStack[i+2])) 
+				if (newVerify.isNumeric(operandsStack[i])) 
 					if (operandsStack[i + 1].equals("."))
 					{
 						operandsStack[i] = operandsStack[i] + "" + operandsStack[i + 1] + ""+ operandsStack[i + 2].toString().replace(",", "").replace(" ", "").replace("[", "").replace("]", "");
