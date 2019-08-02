@@ -7,7 +7,6 @@ package calc.pckg;
 
 class Calculator 
 {
-
 	public static void main(String[] args) 
 	{
 		CreateCalculatorUi newWindow = new CreateCalculatorUi();

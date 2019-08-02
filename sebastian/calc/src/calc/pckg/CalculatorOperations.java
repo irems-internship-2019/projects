@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Stack;
 
-public class CalculatorOperations {
+public class CalculatorOperations extends StringOperations {
 
 	//	final static String addition = CalculatorCharacters.ADDITION.getName();
 	//	final static CalculatorCharacters minus = CalculatorCharacters.SUBSTRACTION;
@@ -24,7 +24,11 @@ public class CalculatorOperations {
 	private static String[] resultString;
 	private static Stack<String> temporaryStack = new Stack<>();
 
-	private static double postFixCalculator(String[] postFixString) 
+	Verify verify = new Verify();
+
+	StackOperations stackOP = new StackOperations();
+
+	private double postFixCalculator(String[] postFixString) 
 	{
 		Stack<Double> operandsStack = new Stack<Double>();
 
@@ -75,7 +79,7 @@ public class CalculatorOperations {
 		return BigDecimal.valueOf(operandsStack.pop()).setScale(3, RoundingMode.HALF_UP).doubleValue();
 	}
 
-	private static int operatorPriority(String operator) 
+	private  int operatorPriority(String operator) 
 	{
 		switch (operator) 
 		{
@@ -92,14 +96,14 @@ public class CalculatorOperations {
 
 	// The main method that converts given infix expression
 	// to postfix expression.
-	private static String[] infixToPostfixConverter(String[] infixString, int nrOfElemnts)
+	private  String[] infixToPostfixConverter(String[] infixString, int nrOfElemnts)
 	{
 		resultString = new String[nrOfElemnts];
 
 		for (j =0; j < nrOfElemnts; j++) 
 		{
 			// If the scanned string is an operand, add it to output.
-			if (Verify.isNumeric(infixString[j])) 
+			if (newVerify.isNumeric(infixString[j])) 
 			{
 				resultString[i] = infixString[j];
 				i++;
@@ -133,7 +137,7 @@ public class CalculatorOperations {
 	}
 
 
-	private static boolean aBracketIsEncountered() 
+	private  boolean aBracketIsEncountered() 
 	{
 		while (!temporaryStack.isEmpty() && !temporaryStack.peek().equals(OPENBRACKET)) 
 		{
@@ -149,7 +153,7 @@ public class CalculatorOperations {
 	}
 
 	// an operator is encountered
-	private static boolean  anOperatorIsEncountered(String infixElement) 
+	private  boolean  anOperatorIsEncountered(String infixElement) 
 	{
 		while (!temporaryStack.isEmpty() && operatorPriority(infixElement) <= operatorPriority(temporaryStack.peek())) 
 		{
@@ -165,7 +169,7 @@ public class CalculatorOperations {
 	}
 
 	// pop all the operators from the stack aka the higher priority operands
-	private static boolean popAllOperatorFromTheStack() 
+	private boolean popAllOperatorFromTheStack() 
 	{
 		while (!temporaryStack.isEmpty()) 
 		{
@@ -180,29 +184,30 @@ public class CalculatorOperations {
 		return true;
 	}
 
-	static void calculateFinalValue() 
+	void calculateFinalValue() 
 	{
 		try {
+
 			//int size = StackOperations.stackSize();
-			Verify.fixBracketCount();
+			verify.fixBracketCount();
 
-			String[] infixDecimalDouble = StringOperations.checkIfDecimal(
-					StringOperations.complexNumbers(), StackOperations.stackSize());
+			String[] infixDecimalDouble = checkIfDecimal(
+					complexNumbers(), stackOP.stackSize());
 
-			String[] infixFinal = StringOperations.removeNull(infixDecimalDouble, StackOperations.stackSize());
+			String[] infixFinal = removeNull(infixDecimalDouble, stackOP.stackSize());
 
 			Double finalValue = postFixCalculator(infixToPostfixConverter(infixFinal, infixFinal.length));
 
 			TextWidget.setDisplayFinalValue(finalValue);
 
-			StackOperations.clearStack();
-			StackOperations.pushStack(NULL);
+			stackOP.clearStack();
+			stackOP.pushStack(NULL);
 			//CreateCalculatorUi.inputStack.push(Double.toString(finalValue));
 
 		} catch (Exception exception) 
 		{
-			StackOperations.clearStack();
-			StackOperations.pushStack(NULL);
+			stackOP.clearStack();
+			stackOP.pushStack(NULL);
 			TextWidget.setDisplayToError();
 			//System.out.println(exception);
 		}
