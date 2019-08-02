@@ -1,4 +1,4 @@
-package adressbook;
+package addressbook;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;

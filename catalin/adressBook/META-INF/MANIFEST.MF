@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AdressBook
-Bundle-SymbolicName: AdressBook;singleton:=true
+Bundle-SymbolicName: AddressBook;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: adressbook.Activator
+Bundle-Activator: addressbook.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.felix.scr,
