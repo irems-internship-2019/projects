@@ -1,4 +1,4 @@
-package adressbook;
+package adress;
 
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;

@@ -7,24 +7,24 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="adressbook.Application">
+               class="adress.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="adressbook.Perspective"
+            class="adress.Perspective"
             name="Perspective"
-            id="AdressBook.perspective">
+            id="Adress.perspective">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="adressbook.View"
+            class="adress.View"
             name="View"
-            id="AdressBook.view"
+            id="Adress.view"
             inject="true">
       </view>
    </extension>
@@ -33,7 +33,7 @@
       <perspectiveExtension
             targetID="*">
          <view
-               id="AdressBook.view"
+               id="Adress.view"
                minimized="false"
                relationship="left"
                standalone="true"

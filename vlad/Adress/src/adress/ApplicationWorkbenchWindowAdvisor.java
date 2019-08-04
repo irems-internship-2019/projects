@@ -1,4 +1,4 @@
-package adressbook;
+package adress;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
