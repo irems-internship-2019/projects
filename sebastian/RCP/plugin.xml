@@ -22,10 +22,9 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="rcpbook.View"
+            class="rcpbook.view.TableView"
             name="View"
-            id="RCPBook.view"
-            inject="true">
+            id="RCPBook.view">
       </view>
    </extension>
    <extension
@@ -33,11 +32,12 @@
       <perspectiveExtension
             targetID="*">
          <view
+               closeable="true"
                id="RCPBook.view"
                minimized="false"
                relationship="left"
-               standalone="true"
-               relative="org.eclipse.ui.editorss">
+               relative="org.eclipse.ui.editorss"
+               standalone="true">
          </view>
       </perspectiveExtension>
    </extension>
