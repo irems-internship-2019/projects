@@ -9,22 +9,22 @@ public class Contact {
 	   private int id; 
 	   private String firstName;
 	   private String lastName;
-	 //  private Address adress;
+	   private Address adress;
 	   private String phoneNumber;
 	   private String emailAdress;
-	    
+	  private static int contactCounter=0;
 	   
 	    public Contact() {
 	    	
 	    }
 
-	public Contact(String firstName, String lastName, String phoneNumber, String emailAdress) {
-		this.id= id++;
+	public Contact(String firstName,Address adress, String lastName, String phoneNumber, String emailAdress) {
+		this.id= contactCounter++;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber=phoneNumber;
 		this.emailAdress=emailAdress;
-
+		this.adress=adress;
 	}
 	
 
@@ -37,6 +37,8 @@ public class Contact {
 	   {
 		   return firstName;
 	   }
+	   
+	 
 	   
 	   public void setFirstName(String firstName) {
 			this.firstName = firstName;
@@ -61,4 +63,10 @@ public class Contact {
 		   return emailAdress;
 	   }
 
+	public String getStreet() {
+		// TODO Auto-generated method stub
+		return adress.getStreet();
+	}
+
+	  
 }
