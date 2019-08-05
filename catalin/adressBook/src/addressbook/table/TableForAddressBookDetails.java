@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import addressbook.comparator.ContactComparator;
 import addressbook.persons.Contact;
 
-public class TableForAddressBook {
+public class TableForAddressBookDetails {
 	private TableViewerColumn createTableViewerColumn(TableViewer viewer, String title, int bound,
 			final int colNumber) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
@@ -53,7 +53,7 @@ public class TableForAddressBook {
 	}
 
 	public void createColumns(Composite parent, TableViewer viewer) {
-		String[] titles = { "Id", "First name", "Last name", "Address", "Phone number", "Email Address" };
+		String[] titles = { "Id", "First name", "Last name", "Country", "City", "Street", "Postal Code" };
 		int[] bounds = { 50, 100 };
 
 		TableViewerColumn column = createTableViewerColumn(viewer, titles[0], bounds[0], 0);
@@ -88,7 +88,7 @@ public class TableForAddressBook {
 			@Override
 			public String getText(Object element) {
 				Contact select = (Contact) element;
-				return select.getAddress().getStreet();
+				return select.getAddress().getCountry();
 			}
 		});
 
@@ -97,7 +97,7 @@ public class TableForAddressBook {
 			@Override
 			public String getText(Object element) {
 				Contact select = (Contact) element;
-				return Integer.toString(select.getPhoneNumber());
+				return select.getAddress().getCity();
 			}
 		});
 
@@ -106,7 +106,16 @@ public class TableForAddressBook {
 			@Override
 			public String getText(Object element) {
 				Contact select = (Contact) element;
-				return select.getEmailAddress();
+				return select.getAddress().getStreet();
+			}
+		});
+
+		column = createTableViewerColumn(viewer, titles[6], bounds[1], 6);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Contact select = (Contact) element;
+				return select.getAddress().getPostal_code();
 			}
 		});
 	}

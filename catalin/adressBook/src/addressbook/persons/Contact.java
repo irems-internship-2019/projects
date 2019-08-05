@@ -2,16 +2,15 @@ package addressbook.persons;
 
 import java.util.ArrayList;
 
-public class ContactClass {
+public class Contact {
 	private int id;
 	private String firstName;
 	private String lastName;
-	private AddressClass address;
+	private Address address;
 	private int phoneNumber;
 	private String emailAddress;
-	
-	public ContactClass(int id, String firstName, String lastName, AddressClass address, int phoneNumber,
-			String emailAddress) {
+
+	public Contact(int id, String firstName, String lastName, Address address, int phoneNumber, String emailAddress) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -45,11 +44,11 @@ public class ContactClass {
 		this.lastName = lastName;
 	}
 
-	public AddressClass getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(AddressClass address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
@@ -68,21 +67,25 @@ public class ContactClass {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	
-	public enum Contact {
-	    INSTANCE;
 
-		private ArrayList<ContactClass> contactList = new ArrayList<ContactClass>();
+	public enum ContactElements {
+		INSTANCE;
 
-	    private Contact() {
-	    	contactList.add(new ContactClass(1,"Ion","Bala",new AddressClass("Romania", "Cluj", "Iancu.23", "3478902"),0462347,"ion09"));
-	    	contactList.add(new ContactClass(2,"Maurice","Hit",new AddressClass("Franta", "Paris", "King.45", "zt4702145"),0323671,"mau00"));
-	    	contactList.add(new ContactClass(3,"Krisnov","Bor",new AddressClass("Bulgaria", "Sofia", "Krus.21", "89to456"),1690365,"borkr01"));
-	    	contactList.add(new ContactClass(4,"Jussepe","Pir",new AddressClass("Italia", "Torino", "Pacetti.13", "gh093"),7613290,"juse11"));
-	    }
+		private ArrayList<Contact> contactList = new ArrayList<Contact>();
 
-	    public ArrayList<ContactClass> getContacts() {
-	        return contactList;
-	    }
+		private ContactElements() {
+			contactList.add(new Contact(1, "Ion", "Bala", new Address("Romania", "Cluj", "Iancu.23", "3478902"),
+					0462347, "ion09"));
+			contactList.add(new Contact(2, "Maurice", "Hit", new Address("Franta", "Paris", "King.45", "zt4702145"),
+					0323671, "mau00"));
+			contactList.add(new Contact(3, "Krisnov", "Bor", new Address("Bulgaria", "Sofia", "Krus.21", "89to456"),
+					1690365, "borkr01"));
+			contactList.add(new Contact(4, "Jussepe", "Pir", new Address("Italia", "Torino", "Pacetti.13", "gh093"),
+					7613290, "juse11"));
+		}
+
+		public ArrayList<Contact> getContacts() {
+			return contactList;
+		}
 	}
 }

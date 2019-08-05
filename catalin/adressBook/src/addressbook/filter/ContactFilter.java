@@ -3,7 +3,7 @@ package addressbook.filter;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import addressbook.persons.ContactClass;
+import addressbook.persons.Contact;
 
 public class ContactFilter extends ViewerFilter {
 
@@ -19,7 +19,7 @@ public class ContactFilter extends ViewerFilter {
 		if (searchString == null || searchString.length() == 0) {
 			return true;
 		}
-		ContactClass person = (ContactClass) element;
+		Contact person = (Contact) element;
 		if (Integer.toString(person.getId()).matches(searchString)) {
 			return true;
 		}

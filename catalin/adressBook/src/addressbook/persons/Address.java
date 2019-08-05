@@ -2,13 +2,13 @@ package addressbook.persons;
 
 import java.util.ArrayList;
 
-public class AddressClass {
+public class Address {
 	private String country;
 	private String city;
 	private String street;
 	private String postal_code;
-	
-	public AddressClass(String country, String city, String street, String postal_code) {
+
+	public Address(String country, String city, String street, String postal_code) {
 		super();
 		this.country = country;
 		this.city = city;
