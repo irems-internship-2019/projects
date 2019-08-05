@@ -75,10 +75,10 @@ public class ContactClass {
 		private ArrayList<ContactClass> contactList = new ArrayList<ContactClass>();
 
 	    private Contact() {
-	    	contactList.add(new ContactClass(1,"Ion","Bala",new AddressClass("Romania", "Cluj", "Iancu", "3478902"),0462347,"ion09"));
-	    	contactList.add(new ContactClass(2,"Maurice","Hit",new AddressClass("Franta", "Paris", "King", "zt4702145"),0323671,"mau00"));
-	    	contactList.add(new ContactClass(3,"Krisnov","Bor",new AddressClass("Bulgaria", "Sofia", "Krus", "89to456"),1690365,"borkr01"));
-	    	contactList.add(new ContactClass(4,"Jussepe","Pir",new AddressClass("Italia", "Torino", "Pacetti", "gh093"),7613290,"borkr01"));
+	    	contactList.add(new ContactClass(1,"Ion","Bala",new AddressClass("Romania", "Cluj", "Iancu.23", "3478902"),0462347,"ion09"));
+	    	contactList.add(new ContactClass(2,"Maurice","Hit",new AddressClass("Franta", "Paris", "King.45", "zt4702145"),0323671,"mau00"));
+	    	contactList.add(new ContactClass(3,"Krisnov","Bor",new AddressClass("Bulgaria", "Sofia", "Krus.21", "89to456"),1690365,"borkr01"));
+	    	contactList.add(new ContactClass(4,"Jussepe","Pir",new AddressClass("Italia", "Torino", "Pacetti.13", "gh093"),7613290,"borkr01"));
 	    }
 
 	    public ArrayList<ContactClass> getContacts() {
