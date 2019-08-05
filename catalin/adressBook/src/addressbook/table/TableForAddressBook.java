@@ -4,10 +4,13 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 
+import addressbook.comparator.ContactComparator;
 import addressbook.persons.ContactClass;
 
 public class TableForAddressBook {
@@ -19,7 +22,25 @@ public class TableForAddressBook {
 		column.setWidth(bound);
 		column.setResizable(true);
 		column.setMoveable(true);
+		column.addSelectionListener(getSelectionAdapter(viewer,column, colNumber));
 		return viewerColumn;
+	}
+	
+	private SelectionAdapter getSelectionAdapter(TableViewer viewer,TableColumn column, int index) {
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				ContactComparator comparator = (ContactComparator) viewer.getComparator();
+				comparator.setColumn(index);
+				
+				int direction = comparator.getDirection();
+				viewer.getTable().setSortDirection(direction);
+				viewer.getTable().setSortColumn(column);
+				viewer.refresh();
+			}
+		};
+		return selectionAdapter;
 	}
 
 	public void viewerLayout(TableViewer viewer) {
