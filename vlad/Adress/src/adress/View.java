@@ -1,7 +1,5 @@
 package adress;
 
-import java.util.*;
-
 import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -13,7 +11,6 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -21,12 +18,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.part.ViewPart;
 
 import Filter.ContactFilter;
-import Model.Address;
 import Model.Contact;
 import Model.ContactProvider;
 import comparator.ContactComparator;
@@ -183,6 +178,11 @@ public class View extends ViewPart {
 
 	}
 	
+	
+	 public TableViewer getViewer() {
+	        return viewer;
+	    }
+	 
 	public  void refresh() {
 		
         viewer.refresh();		

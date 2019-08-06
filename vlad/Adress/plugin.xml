@@ -27,6 +27,12 @@
             id="Adress.view"
             inject="true">
       </view>
+      <view
+            class="adress.AdressDetailsView"
+            id="Adress.view2"
+            name="Details View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -59,17 +65,45 @@
          <toolbar
                id="toolbar1">
             <command
-                  commandId="org.eclipse.ui.file.exit"
+                  commandId="Adress.command1"
                   icon="icons/eclipse16.png"
+                  label="Delete Contact"
                   style="push">
             </command>
             <command
                   commandId="cmd"
                   icon="icons/eclipse16.png"
-                  label="Call User Editor"
+                  label="Add New Contact"
+                  style="push">
+            </command>
+            <command
+                  commandId="Adress.command2"
+                  icon="icons/eclipse16.png"
                   style="push">
             </command>
          </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:Adress.view">
+         <command
+               commandId="Adress.command1"
+               icon="icons/eclipse16.png"
+               label="Delete Contact"
+               style="push">
+         </command>
+         <command
+               commandId="cmd"
+               icon="icons/eclipse16.png"
+               label="Add New Contact"
+               style="push">
+         </command>
+         <command
+               commandId="Adress.editor1"
+               icon="icons/eclipse16.png"
+               label="Edit Contact "
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -81,13 +115,29 @@
             id="adress.book.editor"
             name="Address Book Editor">
       </editor>
+      <editor
+            class="adress.editor.AdressBookEditContact"
+            default="false"
+            id="Adress.editor1"
+            name="Adress Book Contact Edit">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="adress.cmd.AdressEditorCommand"
             id="cmd"
-            name="call editor Command">
+            name="Add Contact Command">
+      </command>
+      <command
+            defaultHandler="Remover.DeleteContact"
+            id="Adress.command1"
+            name="Delete Contact">
+      </command>
+      <command
+            defaultHandler="adress.cmd.AdressEditContactCommand"
+            id="Adress.editor1"
+            name="Edit Contact ">
       </command>
    </extension>
 

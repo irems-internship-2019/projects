@@ -23,7 +23,7 @@ public class AdressbookEditorInput implements IEditorInput {
 
    @Override
    public String getName() {
-       return "Adress Book Editor";
+       return "Adress Book New Contact";
    }
 
    @Override
@@ -33,7 +33,7 @@ public class AdressbookEditorInput implements IEditorInput {
 
    @Override
    public String getToolTipText() {
-       return "Adress Book Editor";
+       return "Adress Book New Contact";
    }
 
 }

@@ -22,6 +22,17 @@ import adress.View;
 
 public class AdressBookEditor extends EditorPart {
 
+	private Text firstNameText;
+	private Text lastNameText;
+	private Text phoneNumberText;
+	private Text emailAdressText;
+	private Text adressText;
+	private Text countryText;
+	 private Text cityText;
+	 private Text postalCodeText;
+
+	ContactProvider contacts = ContactProvider.INSTANCE;
+	
 	public static final String ID = "adress.book.editor";
 
 	public AdressBookEditor() {
@@ -50,7 +61,7 @@ public class AdressBookEditor extends EditorPart {
 		setInput(input);
 
 	}
-
+                                                                                        
 	@Override
 	public boolean isDirty() {
 		// TODO Auto-generated method stub
@@ -63,13 +74,7 @@ public class AdressBookEditor extends EditorPart {
 		return false;
 	}
 
-	private Text firstNameText;
-	private Text lastNameText;
-	private Text phoneNumberText;
-	private Text emailAdressText;
-	private Text adressText;
-
-	ContactProvider contacts = ContactProvider.INSTANCE;
+	
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -99,6 +104,19 @@ public class AdressBookEditor extends EditorPart {
 		Label emailAdressLabel = new Label(parent, SWT.NONE);
 		emailAdressLabel.setText("email Adress");
 		emailAdressText = new Text(parent, SWT.BORDER);
+		
+		Label countryLabel = new Label(parent, SWT.NONE);
+		countryLabel.setText("Country");
+		countryText = new Text(parent, SWT.BORDER);
+		
+		Label cityLabel = new Label(parent, SWT.NONE);
+		cityLabel.setText("City");
+		cityText = new Text(parent, SWT.BORDER);
+		
+		Label postalCodeLabel = new Label(parent, SWT.NONE);
+		postalCodeLabel.setText("Postal Code");
+		postalCodeText = new Text(parent, SWT.BORDER);
+		postalCodeText.setText("test");
 
 		Button insertButton = new Button(parent, SWT.PUSH);
 		insertButton.setText("New Contact");
@@ -107,8 +125,9 @@ public class AdressBookEditor extends EditorPart {
 			public void widgetSelected(SelectionEvent e) {
 
 				contacts.addContacts(new Contact(firstNameText.getText(),
-						new Address("country", "city", adressText.getText(), "postal code"), lastNameText.getText(),
-						phoneNumberText.getText(), emailAdressText.getText()));
+						new Address(countryText.getText(), cityText.getText(), adressText.getText(),
+								postalCodeText.getText()),
+						lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
 
 				View part = (View) getSite().getPage().findView(View.ID);
 				part.refresh();

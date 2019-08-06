@@ -13,7 +13,7 @@ public enum ContactProvider {
 
 	    }
 
-	    public List<Contact> getContacts() {
+	    public ArrayList<Contact> getContacts() {
 	        return contactList;
 	    }
 	    
