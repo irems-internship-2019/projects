@@ -18,6 +18,10 @@ public class Address {
 		this.street = street;
 		this.postalCode = postalCode;
 	}
+	
+	public void setStreet(String street) {
+		this.street=street;
+	}
 
 	public ArrayList<Address> getAddresses() {
 		return adressList;

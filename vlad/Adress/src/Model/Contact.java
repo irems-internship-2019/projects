@@ -46,6 +46,15 @@ public class Contact {
 	public String getphoneNumber() {
 		return phoneNumber;
 	}
+	
+	public void setPhoneNumber(String phoneNumber) {
+		 this.phoneNumber=phoneNumber;
+	}
+	
+	public void setAdress(String adresss) {
+		 this.adress.setStreet(adresss);;
+	}
+
 
 	public String getEmailAdress() {
 		return emailAdress;

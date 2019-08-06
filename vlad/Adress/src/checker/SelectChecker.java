@@ -13,19 +13,33 @@ import org.eclipse.ui.PlatformUI;
 import Model.Contact;
 import Model.ContactProvider;
 import adress.View;
+import adress.editor.AdressBookEditor;
 
 public class SelectChecker {
 
+	
 	private IWorkbench wb = PlatformUI.getWorkbench();
 	private IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 	private IWorkbenchPage page = win.getActivePage();
 	private View view = (View) page.findView(View.ID);
 	private ISelection selection = view.getSite().getSelectionProvider().getSelection();
+	
+	public  Contact getSelectedItem() {
+		Contact selectedContact=null;
+		
+		IStructuredSelection  sel = (IStructuredSelection) selection;
+
+		for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
+			Contact contact = iterator.next();
+			selectedContact=contact;
+
+		}
+		return (selectedContact);
+	}
 
 	public boolean isSelected() {
 
 		if (selection.isEmpty() == false && selection instanceof IStructuredSelection) {
-
 			return true;
 		}
 
@@ -47,11 +61,6 @@ public class SelectChecker {
 
 	public IWorkbenchPage getPage() {
 		return page;
-
-	}
-
-	public ISelection getSSelection() {
-		return selection;
 
 	}
 
