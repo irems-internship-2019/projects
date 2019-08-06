@@ -33,12 +33,6 @@
             name="DetailesView"
             restorable="true">
       </view>
-      <view
-            class="rcpbook.view.EditorView"
-            id="RCPBook.Editor"
-            name="EditorView"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -68,15 +62,33 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
-         <menu
-               label="File">
-            <command
-                  commandId="org.eclipse.ui.file.exit"
-                  label="Exit">
-            </command>
-         </menu>
+            allPopups="false"
+            locationURI="toolbar:RCPBook.view">
+         <command
+               commandId="rcpbook.cmd.AddNewElement"
+               icon="icons/eclipse16.png"
+               label="Editor"
+               style="push"
+               tooltip="Editor">
+         </command>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="rcpbook.cmd.AddNewElement"
+            id="rcpbook.cmd.AddNewElement"
+            name="NewElement">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="rcpbook.view.EditorView"
+            default="false"
+            id="RCPBook.Editor"
+            name="Editor">
+      </editor>
    </extension>
 
 </plugin>
