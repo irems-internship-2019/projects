@@ -2,22 +2,38 @@ package rcpbook.table;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 
 import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.AddressModel;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
+import rcpbook.view.ViewerTools;
 
 public class CreateContactUi {
 
 	private TableViewer tableViewer;
+	private ContactsModel model = new ContactsModel();
+	private ViewerTools vTools = new ViewerTools();
+	private ContactsFilter contactFilter = new ContactsFilter();
+	private MyViewerComparator comparator;
 
 	public void CreateTableUI(Composite parent) {
 
@@ -26,25 +42,41 @@ public class CreateContactUi {
 
 		createTableColums(parent);
 
+		createFilter();
+
+		addDoubleClickListner();
+
+		vTools.assignContactsViewer(tableViewer);
+
 		tableViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, SWT.FILL));
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 
-		// new AddressModel(10);
-		
-		
-		// test
-		AddressModel address = new AddressModel();
-		address.setNumber(10);
-		address.getData();
-		// test
-		
-		
-		ContactsModel data = new ContactsModel(10);
-		tableViewer.setInput(data.getElements());
+		comparator = new MyViewerComparator();
+		tableViewer.setComparator(comparator);
+
+		Label searchLabel = new Label(parent, SWT.NONE);
+		searchLabel.setText("Search");
+
+		final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+		searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+
+		searchText.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent ke) {
+				contactFilter.setSearchText(searchText.getText());
+
+				vTools.refreshContactsViewer();
+			}
+		});
+
+		tableViewer.setInput(model.getElements());
 
 		final Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
+	}
+
+	private void createFilter() {
+		tableViewer.addFilter(contactFilter);
 	}
 
 	private void createTableColums(final Composite parent) {
@@ -89,7 +121,7 @@ public class CreateContactUi {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ContactsManager)
-					return "" + ((ContactsManager) element).getAddress();
+					return "" + ((ContactsManager) element).getAddress().getStreet();
 				return super.getText(element);
 			}
 
@@ -122,8 +154,37 @@ public class CreateContactUi {
 		column.setWidth(bound);
 		column.setResizable(true);
 		column.setMoveable(true);
-		// column.addSelectionListener(getSelectionAdapter(column, colNumber));
+		column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		return viewerColumn;
+	}
+
+	private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				comparator.setColumn(index);
+				int dir = comparator.getDirection();
+				tableViewer.getTable().setSortDirection(dir);
+
+				vTools.refreshContactsViewer();
+			}
+		};
+		return selectionAdapter;
+	}
+
+	private void addDoubleClickListner() {
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+			
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				IStructuredSelection selection = tableViewer.getStructuredSelection();
+				ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
+				
+				AddressModel address = new AddressModel();
+				address.addNewEntry(firstElement);
+				vTools.refreshDetailesView();
+			}
+		});
 	}
 
 }

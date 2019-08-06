@@ -22,10 +22,22 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="rcpbook.View"
-            name="View"
+            class="rcpbook.view.TableView"
+            name="ContactsView"
             id="RCPBook.view"
             inject="true">
+      </view>
+      <view
+            class="rcpbook.view.DetailesView"
+            id="RCPBook.Detailes"
+            name="DetailesView"
+            restorable="true">
+      </view>
+      <view
+            class="rcpbook.view.EditorView"
+            id="RCPBook.Editor"
+            name="EditorView"
+            restorable="true">
       </view>
    </extension>
    <extension
@@ -38,6 +50,18 @@
                relationship="left"
                standalone="true"
                relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="RCPBook.Detailes"
+               minimized="false"
+               relationship="right"
+               relative="RCPBook.view">
+         </view>
+         <view
+               id="RCPBook.Editor"
+               minimized="false"
+               relationship="right"
+               relative="RCPBook.Detailes">
          </view>
       </perspectiveExtension>
    </extension>

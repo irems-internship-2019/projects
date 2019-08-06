@@ -13,7 +13,7 @@ public class ContactsModel
         return contacts;
     }
     
-    public static void addNewEntry(ContactsManager newEntry) 
+    public void addNewContact(ContactsManager newEntry) 
     {
     	contacts.add(newEntry);
     }

@@ -14,7 +14,7 @@ public class AddressModel {
 		return addresses;
 	}
 
-	public static void addNewEntry(ContactsManager newEntry) {
+	public void addNewEntry(ContactsManager newEntry) {
 		addresses.add(newEntry);
 	}
 

@@ -13,7 +13,7 @@ public class ContactsManager
 	private static int index = 1;
 	private int ID = 0;
 
-	private static Random random = new Random(System.currentTimeMillis());
+//	private static Random random = new Random(System.currentTimeMillis());
 	
 	//AddressManager address1 = new AddressManager("USA", "New York", "Cattle Heaven", "415300");
 
@@ -75,4 +75,5 @@ public class ContactsManager
 //				SECOND[random.nextInt(SECOND.length)], PHONENUMBER[random.nextInt(PHONENUMBER.length)], 
 //				EMAIL[random.nextInt(EMAIL.length)]);
 //	}
+	
 }
