@@ -88,19 +88,19 @@
             locationURI="toolbar:Adress.view">
          <command
                commandId="Adress.command1"
-               icon="icons/eclipse16.png"
+               icon="icons/del.png"
                label="Delete Contact"
                style="push">
          </command>
          <command
                commandId="cmd"
-               icon="icons/eclipse16.png"
+               icon="icons/add.png"
                label="Add New Contact"
                style="push">
          </command>
          <command
                commandId="Adress.editor1"
-               icon="icons/eclipse16.png"
+               icon="icons/edit.png"
                label="Edit Contact "
                style="push">
          </command>
