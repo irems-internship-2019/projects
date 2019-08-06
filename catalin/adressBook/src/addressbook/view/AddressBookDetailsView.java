@@ -19,15 +19,15 @@ import org.eclipse.ui.part.ViewPart;
 import addressbook.comparator.ContactComparator;
 import addressbook.filter.ContactFilter;
 import addressbook.persons.Contact.ContactElements;
-import addressbook.table.TableForAddressBook;
+import addressbook.table.TableForAddressBookDetails;
 
-public class AddressBookView extends ViewPart {
-	public static final String ID = "addressbook.view.addressbookview";
+public class AddressBookDetailsView extends ViewPart {
+	public static final String ID = "addressbook.view.addressbookdetailsview";
 	@Inject
 	IWorkbench workbench;
 	private ContactComparator comparator;
 	private static TableViewer viewer;
-	TableForAddressBook tableCreater = new TableForAddressBook();
+	TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
 
 	private void createViewer(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);

@@ -2,13 +2,13 @@ package addressbook.persons;
 
 import java.util.ArrayList;
 
-public class AddressClass {
+public class Address {
 	private String country;
 	private String city;
 	private String street;
 	private String postal_code;
-	
-	public AddressClass(String country, String city, String street, String postal_code) {
+
+	public Address(String country, String city, String street, String postal_code) {
 		super();
 		this.country = country;
 		this.city = city;
@@ -46,23 +46,5 @@ public class AddressClass {
 
 	public void setPostal_code(String postal_code) {
 		this.postal_code = postal_code;
-	}
-	
-	public enum Address {
-	    INSTANCE;
-
-		private ArrayList<AddressClass> adressList = new ArrayList<AddressClass>();
-
-	    private Address() {
-	    	adressList.add(new AddressClass("Romania", "Cluj", "Iancu", "3478902"));
-	    	adressList.add(new AddressClass("Franta", "Paris", "King", "zt4702145"));
-	    	adressList.add(new AddressClass("Bulgaria", "Sofia", "Krus", "89to456"));
-	    	adressList.add(new AddressClass("Italia", "Torino", "Pacetti", "gh093"));
-	    }
-
-	    public ArrayList<AddressClass> getPersons() {
-	        return adressList;
-	    }
-
 	}
 }
