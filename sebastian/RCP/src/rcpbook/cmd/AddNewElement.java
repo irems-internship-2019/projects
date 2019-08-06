@@ -10,8 +10,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import rcpbook.editor.AddressBookEditorInput;
-import rcpbook.view.EditorView;
+import rcpbook.editor.AddressBookNewContactImput;
+import rcpbook.view.Editor;
 
 public class AddNewElement extends AbstractHandler {
 
@@ -21,10 +21,10 @@ public class AddNewElement extends AbstractHandler {
 		       IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		       IWorkbenchPage page = window.getActivePage();
 
-		       AddressBookEditorInput input = new AddressBookEditorInput();
+		       AddressBookNewContactImput input = new AddressBookNewContactImput();
 		       
 		       try {
-		           page.openEditor(input, EditorView.ID);
+		           page.openEditor(input, Editor.ID);
 		       } catch (PartInitException e) {
 		           System.out.println("Error:" + this.getClass().getName() + ":" + e);
 		           e.printStackTrace();

@@ -8,14 +8,14 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import rcpbook.editor.AddressBookEditorInput;
+import rcpbook.editor.AddressBookNewContactImput;
 import rcpbook.editor.CreateEditorUI;
 
-public class EditorView extends EditorPart {
+public class Editor extends EditorPart {
 
-	public static final String ID = "RCPBook.Editor";
+	public static final String ID = "RCPBook.Create";
 	private CreateEditorUI createNewEditor = new CreateEditorUI();
-	public EditorView() {
+	public Editor() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -47,9 +47,9 @@ public class EditorView extends EditorPart {
 	@Override
 	 public void init(IEditorSite site, IEditorInput input)
 	         throws PartInitException {
-	     if (!(input instanceof AddressBookEditorInput)) {
+	     if (!(input instanceof AddressBookNewContactImput)) {
 	         throw new PartInitException("Invalid Input: Must be "
-	                 + AddressBookEditorInput.class.getName());
+	                 + AddressBookNewContactImput.class.getName());
 	     }
 	     setSite(site);
 	     setInput(input);

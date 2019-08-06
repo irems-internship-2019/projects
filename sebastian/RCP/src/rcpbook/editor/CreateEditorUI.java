@@ -31,6 +31,24 @@ public class CreateEditorUI {
 	// private String postalCode;
 
 	public void EditorUI(Composite parent) {
+
+		Label mode = new Label(parent, SWT.NONE);
+		
+		if (CheckIfElementIsSelected.getEditorMode() == 1 && CheckIfElementIsSelected.getEditMode() == 1)
+		{
+			CheckIfElementIsSelected.setEditMode(0);
+			CheckIfElementIsSelected.setEditorMode(0);
+			mode.setText("Edit");
+			}
+			
+		else {
+			mode.setText("New");
+			}
+		
+		
+		//spatiu gol
+		new Label(parent, SWT.NONE);
+
 		Label firstNameLabel = new Label(parent, SWT.NONE);
 		firstNameLabel.setText("First Name: ");
 
@@ -88,9 +106,9 @@ public class CreateEditorUI {
 			public void widgetSelected(SelectionEvent arg0) {
 				newContact.addNewContact(new ContactsManager(
 						firstNameText.getText(), lastNameText.getText(), new AddressManager(countryText.getText(),
-						cityText.getText(), streetText.getText(), postalCodeText.getText()),
+								cityText.getText(), streetText.getText(), postalCodeText.getText()),
 						phoneNumberText.getText(), emailText.getText()));
-               vTools.refreshContactsViewer();
+				vTools.refreshContactsViewer();
 			}
 
 		});
