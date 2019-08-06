@@ -16,6 +16,7 @@ package Remover;
 import Model.Contact;
 import Model.ContactProvider;
 import adress.View;
+import checker.SelectChecker;
 
 	
 
@@ -23,21 +24,26 @@ import adress.View;
 	    @SuppressWarnings("unchecked")
 	    @Override
 	    public Object execute(ExecutionEvent event) throws ExecutionException {
-	        IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-	        IWorkbenchPage page = window.getActivePage();
-	        View view = (View) page.findView(View.ID);
-	        ISelection selection = view.getSite().getSelectionProvider()
-	                .getSelection();
-
-	        if (selection != null && selection instanceof IStructuredSelection) {
-	            List<Contact> persons = ContactProvider.INSTANCE.getContacts();
-	            IStructuredSelection sel = (IStructuredSelection) selection;
-
-	            for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
-	            	Contact contact = iterator.next();
-	                persons.remove(contact);
-	            }
-	            view.refresh();
+//	        IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+//	        IWorkbenchPage page = window.getActivePage();
+//	        View view = (View) page.findView(View.ID);
+//	        ISelection selection = view.getSite().getSelectionProvider()
+//	                .getSelection();
+	        SelectChecker check =new SelectChecker();
+	        
+	        if (check.isSelected()==true) {
+	        	
+	        	
+//	        	 
+//	            List<Contact> persons = ContactProvider.INSTANCE.getContacts();
+//	            IStructuredSelection sel = (IStructuredSelection) selection;
+//
+//	            for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
+//	            	Contact contact = iterator.next();
+//	                persons.remove(contact);
+//	            }
+//	            view.refresh();
+	        	check.testDel();
 	        }
 	        return null;
 	    }
