@@ -7,23 +7,14 @@ public class AddressModel {
 
 	// ViewerTools vTools = new ViewerTools();
 
-	private static List<AddressManager> addresses = new ArrayList<AddressManager>();
-	private static int numbe;
+	private static List<ContactsManager> addresses = new ArrayList<ContactsManager>();
+	
 
-	public void setNumber(int number) {
-		numbe = number;
-	}
-
-	public void getData() {
-		for (int i = 0; i < numbe; i++)
-			addresses.add(AddressManager.createRandomAddress());
-	}
-
-	public List<AddressManager> getAddresses() {
+	public List<ContactsManager> getAddresses() {
 		return addresses;
 	}
 
-	public static void addNewEntry(AddressManager newEntry) {
+	public static void addNewEntry(ContactsManager newEntry) {
 		addresses.add(newEntry);
 	}
 

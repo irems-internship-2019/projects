@@ -69,9 +69,9 @@ public class AddressManager {
 //		return new AddressManager("USA", "New York", "Cattle Heaven", "415300");
 //	}
 	
-			public static AddressManager createRandomAddress(){
-				return new  AddressManager(COUNTRY[random.nextInt(COUNTRY.length)], 
-						CITY[random.nextInt(CITY.length)],STREET[random.nextInt(STREET.length)], 
-						POSTALCODE[random.nextInt(POSTALCODE.length)]);
-			}
+//			public static AddressManager createRandomAddress(){
+//				return new  AddressManager(COUNTRY[random.nextInt(COUNTRY.length)], 
+//						CITY[random.nextInt(CITY.length)],STREET[random.nextInt(STREET.length)], 
+//						POSTALCODE[random.nextInt(POSTALCODE.length)]);
+//			}
 }

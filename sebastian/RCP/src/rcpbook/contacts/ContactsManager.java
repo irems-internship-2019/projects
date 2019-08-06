@@ -20,17 +20,17 @@ public class ContactsManager
 	private String first;
 	private String second;
 	
-	private String address;
+	private AddressManager address;
 	private String phoneNumber;
 	private String email;
 
-	public ContactsManager(String first, String second, String phoneNumber, String email) 
+	public ContactsManager(String first, String second, AddressManager address, String phoneNumber, String email) 
 	{
 		//super();
 		this.ID = index++;
 		this.first = first;
 		this.second = second;
-		address = SetAddressesToContacts.getAddressOfContact(Integer.toString(ID));
+		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
@@ -49,7 +49,7 @@ public class ContactsManager
 	public String getSecond() {
 		return second;
 	}
-	public String getAddress() {
+	public AddressManager getAddress() {
 		return address;
 	}
 
@@ -70,9 +70,9 @@ public class ContactsManager
 	//		this.likes = likes;
 	//	}
 
-	public static ContactsManager createRandomPerson(){
-		return new  ContactsManager(FIRST[random.nextInt(FIRST.length)], 
-				SECOND[random.nextInt(SECOND.length)], PHONENUMBER[random.nextInt(PHONENUMBER.length)], 
-				EMAIL[random.nextInt(EMAIL.length)]);
-	}
+//	public static ContactsManager createRandomPerson(){
+//		return new  ContactsManager(FIRST[random.nextInt(FIRST.length)], 
+//				SECOND[random.nextInt(SECOND.length)], PHONENUMBER[random.nextInt(PHONENUMBER.length)], 
+//				EMAIL[random.nextInt(EMAIL.length)]);
+//	}
 }
