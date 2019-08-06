@@ -14,6 +14,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import addressbook.persons.Contact;
 import addressbook.persons.Contact.ContactElements;
+import addressbook.table.TableForAddressBookDetails;
 import addressbook.view.AddressBookDetailsView;
 import addressbook.view.AddressBookView;
 
@@ -29,11 +30,13 @@ public class DeleteContactHandler extends AbstractHandler {
 
 		if (selection != null && selection instanceof IStructuredSelection) {
 			ArrayList<Contact> persons = ContactElements.INSTANCE.getContacts();
+			ArrayList<Contact> persons2 = TableForAddressBookDetails.contactDetailsList;
 			IStructuredSelection sel = (IStructuredSelection) selection;
 
 			for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
 				Contact person = iterator.next();
 				persons.remove(person);
+				persons2.remove(person);
 			}
 			view.getViewer().refresh();
 			secondView.getViewer().refresh();

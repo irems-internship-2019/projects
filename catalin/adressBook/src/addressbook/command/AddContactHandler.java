@@ -8,8 +8,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import addressbook.editor.AddressBookEditor;
-import addressbook.editor.AddressBookEditorInput;
+import addressbook.editor.AddContact;
+import addressbook.editor.AddContactInput;
 
 public class AddContactHandler extends AbstractHandler {
 
@@ -18,13 +18,13 @@ public class AddContactHandler extends AbstractHandler {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IWorkbenchPage page = window.getActivePage();
 
-		AddressBookEditorInput input = new AddressBookEditorInput();
+		AddContactInput input = new AddContactInput();
 		try {
-			page.openEditor(input, AddressBookEditor.ID);
+			page.openEditor(input, AddContact.ID);
 		} catch (PartInitException e) {
 			System.out.println("Error:" + this.getClass().getName() + ":" + e);
 			e.printStackTrace();
-			throw new ExecutionException("Error open UserEditor");
+			throw new ExecutionException("Error open AddContact");
 		}
 		return null;
 	}
