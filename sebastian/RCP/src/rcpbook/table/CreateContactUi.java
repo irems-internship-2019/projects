@@ -25,6 +25,7 @@ import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.AddressModel;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
+import rcpbook.editor.CheckIfElementIsSelected;
 import rcpbook.view.ViewerTools;
 
 public class CreateContactUi {
@@ -43,6 +44,8 @@ public class CreateContactUi {
 		createTableColums(parent);
 
 		createFilter();
+		
+		addSingleClickListner();
 
 		addDoubleClickListner();
 
@@ -183,6 +186,23 @@ public class CreateContactUi {
 				AddressModel address = new AddressModel();
 				address.addNewEntry(firstElement);
 				vTools.refreshDetailesView();
+			}
+		});
+	}
+	
+	private void addSingleClickListner() {
+		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = tableViewer.getStructuredSelection();
+			    ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
+				
+			    CheckIfElementIsSelected.setEditorMode(1);
+			    CheckIfElementIsSelected.setSelectedItem(firstElement);
+			   // CheckIfElementIsSelected.addSelectedIndex(0);
+				//System.out.println(firstElement.getFirst());
+				 
 			}
 		});
 	}
