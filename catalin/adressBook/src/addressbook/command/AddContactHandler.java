@@ -8,19 +8,20 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import addressbook.editor.AddContact;
-import addressbook.editor.AddContactInput;
+import addressbook.editor.AddressBookEditor;
+import addressbook.editor.AddressBookEditorInput;
 
 public class AddContactHandler extends AbstractHandler {
-
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IWorkbenchPage page = window.getActivePage();
-
-		AddContactInput input = new AddContactInput();
+		
+		AddressBookEditorInput input = new AddressBookEditorInput();
 		try {
-			page.openEditor(input, AddContact.ID);
+			AddressBookEditor.numberOfChoice = 1;
+			page.openEditor(input, AddressBookEditor.ID);
 		} catch (PartInitException e) {
 			System.out.println("Error:" + this.getClass().getName() + ":" + e);
 			e.printStackTrace();

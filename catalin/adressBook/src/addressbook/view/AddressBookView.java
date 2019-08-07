@@ -22,6 +22,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.part.ViewPart;
 
 import addressbook.comparator.ContactComparator;
+import addressbook.contentofeditor.ContentOfEdit;
 import addressbook.editor.AddressBookEditor;
 import addressbook.filter.ContactFilter;
 import addressbook.persons.Contact;
@@ -49,7 +50,7 @@ public class AddressBookView extends ViewPart {
 				AddressBookDetailsView object = new AddressBookDetailsView();
 				object.refresh();
 
-				AddressBookEditor secondObject = new AddressBookEditor();
+				ContentOfEdit secondObject = new ContentOfEdit();
 				secondObject.clearContactSelected();
 			}
 		});
@@ -62,7 +63,7 @@ public class AddressBookView extends ViewPart {
 				IStructuredSelection selection = viewer.getStructuredSelection();
 				Contact firstElement = (Contact) selection.getFirstElement();
 
-				AddressBookEditor.contactSelected.add(firstElement);
+				ContentOfEdit.contactSelected.add(firstElement);
 			}
 		});
 	}
