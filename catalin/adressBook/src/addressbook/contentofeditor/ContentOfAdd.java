@@ -1,8 +1,10 @@
-package addressbook.editor;
+package addressbook.contentofeditor;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -10,67 +12,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.part.EditorPart;
-import addressbook.editor.AddressBookEditor.TitlesOfColumns;
+
+import addressbook.editor.AddressBookEditor;
 import addressbook.persons.Address;
 import addressbook.persons.Contact;
-import addressbook.persons.Contact.ContactElements;
-import addressbook.view.AddressBookView;
 
-public class AddContact extends EditorPart {
-	public static final String ID = "addressbook.editor.addcontact";
-	private Contact person;
-
-	private void createLabel(Composite parent, String element) {
-		Label label = new Label(parent, SWT.NONE);
-		label.setText(element);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 1, 1));
-	}
-
-	public AddContact() {
-
-	}
-
-	@Override
-	public void doSave(IProgressMonitor monitor) {
-
-	}
-
-	@Override
-	public void doSaveAs() {
-
-	}
-
-	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		if (!(input instanceof AddContactInput)) {
-			throw new PartInitException("Invalid Input: Must be " + AddContactInput.class.getName());
-		}
-		setSite(site);
-		setInput(input);
-	}
-
-	@Override
-	public boolean isDirty() {
-		return false;
-	}
-
-	@Override
-	public boolean isSaveAsAllowed() {
-		return false;
-	}
-
-	@Override
-	public void createPartControl(Composite parent) {
-		ContactElements persons = ContactElements.INSTANCE;
-		AddressBookView object = new AddressBookView();
-		String checkNumbers = "[0-9]+";
-
+public class ContentOfAdd extends AddressBookEditor {
+	public void addContent(Composite parent) {
 		parent.setLayout(new FillLayout());
 		Composite body = new Composite(parent, SWT.NONE);
 		body.setLayout(new GridLayout(4, true));
@@ -110,6 +59,19 @@ public class AddContact extends EditorPart {
 		createLabel(body, TitlesOfColumns.EMAIL.getSignOfElements());
 		Text textEmail = new Text(body, SWT.BORDER);
 		textEmail.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
+		textEmail.addKeyListener(new KeyListener() {
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				// TODO Auto-generated method stub
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+			
+		});
 
 		Button button = new Button(body, SWT.PUSH);
 		button.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, true, 1, 1));
@@ -117,6 +79,7 @@ public class AddContact extends EditorPart {
 		button.setFont(JFaceResources.getDialogFont());
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
+				Contact person;
 				if (textId.getText().matches(checkNumbers) && textId.getText().length() != 0
 						&& textFirstName.getText().length() != 0 && textLastName.getText().length() != 0
 						&& textCountry.getText().length() != 0 && textCity.getText().length() != 0
@@ -130,13 +93,11 @@ public class AddContact extends EditorPart {
 							Integer.parseInt(textPhoneNumber.getText()), textEmail.getText());
 					persons.getContacts().add(person);
 					object.refresh();
+					setDirty(false);
 				}
 			}
 		});
-	}
-
-	@Override
-	public void setFocus() {
 
 	}
+
 }

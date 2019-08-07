@@ -92,12 +92,6 @@
             id="addressbook.editor.addressbookeditor"
             name="AddressBookEditor">
       </editor>
-      <editor
-            class="addressbook.editor.AddContact"
-            default="false"
-            id="addressbook.editor.addcontact"
-            name="AddContact">
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
