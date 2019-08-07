@@ -1,7 +1,5 @@
 package addressbook.persons;
 
-import java.util.ArrayList;
-
 public class Address {
 	private String country;
 	private String city;

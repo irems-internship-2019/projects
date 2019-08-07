@@ -1,6 +1,5 @@
 package adress.editor;
 
-import java.awt.Button;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelection;
@@ -8,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -140,6 +140,10 @@ public class AdressBookEditContact extends EditorPart {
 		cityText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		cityText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 		cityText.setText("test");
+		
+		 parent.setLayout(new GridLayout(2,false));
+		 Button editContact = new Button(parent,SWT.PUSH);
+		 editContact.setText("Edit Contact");
 				
 
 	}

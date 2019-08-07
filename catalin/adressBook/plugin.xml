@@ -60,30 +60,28 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:org.eclipse.ui.main.toolbar">
-         <toolbar
-               id="toolbar1">
-            <command
-                  commandId="addressbook.command.addcontact"
-                  icon="icons/eclipse16.png"
-                  label="Add"
-                  style="push"
-                  tooltip="Add">
-            </command>
-            <command
-                  commandId="addressbook.command.editcontact"
-                  icon="icons/eclipse16.png"
-                  label="Edit"
-                  style="push">
-            </command>
-            <command
-                  commandId="addressbook.command.deletecontact"
-                  icon="icons/eclipse16.png"
-                  label="Delete"
-                  style="push"
-                  tooltip="Delete">
-            </command>
-         </toolbar>
+            locationURI="toolbar:addressbook.view.addressbookview">
+         <command
+               commandId="addressbook.command.addcontact"
+               icon="icons/add-clipart-to-photos.png"
+               label="Add"
+               style="push"
+               tooltip="Add">
+         </command>
+         <command
+               commandId="addressbook.command.editcontact"
+               icon="icons/descărcare.png"
+               label="Edit"
+               style="push"
+               tooltip="Edit">
+         </command>
+         <command
+               commandId="addressbook.command.deletecontact"
+               icon="icons/Octagon_delete.svg.png"
+               label="Delete"
+               style="push"
+               tooltip="Delete">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -93,6 +91,12 @@
             default="false"
             id="addressbook.editor.addressbookeditor"
             name="AddressBookEditor">
+      </editor>
+      <editor
+            class="addressbook.editor.AddContact"
+            default="false"
+            id="addressbook.editor.addcontact"
+            name="AddContact">
       </editor>
    </extension>
    <extension

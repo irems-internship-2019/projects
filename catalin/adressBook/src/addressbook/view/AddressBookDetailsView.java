@@ -15,17 +15,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.part.ViewPart;
-
-import addressbook.comparator.ContactComparator;
-import addressbook.filter.ContactFilter;
-import addressbook.persons.Contact.ContactElements;
+import addressbook.comparator.ContactDetailsComparator;
+import addressbook.filter.ContactDetailsFilter;
 import addressbook.table.TableForAddressBookDetails;
 
 public class AddressBookDetailsView extends ViewPart {
 	public static final String ID = "addressbook.view.addressbookdetailsview";
 	@Inject
 	IWorkbench workbench;
-	private ContactComparator comparator;
+	private ContactDetailsComparator comparator;
 	private static TableViewer viewer;
 	TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
 
@@ -38,7 +36,7 @@ public class AddressBookDetailsView extends ViewPart {
 
 		viewer.setContentProvider(new ArrayContentProvider());
 
-		viewer.setInput(ContactElements.INSTANCE.getContacts());
+		viewer.setInput(TableForAddressBookDetails.contactDetailsList);
 
 		getSite().setSelectionProvider(viewer);
 
@@ -52,7 +50,7 @@ public class AddressBookDetailsView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		ContactFilter filter = new ContactFilter();
+		ContactDetailsFilter filter = new ContactDetailsFilter();
 		parent.setLayout(new GridLayout(2, false));
 		Label searchLabel = new Label(parent, SWT.NONE);
 		searchLabel.setText("Search: ");
@@ -61,7 +59,7 @@ public class AddressBookDetailsView extends ViewPart {
 
 		createViewer(parent);
 
-		comparator = new ContactComparator();
+		comparator = new ContactDetailsComparator();
 		viewer.setComparator(comparator);
 
 		searchText.addKeyListener(new KeyAdapter() {

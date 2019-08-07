@@ -1,5 +1,7 @@
 package addressbook.table;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -9,11 +11,12 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
-
-import addressbook.comparator.ContactComparator;
+import addressbook.comparator.ContactDetailsComparator;
 import addressbook.persons.Contact;
 
 public class TableForAddressBookDetails {
+	public static ArrayList<Contact> contactDetailsList = new ArrayList<Contact>();
+
 	private TableViewerColumn createTableViewerColumn(TableViewer viewer, String title, int bound,
 			final int colNumber) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
@@ -30,7 +33,7 @@ public class TableForAddressBookDetails {
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ContactComparator comparator = (ContactComparator) viewer.getComparator();
+				ContactDetailsComparator comparator = (ContactDetailsComparator) viewer.getComparator();
 				comparator.setColumn(index);
 
 				int direction = comparator.getDirection();
