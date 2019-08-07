@@ -66,9 +66,9 @@
             locationURI="toolbar:RCPBook.view">
          <command
                commandId="rcpbook.cmd.AddNewElement"
-               label="New"
+               label="Create Contact"
                style="push"
-               tooltip="CreateNewElement">
+               tooltip="Create New Element">
          </command>
          <command
                commandId="rcpbook.cmd.EditElement"
@@ -96,7 +96,7 @@
             class="rcpbook.view.Editor"
             default="false"
             id="RCPBook.Create"
-            name="CreateNewEntry">
+            name="Editor">
       </editor>
    </extension>
    <extension

@@ -10,7 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import rcpbook.editor.AddressBookEditorInput;
 import rcpbook.editor.AddressBookNewContactImput;
-import rcpbook.editor.CheckIfElementIsSelected;
+import rcpbook.editor.CheckSelected;
 import rcpbook.view.Editor;
 
 public class EditElement extends AbstractHandler {
@@ -21,9 +21,9 @@ public class EditElement extends AbstractHandler {
 		IWorkbenchPage page = window.getActivePage();
 
 		AddressBookNewContactImput input = new AddressBookNewContactImput();
-		CheckIfElementIsSelected.setEditMode(true);
+		//CheckIfElementIsSelected.setEditMode(true);
 
-		if (CheckIfElementIsSelected.getEditorMode()) {
+		//if (CheckIfElementIsSelected.getEditorMode()) {
 
 			try {
 				page.openEditor(input, Editor.ID);
@@ -32,7 +32,7 @@ public class EditElement extends AbstractHandler {
 				e.printStackTrace();
 				throw new ExecutionException("Error open EditorView");
 			}
-		}
+		//}
 		return null;
 	}
 

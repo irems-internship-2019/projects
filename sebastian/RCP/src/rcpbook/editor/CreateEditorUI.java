@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import rcpbook.Dirty.DirtyListener;
+import rcpbook.cmd.EditElement;
 import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
@@ -24,40 +25,17 @@ public class CreateEditorUI {
 	ViewerTools vTools = new ViewerTools();
 	private ContactsModel newContact = new ContactsModel();
 	private Text[] textNames = new Text[8];
-	private Editor edit;
+	// private Editor edit;
 
 	public void EditorUI(Composite parent) {
-
-		Label mode = new Label(parent, SWT.NONE);
-
-		if (CheckIfElementIsSelected.getEditorMode() && CheckIfElementIsSelected.getEditMode()) {
-
-			mode.setText("Editor Mode");
-
-			createEditorFields(parent);
-
-			assignSelectedFieldsToText();
-
-			createAddButton(parent);
-
-		}
-
-		else {
-			mode.setText("Create Mode");
-
-			createEditorFields(parent);
-
-			createAddButton(parent);
-
-		}
-
+		
+		createEditorFields(parent);
+		assignSelectedFieldsToText();
+		createAddButton(parent);
 	}
 
 	private void createEditorFields(Composite parent) {
 		int i = 0;
-		// need one extra :(
-
-		new Label(parent, SWT.NONE);
 
 		String[] labelTags = { "FirstName: ", "Last Name: ", "Phone Number: ", "Email: ", "Country: ", "City: ",
 				"Street: ", "Postal Code: " };
@@ -67,15 +45,6 @@ public class CreateEditorUI {
 			textNames[i] = new Text(parent, SWT.BORDER | SWT.SEARCH);
 			textNames[i].setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
-//			   DirtyListener listener = new DirtyListenerImpl();
-//		       DirtyUtils.registryDirty(listener, controls);
-			
-			textNames[i].addKeyListener(new KeyAdapter() {
-				public void keyPressed(KeyEvent ke) {
-					edit.setDirty(true);
-					System.out.print("Dirty");
-				}
-			});
 			i++;
 		}
 	}
@@ -90,21 +59,19 @@ public class CreateEditorUI {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				System.out.println(CheckIfElementIsSelected.getEditorMode());
-//				System.out.println(CheckIfElementIsSelected.getEditMode());
-				if (CheckIfElementIsSelected.getEditorMode() && CheckIfElementIsSelected.getEditMode())
-					editOldContact();
+				
+				if (CheckSelected.getSelectedItem() != null)
+					editContact();
 				else
-					createNewContact();
-
+					newContact();
 			}
 		};
 	}
 
-	private void editOldContact() {
+	private void editContact() {
 
 		ContactsManager contact = newContact.getElements()
-				.get(CheckIfElementIsSelected.getSelectedItem().getIdForComparator() - 1);
+				.get(CheckSelected.getSelectedItem().getIdForComparator() - 1);
 
 		contact.setFirst(textNames[0].getText());
 		contact.setSecond(textNames[1].getText());
@@ -115,37 +82,35 @@ public class CreateEditorUI {
 		contact.getAddress().setStreet(textNames[6].getText());
 		contact.getAddress().setPostalCode(textNames[7].getText());
 
-		CheckIfElementIsSelected.setEditMode(false);
-		CheckIfElementIsSelected.setEditorMode(false);
-
-		edit.setDirty(false);
-		
+		// edit.setDirty(false);
+		CheckSelected.setSelectedToNull();
 		vTools.refreshContactsViewer();
 
 	}
 
-	private void createNewContact() {
+	private void newContact() {
 		newContact.addNewContact(new ContactsManager(
 				textNames[0].getText(), textNames[1].getText(), new AddressManager(textNames[2].getText(),
 						textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
 				textNames[6].getText(), textNames[7].getText()));
 
-		edit.setDirty(false);
-		
+		// edit.setDirty(false);
+
 		vTools.refreshContactsViewer();
 	}
 
 	private void assignSelectedFieldsToText() {
-		// textNames[0].setText("Dorel");
-		// textNames[1].setText("Gigele");
-		textNames[0].setText(CheckIfElementIsSelected.getSelectedItem().getFirst());
-		textNames[1].setText(CheckIfElementIsSelected.getSelectedItem().getSecond());
-		textNames[2].setText(CheckIfElementIsSelected.getSelectedItem().getPhone());
-		textNames[3].setText(CheckIfElementIsSelected.getSelectedItem().getEmail());
-		textNames[4].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getCountry());
-		textNames[5].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getCity());
-		textNames[6].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getStreet());
-		textNames[7].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getPostalCode());
+
+		if (CheckSelected.getSelectedItem() != null) {
+			textNames[0].setText(CheckSelected.getSelectedItem().getFirst());
+			textNames[1].setText(CheckSelected.getSelectedItem().getSecond());
+			textNames[2].setText(CheckSelected.getSelectedItem().getPhone());
+			textNames[3].setText(CheckSelected.getSelectedItem().getEmail());
+			textNames[4].setText(CheckSelected.getSelectedItem().getAddress().getCountry());
+			textNames[5].setText(CheckSelected.getSelectedItem().getAddress().getCity());
+			textNames[6].setText(CheckSelected.getSelectedItem().getAddress().getStreet());
+			textNames[7].setText(CheckSelected.getSelectedItem().getAddress().getPostalCode());
+		}
 	}
 
 }
