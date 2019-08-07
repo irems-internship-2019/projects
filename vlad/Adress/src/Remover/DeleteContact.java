@@ -14,7 +14,7 @@ public class DeleteContact extends AbstractHandler {
 		SelectChecker check = new SelectChecker();
 		if (check.isSelected() == true) {
  
-			check.testDel();
+			check.deleteContact();
 		
 		}
 		return null;

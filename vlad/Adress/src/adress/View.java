@@ -4,6 +4,9 @@ import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -19,12 +22,17 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import Filter.ContactFilter;
 import Model.Contact;
 import Model.ContactProvider;
+import org.eclipse.ui.IWorkbenchPage;
 import comparator.ContactComparator;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 
 
 public class View extends ViewPart {
@@ -36,6 +44,25 @@ public class View extends ViewPart {
 	private TableViewer viewer;
 	private ContactComparator comparator;
 	
+	
+	private void createDoubleSelector() {
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) 
+			{
+				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				
+				try {
+					activePage.showView(AdressDetailsView.ID);
+				} catch (PartInitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+			}
+		});
+	}
 	@Override
 	public void createPartControl(Composite parent) {
 	    GridLayout layout = new GridLayout(2, false);
@@ -46,6 +73,7 @@ public class View extends ViewPart {
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
                 | GridData.HORIZONTAL_ALIGN_FILL));
         createViewer(parent);
+        createDoubleSelector();
         comparator = new ContactComparator();
         viewer.setComparator(comparator);
         
@@ -57,7 +85,7 @@ public class View extends ViewPart {
 
 		});
 		viewer.addFilter(contactFilter);
-		  
+		
 	
 	}
 	
@@ -177,6 +205,16 @@ public class View extends ViewPart {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public Contact getSelectedItem()
+	{
+		final StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+		final Contact selectedContact = (Contact) selection.getFirstElement();
+				
+		return selectedContact;
+	}
+	
+	
 	
 	
 	 public TableViewer getViewer() {

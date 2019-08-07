@@ -24,18 +24,7 @@ public class SelectChecker {
 	private View view = (View) page.findView(View.ID);
 	private ISelection selection = view.getSite().getSelectionProvider().getSelection();
 	
-	public  Contact getSelectedItem() {
-		Contact selectedContact=null;
-		
-		IStructuredSelection  sel = (IStructuredSelection) selection;
-
-		for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
-			Contact contact = iterator.next();
-			selectedContact=contact;
-
-		}
-		return (selectedContact);
-	}
+	
 
 	public boolean isSelected() {
 
@@ -46,7 +35,7 @@ public class SelectChecker {
 		return false;
 	}
 
-	public void testDel() {
+	public void deleteContact() {
 
 		List<Contact> persons = ContactProvider.INSTANCE.getContacts();
 		IStructuredSelection sel = (IStructuredSelection) selection;
@@ -61,6 +50,8 @@ public class SelectChecker {
 
 	public IWorkbenchPage getPage() {
 		return page;
+		
+		
 
 	}
 

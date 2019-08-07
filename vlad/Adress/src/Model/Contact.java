@@ -80,4 +80,9 @@ public class Contact {
 		adress.setCountry(country);
 	}
 
+	public Address getAddress() {
+		
+		return adress;
+	}
+
 }

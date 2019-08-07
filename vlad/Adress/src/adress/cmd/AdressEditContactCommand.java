@@ -9,7 +9,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.handlers.HandlerUtil;
 
+import adress.View;
 import adress.editor.AdressBookEditor;
 import adress.editor.AdressbookEditorInput;
 import checker.SelectChecker;
@@ -21,20 +23,12 @@ public class AdressEditContactCommand extends AbstractHandler implements IHandle
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		AdressbookEditorInput input = new AdressbookEditorInput();
-		SelectChecker check = new SelectChecker();
+		IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+		View view = (View) activePage.findView(View.ID);
+		
+		AdressBookEditor.openEditor(view.getSelectedItem());
+		
 
-		try {
-			if (check.isSelected() == true) {
-				AdressBookEditor.setState("edit");
-				((IWorkbenchPage) check.getPage()).openEditor(input, AdressBookEditor.ID);
-			}
-		} catch (PartInitException e) {
-			System.out.println("Error:" + this.getClass().getName() + ":" + e);
-			e.printStackTrace();
-			throw new ExecutionException("Error open UserEditor");
-		}
-		check.refresh();
 
 		return null;
 	}

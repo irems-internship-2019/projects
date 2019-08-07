@@ -45,6 +45,12 @@
                standalone="true"
                relative="org.eclipse.ui.editorss">
          </view>
+         <view
+               id="Adress.view2"
+               minimized="false"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension
@@ -139,6 +145,21 @@
             id="Adress.editor1"
             name="Edit Contact ">
       </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="Adress.viewContribution1"
+            targetID="Adress.view">
+         <action
+               class="adress.actions.ViewActionDelegate1"
+               icon="icons/del.png"
+               id="Adress.action1"
+               label="extra"
+               style="push"
+               toolbarPath="additions">
+         </action>
+      </viewContribution>
    </extension>
 
 </plugin>
