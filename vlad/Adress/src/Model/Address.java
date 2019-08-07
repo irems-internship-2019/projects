@@ -45,6 +45,11 @@ public class Address {
 		return postalCode;
 	}
 
+	public void setCountry(String country) {
+		// TODO Auto-generated method stub
+		  this.country=country;
+	}
+
 	
 	
 }

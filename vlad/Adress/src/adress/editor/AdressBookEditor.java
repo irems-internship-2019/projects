@@ -3,6 +3,8 @@ package adress.editor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -13,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
@@ -33,6 +36,7 @@ public class AdressBookEditor extends EditorPart {
 	private Text cityText;
 	private Text postalCodeText;
 	public static String state;
+	private boolean dirtyCheck;
 
 	ContactProvider contacts = ContactProvider.INSTANCE;
 
@@ -71,8 +75,17 @@ public class AdressBookEditor extends EditorPart {
 
 	@Override
 	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
+		if (dirtyCheck == true)
+			return true;
+		else
+			return false;
+	}
+
+	public final void setDirty(boolean isDirty) {
+		if (this.isDirty() == isDirty)
+			return;
+		this.dirtyCheck = isDirty;
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
 	}
 
 	@Override
@@ -151,30 +164,115 @@ public class AdressBookEditor extends EditorPart {
 	}
 
 	private void editState(Composite parent) {
-		SelectChecker checker =new  SelectChecker();
+		SelectChecker checker = new SelectChecker();
 		firstNameText.setText(checker.getSelectedItem().getFirstName());
+		firstNameText.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+		});
+
 		lastNameText.setText(checker.getSelectedItem().getLastName());
+		 lastNameText.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+		});
 		phoneNumberText.setText(checker.getSelectedItem().getphoneNumber());
+		phoneNumberText.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+		});
 		adressText.setText(checker.getSelectedItem().getStreet());
+		 adressText.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+		});
 		emailAdressText.setText(checker.getSelectedItem().getEmailAdress());
-		countryText.setText("edit");
+		emailAdressText.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+		});
+		countryText.setText(checker.getSelectedItem().getCountry());
+		countryText.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				setDirty(true);
+			}
+		});
 		cityText.setText("edit");
 		postalCodeText.setText("edit");
-		
-		
+
 		Button insertButton = new Button(parent, SWT.PUSH);
 		insertButton.setText("Edit Contact");
 		insertButton.setFont(JFaceResources.getDialogFont());
 		insertButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("a=" + checker.getSelectedItem().getFirstName());
-				System.out.println("b=" + firstNameText.getText());
+//				System.out.println("a=" + checker.getSelectedItem().getFirstName());
+//				System.out.println("b=" + firstNameText.getText());
 
 				if (checker.getSelectedItem().getFirstName().equals(firstNameText.getText()) == false
 						|| checker.getSelectedItem().getLastName().equals(lastNameText.getText()) == false
 						|| checker.getSelectedItem().getphoneNumber().equals(phoneNumberText.getText()) == false
 						|| checker.getSelectedItem().getStreet().equals(adressText.getText()) == false
 						|| checker.getSelectedItem().getEmailAdress().equals(emailAdressText.getText()) == false
+						|| checker.getSelectedItem().getCountry().equals(countryText.getText()) == false
 
 				) {
 
@@ -182,12 +280,15 @@ public class AdressBookEditor extends EditorPart {
 					checker.getSelectedItem().setLastName(lastNameText.getText());
 					checker.getSelectedItem().setPhoneNumber(phoneNumberText.getText());
 					checker.getSelectedItem().setAdress(adressText.getText());
+					checker.getSelectedItem().setEmailAdress(emailAdressText.getText());
+					checker.getSelectedItem().setCountry(countryText.getText());
 
 				}
 
 				View part = (View) getSite().getPage().findView(View.ID);
 				part.refresh();
 
+				setDirty(false);
 			}
 		});
 
@@ -216,7 +317,7 @@ public class AdressBookEditor extends EditorPart {
 		});
 
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Editor State:"+state);
+		label.setText("Editor State:" + state);
 
 		setState("create");
 
