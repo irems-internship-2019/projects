@@ -99,5 +99,20 @@
             name="CreateNewEntry">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="contactView.actions"
+            targetID="RCPBook.view">
+         <action
+               class="rcpbook.cmd.AddNewElement"
+               id="create.contact.id"
+               label="Create Contact"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Create new contact">
+         </action>
+      </viewContribution>
+   </extension>
 
 </plugin>

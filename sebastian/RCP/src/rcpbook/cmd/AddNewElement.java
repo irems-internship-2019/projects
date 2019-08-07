@@ -5,6 +5,12 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewActionDelegate;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -34,3 +40,30 @@ public class AddNewElement extends AbstractHandler {
 	}
 	
 }
+
+
+//implements IViewActionDelegate
+//{
+//
+//	@Override
+//	public void run(IAction action) 
+//	{
+//		MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Info", "You run Add new element");
+//		
+//	}
+//
+//	@Override
+//	public void selectionChanged(IAction action, ISelection selection) 
+//	{
+//		
+//	}
+//
+//	@Override
+//	public void init(IViewPart view) 
+//	{
+//		
+//	}
+//}
+
+
+

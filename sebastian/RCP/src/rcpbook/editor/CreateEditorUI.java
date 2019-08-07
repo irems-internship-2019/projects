@@ -21,160 +21,112 @@ public class CreateEditorUI {
 
 	ViewerTools vTools = new ViewerTools();
 	private ContactsModel newContact = new ContactsModel();
-	// private String first;
-	// private String second;
-	// private String phoneNumber;
-	// private String email;
-	// private String country;
-	// private String city;
-	// private String street;
-	// private String postalCode;
+	private Text[] textNames = new Text[8];
 
 	public void EditorUI(Composite parent) {
 
 		Label mode = new Label(parent, SWT.NONE);
-		
-		if (CheckIfElementIsSelected.getEditorMode() == 1 && CheckIfElementIsSelected.getEditMode() == 1)
-		{
+
+		if (CheckIfElementIsSelected.getEditorMode() == 1 && CheckIfElementIsSelected.getEditMode() == 1) {
+
+			mode.setText("Editor Mode");
+
+			createEditorFields(parent);
+
+			createAddButton(parent);
+
+			assignSelectedFieldsToText();
+
 			CheckIfElementIsSelected.setEditMode(0);
 			CheckIfElementIsSelected.setEditorMode(0);
-			mode.setText("Edit");
-			}
-			
+		}
+
 		else {
-			mode.setText("New");
-			}
-		
-		
-		//spatiu gol
-		new Label(parent, SWT.NONE);
+			mode.setText("Create Mode");
 
-		Label firstNameLabel = new Label(parent, SWT.NONE);
-		firstNameLabel.setText("First Name: ");
+			createEditorFields(parent);
 
-		final Text firstNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		firstNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+			createAddButton(parent);
 
-		Label lastNameLabel = new Label(parent, SWT.NONE);
-		lastNameLabel.setText("Last Name: ");
+		}
 
-		final Text lastNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		lastNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label phoneNumberLabel = new Label(parent, SWT.NONE);
-		phoneNumberLabel.setText("Phone Number: ");
-
-		final Text phoneNumberText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		phoneNumberText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label emailLabel = new Label(parent, SWT.NONE);
-		emailLabel.setText("Email: ");
-
-		final Text emailText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		emailText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label countryLabel = new Label(parent, SWT.NONE);
-		countryLabel.setText("Country: ");
-
-		final Text countryText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		countryText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label cityLabel = new Label(parent, SWT.NONE);
-		cityLabel.setText("City: ");
-
-		final Text cityText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		cityText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label streetLabel = new Label(parent, SWT.NONE);
-		streetLabel.setText("Street: ");
-
-		final Text streetText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		streetText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label postalCodeLabel = new Label(parent, SWT.NONE);
-		postalCodeLabel.setText("Postal Code: ");
-
-		final Text postalCodeText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		postalCodeText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Button button = new Button(parent, SWT.NONE);
-		button.setText("Create new entry");
-		// button.addSelectionListener(makeButtonSelectionListner());
-
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				newContact.addNewContact(new ContactsManager(
-						firstNameText.getText(), lastNameText.getText(), new AddressManager(countryText.getText(),
-								cityText.getText(), streetText.getText(), postalCodeText.getText()),
-						phoneNumberText.getText(), emailText.getText()));
-				vTools.refreshContactsViewer();
-			}
-
-		});
-
-		// firstNameText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// first = firstNameText.getText();
-		//
-		// }
-		// });
-		//
-		// lastNameText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// second = lastNameText.getText();
-		//
-		// }
-		// });
-		//
-		// phoneNumberText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// phoneNumber = phoneNumberText.getText();
-		//
-		// }
-		// });
-		//
-		// emailText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// email = emailText.getText();
-		// }
-		// });
-		//
-		// countryText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// country = countryText.getText();
-		// }
-		// });
-		//
-		// cityText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// city = cityText.getText();
-		// }
-		// });
-		//
-		// streetText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// street = streetText.getText();
-		// }
-		// });
-		//
-		// postalCodeText.addKeyListener(new KeyAdapter() {
-		// public void keyReleased(KeyEvent ke) {
-		// postalCode = postalCodeText.getText();
-		// }
-		// });
 	}
 
-	// private SelectionListener makeButtonSelectionListner()
-	// {
-	// return new SelectionAdapter()
-	// {
-	// @Override
-	// public void widgetSelected(SelectionEvent e)
-	// {
-	// newContact.addNewContact(new ContactsManager(firstname, null, null, null,
-	// null));
-	// }
-	// };
-	// }
+	private void createEditorFields(Composite parent) {
+		int i = 0;
+		// need one extra :(
+
+		new Label(parent, SWT.NONE);
+
+		String[] labelTags = { "FirstName: ", "Last Name: ", "Phone Number: ", "Email: ", "Country: ", "City: ",
+				"Street: ", "Postal Code: " };
+
+		for (String str : labelTags) {
+			new Label(parent, SWT.NONE).setText(str);
+			textNames[i] = new Text(parent, SWT.BORDER | SWT.SEARCH);
+			textNames[i].setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+			i++;
+		}
+	}
+
+	private void createAddButton(Composite parent) {
+		Button button = new Button(parent, SWT.NONE);
+		button.addSelectionListener(makeButtonSelectionListner(button));
+	}
+
+	private SelectionListener makeButtonSelectionListner(Button button) {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (CheckIfElementIsSelected.getEditorMode() == 1 && CheckIfElementIsSelected.getEditMode() == 1) {
+					editOldContact();
+					button.setText("Edit");
+				} else {
+					createNewContact();
+					button.setText("Create");
+				}
+			}
+		};
+	}
+
+	private void editOldContact() {
+
+		ContactsManager contact = newContact.getElements()
+				.get(CheckIfElementIsSelected.getSelectedItem().getIdForComparator());
+
+		contact.setFirst(textNames[0].getText());
+		contact.setSecond(textNames[1].getText());
+		contact.setPhoneNumber(textNames[2].getText());
+		contact.setEmail(textNames[3].getText());
+		contact.getAddress().setCountry(textNames[4].getText());
+		contact.getAddress().setCity(textNames[5].getText());
+		contact.getAddress().setStreet(textNames[6].getText());
+		contact.getAddress().setPostalCode(textNames[7].getText());
+
+		vTools.refreshContactsViewer();
+
+	}
+
+	private void createNewContact() {
+		newContact.addNewContact(new ContactsManager(
+				textNames[0].getText(), textNames[1].getText(), new AddressManager(textNames[2].getText(),
+						textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
+				textNames[6].getText(), textNames[7].getText()));
+
+		vTools.refreshContactsViewer();
+	}
+
+	private void assignSelectedFieldsToText() {
+		// textNames[0].setText("Dorel");
+		// textNames[1].setText("Gigele");
+		textNames[0].setText(CheckIfElementIsSelected.getSelectedItem().getFirst());
+		textNames[1].setText(CheckIfElementIsSelected.getSelectedItem().getSecond());
+		textNames[2].setText(CheckIfElementIsSelected.getSelectedItem().getPhone());
+		textNames[3].setText(CheckIfElementIsSelected.getSelectedItem().getEmail());
+		textNames[4].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getCountry());
+		textNames[5].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getCity());
+		textNames[6].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getStreet());
+		textNames[7].setText(CheckIfElementIsSelected.getSelectedItem().getAddress().getPostalCode());
+	}
+
 }

@@ -61,19 +61,23 @@ public class ContactsManager
 		return email;
 	}
 
-	//	public void setFirst(String first)
-	//	{
-	//		this.first = first;
-	//	}	
-	//	
-	//	public void setLikes(String likes) {
-	//		this.likes = likes;
-	//	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-//	public static ContactsManager createRandomPerson(){
-//		return new  ContactsManager(FIRST[random.nextInt(FIRST.length)], 
-//				SECOND[random.nextInt(SECOND.length)], PHONENUMBER[random.nextInt(PHONENUMBER.length)], 
-//				EMAIL[random.nextInt(EMAIL.length)]);
-//	}
-	
+	public void setFirst(String first) {
+		this.first = first;
+	}
+
+	public void setSecond(String second) {
+		this.second = second;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }
