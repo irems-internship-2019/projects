@@ -12,9 +12,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import rcpbook.Dirty.DirtyListener;
 import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
+import rcpbook.view.Editor;
 import rcpbook.view.ViewerTools;
 
 public class CreateEditorUI {
@@ -22,23 +24,22 @@ public class CreateEditorUI {
 	ViewerTools vTools = new ViewerTools();
 	private ContactsModel newContact = new ContactsModel();
 	private Text[] textNames = new Text[8];
+	private Editor edit;
 
 	public void EditorUI(Composite parent) {
 
 		Label mode = new Label(parent, SWT.NONE);
 
-		if (CheckIfElementIsSelected.getEditorMode() == 1 && CheckIfElementIsSelected.getEditMode() == 1) {
+		if (CheckIfElementIsSelected.getEditorMode() && CheckIfElementIsSelected.getEditMode()) {
 
 			mode.setText("Editor Mode");
 
 			createEditorFields(parent);
 
-			createAddButton(parent);
-
 			assignSelectedFieldsToText();
 
-			CheckIfElementIsSelected.setEditMode(0);
-			CheckIfElementIsSelected.setEditorMode(0);
+			createAddButton(parent);
+
 		}
 
 		else {
@@ -65,12 +66,23 @@ public class CreateEditorUI {
 			new Label(parent, SWT.NONE).setText(str);
 			textNames[i] = new Text(parent, SWT.BORDER | SWT.SEARCH);
 			textNames[i].setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+
+//			   DirtyListener listener = new DirtyListenerImpl();
+//		       DirtyUtils.registryDirty(listener, controls);
+			
+			textNames[i].addKeyListener(new KeyAdapter() {
+				public void keyPressed(KeyEvent ke) {
+					edit.setDirty(true);
+					System.out.print("Dirty");
+				}
+			});
 			i++;
 		}
 	}
 
 	private void createAddButton(Composite parent) {
 		Button button = new Button(parent, SWT.NONE);
+		button.setText("Submit");
 		button.addSelectionListener(makeButtonSelectionListner(button));
 	}
 
@@ -78,13 +90,13 @@ public class CreateEditorUI {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (CheckIfElementIsSelected.getEditorMode() == 1 && CheckIfElementIsSelected.getEditMode() == 1) {
+//				System.out.println(CheckIfElementIsSelected.getEditorMode());
+//				System.out.println(CheckIfElementIsSelected.getEditMode());
+				if (CheckIfElementIsSelected.getEditorMode() && CheckIfElementIsSelected.getEditMode())
 					editOldContact();
-					button.setText("Edit");
-				} else {
+				else
 					createNewContact();
-					button.setText("Create");
-				}
+
 			}
 		};
 	}
@@ -92,7 +104,7 @@ public class CreateEditorUI {
 	private void editOldContact() {
 
 		ContactsManager contact = newContact.getElements()
-				.get(CheckIfElementIsSelected.getSelectedItem().getIdForComparator());
+				.get(CheckIfElementIsSelected.getSelectedItem().getIdForComparator() - 1);
 
 		contact.setFirst(textNames[0].getText());
 		contact.setSecond(textNames[1].getText());
@@ -103,6 +115,11 @@ public class CreateEditorUI {
 		contact.getAddress().setStreet(textNames[6].getText());
 		contact.getAddress().setPostalCode(textNames[7].getText());
 
+		CheckIfElementIsSelected.setEditMode(false);
+		CheckIfElementIsSelected.setEditorMode(false);
+
+		edit.setDirty(false);
+		
 		vTools.refreshContactsViewer();
 
 	}
@@ -113,6 +130,8 @@ public class CreateEditorUI {
 						textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
 				textNames[6].getText(), textNames[7].getText()));
 
+		edit.setDirty(false);
+		
 		vTools.refreshContactsViewer();
 	}
 

@@ -4,8 +4,8 @@ import rcpbook.contacts.ContactsManager;
 
 public class CheckIfElementIsSelected {
 
-	private static int editorMode = 0;
-	private static int createMode = 0;
+	private static boolean editorMode = false;
+	private static boolean createMode = false;
 	
 	private static ContactsManager contact;
 	
@@ -19,22 +19,22 @@ public class CheckIfElementIsSelected {
 		return contact;
 	}
 	
-	public static void setEditorMode(int selector )
+	public static void setEditorMode(boolean selector )
 	{
 		editorMode = selector;
 	}
 	
-	public static void setEditMode(int create )
+	public static void setEditMode(boolean create )
 	{
 		createMode = create;
 	}
 	
-	public static int getEditorMode() 
+	public static boolean getEditorMode() 
 	{
 		return editorMode;
 	}
 	
-	public static int getEditMode() 
+	public static boolean getEditMode() 
 	{
 		return createMode;
 	}

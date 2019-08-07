@@ -198,7 +198,7 @@ public class CreateContactUi {
 				IStructuredSelection selection = tableViewer.getStructuredSelection();
 			    ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
 				
-			    CheckIfElementIsSelected.setEditorMode(1);
+			    CheckIfElementIsSelected.setEditorMode(true);
 			    CheckIfElementIsSelected.setSelectedItem(firstElement);
 			   // CheckIfElementIsSelected.addSelectedIndex(0);
 				//System.out.println(firstElement.getFirst());

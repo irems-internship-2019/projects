@@ -21,9 +21,9 @@ public class EditElement extends AbstractHandler {
 		IWorkbenchPage page = window.getActivePage();
 
 		AddressBookNewContactImput input = new AddressBookNewContactImput();
-		CheckIfElementIsSelected.setEditMode(1);
+		CheckIfElementIsSelected.setEditMode(true);
 
-		if (CheckIfElementIsSelected.getEditorMode() == 1) {
+		if (CheckIfElementIsSelected.getEditorMode()) {
 
 			try {
 				page.openEditor(input, Editor.ID);
