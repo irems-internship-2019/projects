@@ -22,10 +22,10 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="rcpbook.view.TableView"
-            name="ContactsView"
+            class="rcpbook.view.ContactsView"
             id="RCPBook.view"
-            inject="true">
+            inject="true"
+            name="ContactsView">
       </view>
       <view
             class="rcpbook.view.DetailesView"
@@ -66,7 +66,8 @@
             locationURI="toolbar:RCPBook.view">
          <command
                commandId="rcpbook.cmd.AddNewElement"
-               label="Create Contact"
+               icon="icons/eclipse16.png"
+               label="Create?"
                style="push"
                tooltip="Create New Element">
          </command>
@@ -93,7 +94,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="rcpbook.view.Editor"
+            class="rcpbook.view.EditorView"
             default="false"
             id="RCPBook.Create"
             name="Editor">
@@ -105,12 +106,28 @@
             id="contactView.actions"
             targetID="RCPBook.view">
          <action
-               class="rcpbook.cmd.AddNewElement"
+               class="rcpbook.cmd.Create"
                id="create.contact.id"
-               label="Create Contact"
+               label="Create"
+               style="push"
+               toolbarPath="actions"
+               tooltip="Create Contact">
+         </action>
+         <action
+               class="rcpbook.cmd.Delete"
+               id="delete.contact.id"
+               label="Delete"
                style="push"
                toolbarPath="additions"
-               tooltip="Create new contact">
+               tooltip="Delete Contact">
+         </action>
+         <action
+               class="rcpbook.cmd.Edit"
+               id="edit.contact.id"
+               label="Edit"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Edit Contact ">
          </action>
       </viewContribution>
    </extension>

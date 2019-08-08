@@ -1,7 +1,5 @@
 package rcpbook.contacts;
 
-import java.util.Random;
-
 public class ContactsManager 
 {
 	private static final String[]   FIRST = {"Favonius", "Tom", "Brad", "Scott", "Linda", "Maria"};

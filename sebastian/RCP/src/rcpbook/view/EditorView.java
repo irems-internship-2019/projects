@@ -4,29 +4,52 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
-import rcpbook.Dirty.DirtyListener;
+import rcpbook.contacts.ContactsManager;
 import rcpbook.editor.AddressBookNewContactImput;
 import rcpbook.editor.CreateEditorUI;
 
-public class Editor extends EditorPart {
+public class EditorView extends EditorPart {
 
 	public static final String ID = "RCPBook.Create";
 	private CreateEditorUI createNewEditor = new CreateEditorUI();
 	private boolean dirty = false;
 
-
 	@Override
 	public void createPartControl(Composite parent) {
-
 		parent.setLayout(new GridLayout(2, false));
 		createNewEditor.EditorUI(parent);
 
+	}
+	
+	public static void openEditor(ContactsManager model)
+	{
+		AddressBookNewContactImput input = new AddressBookNewContactImput();
+		
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		
+		try 
+		{
+			EditorView addressBookEditor = (EditorView) activePage.openEditor(input, ID);
+			addressBookEditor.setModelAndWidget(model);
+			
+		} 
+		catch (PartInitException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void setModelAndWidget(ContactsManager model) 
+	{
+		createNewEditor.setModel(model);
+		createNewEditor.updateWidgets();
 	}
 
 	@Override
@@ -40,7 +63,7 @@ public class Editor extends EditorPart {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public void doSaveAs() {
 		// TODO Auto-generated method stub

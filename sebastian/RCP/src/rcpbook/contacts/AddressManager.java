@@ -4,15 +4,8 @@ import java.util.Random;
 
 public class AddressManager {
 
-	private static final String[] COUNTRY = { "USA", "Ukraine", "Liliput", "Germany", "Kingdom of Buganda" };
-	private static final String[] CITY = { "New York", "Idiotville", "Saint-Louis-du-Ha! Ha!", "Worcestershire","Brokenwind" };
-	private static final String[] STREET = { "Herculane 07", " Libertatii 22", "Revolutiei 77", "Ady Endre 11","Viseului 04" };
-	private static final String[] POSTALCODE = { "07450", "33917", "415300", "329875", "412800" };
-
 	private static int index = 1;
 	private int ID = 0;
-
-	private static Random random = new Random(System.currentTimeMillis());
 
 	private String country;
 	private String city;
@@ -63,15 +56,4 @@ public class AddressManager {
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
-
-	
-//	public static AddressManager createAddress() {
-//		return new AddressManager("USA", "New York", "Cattle Heaven", "415300");
-//	}
-	
-//			public static AddressManager createRandomAddress(){
-//				return new  AddressManager(COUNTRY[random.nextInt(COUNTRY.length)], 
-//						CITY[random.nextInt(CITY.length)],STREET[random.nextInt(STREET.length)], 
-//						POSTALCODE[random.nextInt(POSTALCODE.length)]);
-//			}
 }

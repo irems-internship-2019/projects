@@ -8,10 +8,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import rcpbook.editor.AddressBookEditorInput;
 import rcpbook.editor.AddressBookNewContactImput;
-import rcpbook.editor.CheckSelected;
-import rcpbook.view.Editor;
+import rcpbook.view.EditorView;
 
 public class EditElement extends AbstractHandler {
 
@@ -26,7 +24,7 @@ public class EditElement extends AbstractHandler {
 		//if (CheckIfElementIsSelected.getEditorMode()) {
 
 			try {
-				page.openEditor(input, Editor.ID);
+				page.openEditor(input, EditorView.ID);
 			} catch (PartInitException e) {
 				System.out.println("Error:" + this.getClass().getName() + ":" + e);
 				e.printStackTrace();

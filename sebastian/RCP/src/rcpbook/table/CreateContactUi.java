@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -21,7 +22,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.AddressModel;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
@@ -45,7 +45,7 @@ public class CreateContactUi {
 
 		createFilter();
 		
-		addSingleClickListner();
+		//addSingleClickListner();
 
 		addDoubleClickListner();
 
@@ -83,14 +83,17 @@ public class CreateContactUi {
 	}
 
 	private void createTableColums(final Composite parent) {
-		String[] titles = { "ID", "First name", "Last name", "Address", "Phone Number", "Email" };
-		int bounds = 100;
-
-		// List<Elements> persons = new ArrayList<Elements>();
-		// for(int i=0; i<10; i++)
-		// persons.add(Elements.createRandomPerson());
-
-		TableViewerColumn column = createTableViewerColumn(titles[0], bounds, 0);
+		String[] columnTitles = { "ID", "First name", "Last name", "Address", "Phone Number", "Email" };
+		int bounds = 100,i = 0;
+		TableViewerColumn colum;
+		
+		for(String title: columnTitles) 
+		{
+			
+		}
+		
+		
+		TableViewerColumn column = createTableViewerColumn(columnTitles[0], bounds, 0);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ContactsManager)
@@ -99,9 +102,7 @@ public class CreateContactUi {
 			}
 		});
 
-		column = createTableViewerColumn(titles[1], bounds, 1);
-		// column.setEditingSupport(new FirstNameEditingSupport(tableViewer));//u need
-		// more of these
+		column = createTableViewerColumn(columnTitles[1], bounds, 1);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ContactsManager)
@@ -111,7 +112,7 @@ public class CreateContactUi {
 
 		});
 
-		column = createTableViewerColumn(titles[2], bounds, 2);
+		column = createTableViewerColumn(columnTitles[2], bounds, 2);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ContactsManager)
@@ -120,17 +121,17 @@ public class CreateContactUi {
 			}
 		});
 
-		column = createTableViewerColumn(titles[3], bounds, 3);
+		column = createTableViewerColumn(columnTitles[3], bounds, 3);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ContactsManager)
-					return "" + ((ContactsManager) element).getAddress().getStreet();
+					return ((ContactsManager) element).getAddress().getStreet();
 				return super.getText(element);
 			}
 
 		});
 
-		column = createTableViewerColumn(titles[4], bounds, 4);
+		column = createTableViewerColumn(columnTitles[4], bounds, 4);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ContactsManager)
@@ -139,7 +140,7 @@ public class CreateContactUi {
 			}
 		});
 
-		column = createTableViewerColumn(titles[5], bounds, 5);
+		column = createTableViewerColumn(columnTitles[5], bounds, 5);
 		// column.setEditingSupport(new OptionEditingSupport(tableViewer));
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
@@ -190,21 +191,17 @@ public class CreateContactUi {
 		});
 	}
 	
-	private void addSingleClickListner() {
-		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = tableViewer.getStructuredSelection();
-			    ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
-				
-//			    CheckIfElementIsSelected.setEditorMode(true);
-			    CheckSelected.setSelectedItem(firstElement);
-			   // CheckIfElementIsSelected.addSelectedIndex(0);
-				//System.out.println(firstElement.getFirst());
-				 
-			}
-		});
-	}
-
+//	private void addSingleClickListner() {
+//		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+//			
+//			@Override
+//			public void selectionChanged(SelectionChangedEvent event) {
+//				IStructuredSelection selection = tableViewer.getStructuredSelection();
+//			    ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
+//				
+//			    CheckSelected.setSelectedItem(firstElement);
+//				 
+//			}
+//		});
+//	}
 }

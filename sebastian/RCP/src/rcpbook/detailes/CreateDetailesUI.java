@@ -7,16 +7,12 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 
 import rcpbook.contacts.AddressModel;
 import rcpbook.contacts.ContactsManager;
-import rcpbook.detailes.DetailesManager;
 import rcpbook.view.ViewerTools;
-import rcpbook.contacts.ContactsModel;
 
 public class CreateDetailesUI {
 	

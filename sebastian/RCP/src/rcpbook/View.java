@@ -1,6 +1,7 @@
 package rcpbook;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 

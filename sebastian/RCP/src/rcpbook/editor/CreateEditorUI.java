@@ -1,8 +1,6 @@
 package rcpbook.editor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -12,25 +10,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import rcpbook.Dirty.DirtyListener;
-import rcpbook.cmd.EditElement;
 import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
-import rcpbook.view.Editor;
 import rcpbook.view.ViewerTools;
 
 public class CreateEditorUI {
 
 	ViewerTools vTools = new ViewerTools();
 	private ContactsModel newContact = new ContactsModel();
+	private ContactsManager contact;
 	private Text[] textNames = new Text[8];
-	// private Editor edit;
 
 	public void EditorUI(Composite parent) {
-		
+
 		createEditorFields(parent);
-		assignSelectedFieldsToText();
+
+//		if (CheckSelected.getSelectedItem() != null)
+//			assignSelectedFieldsToText();
+
 		createAddButton(parent);
 	}
 
@@ -59,8 +57,8 @@ public class CreateEditorUI {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
-				if (CheckSelected.getSelectedItem() != null)
+
+				if (contact != null)
 					editContact();
 				else
 					newContact();
@@ -71,7 +69,7 @@ public class CreateEditorUI {
 	private void editContact() {
 
 		ContactsManager contact = newContact.getElements()
-				.get(CheckSelected.getSelectedItem().getIdForComparator() - 1);
+				.get(this.contact.getIdForComparator() - 1);
 
 		contact.setFirst(textNames[0].getText());
 		contact.setSecond(textNames[1].getText());
@@ -83,7 +81,8 @@ public class CreateEditorUI {
 		contact.getAddress().setPostalCode(textNames[7].getText());
 
 		// edit.setDirty(false);
-		CheckSelected.setSelectedToNull();
+		//CheckSelected.setSelectedToNull();
+		contact = null;
 		vTools.refreshContactsViewer();
 
 	}
@@ -99,18 +98,21 @@ public class CreateEditorUI {
 		vTools.refreshContactsViewer();
 	}
 
-	private void assignSelectedFieldsToText() {
-
-		if (CheckSelected.getSelectedItem() != null) {
-			textNames[0].setText(CheckSelected.getSelectedItem().getFirst());
-			textNames[1].setText(CheckSelected.getSelectedItem().getSecond());
-			textNames[2].setText(CheckSelected.getSelectedItem().getPhone());
-			textNames[3].setText(CheckSelected.getSelectedItem().getEmail());
-			textNames[4].setText(CheckSelected.getSelectedItem().getAddress().getCountry());
-			textNames[5].setText(CheckSelected.getSelectedItem().getAddress().getCity());
-			textNames[6].setText(CheckSelected.getSelectedItem().getAddress().getStreet());
-			textNames[7].setText(CheckSelected.getSelectedItem().getAddress().getPostalCode());
+	public void updateWidgets() {
+		if (contact != null) {
+			textNames[0].setText(contact.getFirst());
+			textNames[1].setText(contact.getSecond());
+			textNames[2].setText(contact.getPhone());
+			textNames[3].setText(contact.getEmail());
+			textNames[4].setText(contact.getAddress().getCountry());
+			textNames[5].setText(contact.getAddress().getCity());
+			textNames[6].setText(contact.getAddress().getStreet());
+			textNames[7].setText(contact.getAddress().getPostalCode());
 		}
 	}
-
+	
+	public void setModel(ContactsManager model) 
+	{
+		this.contact = model;
+	}
 }
