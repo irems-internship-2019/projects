@@ -2,10 +2,9 @@ package adress.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -28,6 +27,7 @@ import Model.ContactProvider;
 import adress.AdressDetailsView;
 import adress.View;
 import checker.SelectChecker;
+import uiManager.CreateUI;
 
 public class AdressBookEditor extends EditorPart {
 
@@ -43,26 +43,22 @@ public class AdressBookEditor extends EditorPart {
 	SelectChecker check = new SelectChecker();
 
 	private Contact contact;
-	
+
 	ContactProvider contacts = ContactProvider.INSTANCE;
 
 	public static final String ID = "adress.book.editor";
-	
-	
-	public static void openEditor(Contact model)
-	{
+
+	public static void openEditor(Contact model) {
 		AdressbookEditorInput input = new AdressbookEditorInput();
-		
+
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		
-		try 
-		{
+
+		try {
 			AdressBookEditor addressBookEditor = (AdressBookEditor) activePage.openEditor(input, ID);
 			addressBookEditor.setModel(model);
-		addressBookEditor.updateWidgets();
-		} 
-		catch (PartInitException e) 
-		{
+			addressBookEditor.updateWidgets();
+
+		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
 	}
@@ -70,13 +66,12 @@ public class AdressBookEditor extends EditorPart {
 	private void setModel(Contact model) {
 		// TODO Auto-generated method stub
 		this.contact = model;
+
 	}
 
 	public AdressBookEditor() {
 		// TODO Auto-generated constructor stub
 	}
-
-
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -86,7 +81,6 @@ public class AdressBookEditor extends EditorPart {
 
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -121,19 +115,27 @@ public class AdressBookEditor extends EditorPart {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
-	private void updateWidgets()
-	{
-		
-		firstNameText.setText(contact.getFirstName());
-		lastNameText.setText(contact.getLastName());
-		countryText.setText(contact.getAddress().getCountry());
-		cityText.setText(contact.getAddress().getCity());
-		adressText.setText(contact.getAddress().getStreet());
-		postalCodeText.setText(contact.getAddress().getPostal_code());
-		phoneNumberText.setText(contact.getphoneNumber());
-		emailAdressText.setText(contact.getEmailAdress());
+
+	private void updateWidgets() {
+
+		if (contact != null) {
+			firstNameText.setText(contact.getFirstName());
+			lastNameText.setText(contact.getLastName());
+			countryText.setText(contact.getAddress().getCountry());
+			cityText.setText(contact.getAddress().getCity());
+			adressText.setText(contact.getAddress().getStreet());
+			postalCodeText.setText(contact.getAddress().getPostal_code());
+			phoneNumberText.setText(contact.getphoneNumber());
+			emailAdressText.setText(contact.getEmailAdress());
+		}
+		listenerForText(firstNameText);
+		listenerForText(lastNameText);
+		listenerForText(countryText);
+		listenerForText(cityText);
+		listenerForText(adressText);
+		listenerForText(postalCodeText);
+		listenerForText(phoneNumberText);
+		listenerForText(emailAdressText);
 
 	}
 
@@ -143,172 +145,113 @@ public class AdressBookEditor extends EditorPart {
 		// If you want to design with WindowBuilder Designer
 		// Change code like: (Important!!!)
 
+		CreateUI uiCreation = new CreateUI();
+		parent.setLayout(new GridLayout(2, false));
 		parent.setLayout(new GridLayout(2, false));
 		Label firstNameLabel = new Label(parent, SWT.NONE);
 		firstNameLabel.setText("First Name");
 		firstNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		firstNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		firstNameText.setText("first");
 
-		parent.setLayout(new GridLayout(2, false));
+//		uiCreation.test(parent, firstNameText);
+
 		Label lastNameLabel = new Label(parent, SWT.NONE);
 		lastNameLabel.setText("Last Name");
 		lastNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		lastNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		lastNameText.setText("last");
 
-		parent.setLayout(new GridLayout(2, false));
 		Label phoneNumberLabel = new Label(parent, SWT.NONE);
 		phoneNumberLabel.setText("Phone Number");
 		phoneNumberText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		phoneNumberText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		phoneNumberText.setText("phone");
 
-		parent.setLayout(new GridLayout(2, false));
 		Label adressLabel = new Label(parent, SWT.NONE);
 		adressLabel.setText("Adress");
 		adressText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		adressText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		adressText.setText("adress");
 
-		parent.setLayout(new GridLayout(2, false));
 		Label emailAdressLabel = new Label(parent, SWT.NONE);
 		emailAdressLabel.setText("E-mail");
 		emailAdressText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		emailAdressText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		emailAdressText.setText("email");
 
-		parent.setLayout(new GridLayout(2, false));
 		Label countryLabel = new Label(parent, SWT.NONE);
 		countryLabel.setText("Country");
 		countryText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		countryText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		countryText.setText("country");
 
-		parent.setLayout(new GridLayout(2, false));
 		Label cityLabel = new Label(parent, SWT.NONE);
 		cityLabel.setText("City");
 		cityText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		cityText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		cityText.setText("city");
 
-		parent.setLayout(new GridLayout(2, false));
 		Label postalCodeLabel = new Label(parent, SWT.NONE);
 		postalCodeLabel.setText("Postal Code");
 		postalCodeText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		postalCodeText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		postalCodeText.setText("postal");
 
-		if (check.isSelected() == true)
-			editState(parent);
-		else
-			InsertState(parent);
-
-	}
-	
-	
-	private void listenerForText(Text text) 
-	{
-		text.addKeyListener(new KeyListener() 
-		{
-			@Override
-			public void keyReleased(KeyEvent e) 
-			{
+		Button insertButton = new Button(parent, SWT.PUSH);
+		insertButton.setText("Save");
+		insertButton.setFont(JFaceResources.getDialogFont());
+		insertButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				if (contact != null)
+					editState(parent);
+				else
+					InsertState(parent);
+				setDirty(false);
 			}
-	
+
+		});
+	}
+
+	private void listenerForText(Text text) {
+
+		text.addModifyListener(new ModifyListener() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
+			public void modifyText(ModifyEvent e) {
+				// TODO Auto-generated method stub
 				setDirty(true);
 			}
 		});
 	}
-	
+
 	private void editState(Composite parent) {
 
+		if (contact.getFirstName().equals(firstNameText.getText()) == false
+				|| contact.getLastName().equals(lastNameText.getText()) == false
+				|| contact.getphoneNumber().equals(phoneNumberText.getText()) == false
+				|| contact.getEmailAdress().equals(emailAdressText.getText()) == false
+				|| contact.getAddress().getCity().equals(cityText.getText()) == false
+				|| contact.getAddress().getCountry().equals(countryText.getText()) == false
+				|| contact.getAddress().getStreet().equals(adressText.getText()) == false
+				|| contact.getAddress().getPostal_code().equals(postalCodeText.getText()) == false
+
+		) {
+
+			contact.setFirstName(firstNameText.getText());
+			contact.setLastName(lastNameText.getText());
+			contact.setPhoneNumber(phoneNumberText.getText());
+
+		}
 		View part = (View) getSite().getPage().findView(View.ID);
-		AdressDetailsView detailsPart = (AdressDetailsView) getSite().getPage().findView(AdressDetailsView.ID);
-
-		firstNameText.setText(part.getSelectedItem().getFirstName());
-		listenerForText(firstNameText);
-
-		lastNameText.setText(part.getSelectedItem().getLastName());
-		listenerForText(lastNameText);
-
-		phoneNumberText.setText(part.getSelectedItem().getphoneNumber());
-		listenerForText(phoneNumberText);
-
-		adressText.setText(part.getSelectedItem().getStreet());
-		listenerForText(adressText);
-
-		emailAdressText.setText(part.getSelectedItem().getEmailAdress());
-		listenerForText(emailAdressText);
-
-		countryText.setText(part.getSelectedItem().getCountry());
-		listenerForText(countryText);
-
-		cityText.setText("edit");
-		postalCodeText.setText("edit");
-
-		Button insertButton = new Button(parent, SWT.PUSH);
-		insertButton.setText("Edit Contact");
-		insertButton.setFont(JFaceResources.getDialogFont());
-		insertButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-
-				if (part.getSelectedItem().getFirstName().equals(firstNameText.getText()) == false
-						|| part.getSelectedItem().getLastName().equals(lastNameText.getText()) == false
-						|| part.getSelectedItem().getphoneNumber().equals(phoneNumberText.getText()) == false
-						|| part.getSelectedItem().getStreet().equals(adressText.getText()) == false
-						|| part.getSelectedItem().getEmailAdress().equals(emailAdressText.getText()) == false
-						|| part.getSelectedItem().getCountry().equals(countryText.getText()) == false
-
-				) {
-
-					contacts.getContacts().get(contacts.getContacts().indexOf(part.getSelectedItem()))
-							.setFirstName(firstNameText.getText());
-					contacts.getContacts().get(contacts.getContacts().indexOf(part.getSelectedItem()))
-							.setLastName(lastNameText.getText());
-					contacts.getContacts().get(contacts.getContacts().indexOf(part.getSelectedItem()))
-							.setAdress(adressText.getText());
-					contacts.getContacts().get(contacts.getContacts().indexOf(part.getSelectedItem()))
-							.setEmailAdress(emailAdressText.getText());
-					contacts.getContacts().get(contacts.getContacts().indexOf(part.getSelectedItem()))
-							.setCountry(countryText.getText());
-				}
-				setDirty(false);
-				part.refresh();
-				detailsPart.refresh();
-
-				setDirty(false);
-			}
-		});
+		part.refresh();
 
 
 	}
 
 	private void InsertState(Composite parent) {
 
-		Button insertButton = new Button(parent, SWT.PUSH);
-		insertButton.setText("New Contact");
-		insertButton.setFont(JFaceResources.getDialogFont());
-		insertButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-
-				contacts.addContacts(new Contact(firstNameText.getText(),
-						new Address(countryText.getText(), cityText.getText(), adressText.getText(),
-								postalCodeText.getText()),
-						lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
-
-				View part = (View) getSite().getPage().findView(View.ID);
-				part.refresh();
- 
-			}
-		});
-
-
+		contacts.addContacts(new Contact(firstNameText.getText(),
+				new Address(countryText.getText(), cityText.getText(), adressText.getText(), postalCodeText.getText()),
+				lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
+		View part = (View) getSite().getPage().findView(View.ID);
+		part.refresh();
 
 	}
+
+	
 
 	@Override
 	public void setFocus() {

@@ -51,34 +51,13 @@ public class Contact {
 		 this.phoneNumber=phoneNumber;
 	}
 	
-	public void setAdress(String adresss) {
-		 this.adress.setStreet(adresss);;
-	}
+
 
 
 	public String getEmailAdress() {
 		return emailAdress;
 	}
 	
-	public void setEmailAdress(String emailAdress) {
-		 this.emailAdress=emailAdress;
-	}
-
-
-	public String getStreet() {
-		// TODO Auto-generated method stub
-		return adress.getStreet();
-	}
-	
-	public String getCountry() {
-		// TODO Auto-generated method stub
-		return adress.getCountry();
-	}
-
-	public void setCountry(String country) {
-		// TODO Auto-generated method stub
-		adress.setCountry(country);
-	}
 
 	public Address getAddress() {
 		

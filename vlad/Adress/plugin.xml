@@ -92,24 +92,6 @@
       <menuContribution
             allPopups="false"
             locationURI="toolbar:Adress.view">
-         <command
-               commandId="Adress.command1"
-               icon="icons/del.png"
-               label="Delete Contact"
-               style="push">
-         </command>
-         <command
-               commandId="cmd"
-               icon="icons/add.png"
-               label="Add New Contact"
-               style="push">
-         </command>
-         <command
-               commandId="Adress.editor1"
-               icon="icons/edit.png"
-               label="Edit Contact "
-               style="push">
-         </command>
       </menuContribution>
    </extension>
    <extension
@@ -153,9 +135,27 @@
             targetID="Adress.view">
          <action
                class="adress.actions.ViewActionDelegate1"
+               enablesFor="1"
                icon="icons/del.png"
                id="Adress.action1"
-               label="extra"
+               label="delete"
+               style="push"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="adress.actions.ViewActionDelegate2"
+               enablesFor="1"
+               icon="icons/edit.png"
+               id="Adress.action2"
+               label="edit"
+               style="push"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="adress.actions.ViewActionDelegate3"
+               icon="icons/add.png"
+               id="Adress.action3"
+               label="create"
                style="push"
                toolbarPath="additions">
          </action>

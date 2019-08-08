@@ -2,9 +2,7 @@ package adress.editor;
 
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -13,14 +11,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.part.EditorPart;
 
 import Model.ContactProvider;
-import adress.View;
 
 public class AdressBookEditContact extends EditorPart {
 

@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import Filter.ContactFilter;
@@ -27,7 +29,7 @@ public class AdressDetailsView extends ViewPart {
 	public static final String ID = "Adress.view2";
 	ContactFilter contactFilter = new ContactFilter();
 
-	private TableViewer viewer;
+	private  TableViewer viewer;
 	private ContactComparator comparator;
 	
 	
@@ -82,35 +84,59 @@ public class AdressDetailsView extends ViewPart {
 		String[] titles = { "Id","First Name", "Last Name", "Country", "City", " Postal Code" };
 		int[] bounds = { 50, 100, 100, 100, 100,100 };
 		
-		TableViewerColumn idColumn = createTableViewerColumn(titles[0], bounds[0],0);
-		idColumn.setLabelProvider(new ColumnLabelProvider() {
+		TableViewerColumn column ;
+		
+		column= createTableViewerColumn(titles[0], bounds[0],0);
+		column.setLabelProvider(new ColumnLabelProvider() {
 			  public String getText(Object element) {
 	                Contact p = (Contact) element;
 	                return p.getId();
 	            }
 		});
 		
-		TableViewerColumn firstName = createTableViewerColumn(titles[1], bounds[1],1);
-		firstName.setLabelProvider(new ColumnLabelProvider() {
+		column = createTableViewerColumn(titles[1], bounds[1],1);
+		column.setLabelProvider(new ColumnLabelProvider() {
 			  public String getText(Object element) {
 	                Contact p = (Contact) element;
 	                return p.getFirstName();
 	            }
 		});
 		
-		TableViewerColumn lastName = createTableViewerColumn(titles[2], bounds[2],2);
-		lastName.setLabelProvider(new ColumnLabelProvider() {
+		column = createTableViewerColumn(titles[2], bounds[2],2);
+		column.setLabelProvider(new ColumnLabelProvider() {
 			  public String getText(Object element) {
 	                Contact p = (Contact) element;
 	                return p.getLastName();
 	            }
 		});
 		
-		TableViewerColumn country = createTableViewerColumn(titles[3], bounds[3],3);
-		country.setLabelProvider(new ColumnLabelProvider() {
+		 column = createTableViewerColumn(titles[3], bounds[3],3);
+		column.setLabelProvider(new ColumnLabelProvider() {
 			  public String getText(Object element) {
 	                Contact p = (Contact) element;
-	                return p.getCountry();
+	                return p.getAddress().getCountry();
+	            }
+		});
+		 column = createTableViewerColumn(titles[4], bounds[4],4);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			  public String getText(Object element) {
+	                Contact p = (Contact) element;
+	                return p.getAddress().getCity();
+	            }
+		});
+		column = createTableViewerColumn(titles[5], bounds[5],5);
+		 column.setLabelProvider(new ColumnLabelProvider() {
+			  public String getText(Object element) {
+	                Contact p = (Contact) element;
+	                return p.getAddress().getStreet();
+	            }
+		});
+		
+		  column = createTableViewerColumn(titles[5], bounds[5],5);
+		 column.setLabelProvider(new ColumnLabelProvider() {
+			  public String getText(Object element) {
+	                Contact p = (Contact) element;
+	                return p.getAddress().getPostal_code();
 	            }
 		});
 		
@@ -147,9 +173,17 @@ public class AdressDetailsView extends ViewPart {
 
 	}
 
-	public void refresh() {
+	public  void refresh() {
 		// TODO Auto-generated method stub
 		viewer.refresh();
 	}
+	
+	public static void refreshView() {
 
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		AdressDetailsView view = (AdressDetailsView) activePage.findView(AdressDetailsView.ID);
+
+		view.refresh();
+	}
+	
 }

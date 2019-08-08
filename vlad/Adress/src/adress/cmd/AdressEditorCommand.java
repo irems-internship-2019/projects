@@ -22,20 +22,25 @@ import checker.SelectChecker;
 public class AdressEditorCommand extends AbstractHandler implements IHandler {
 
 	public static final String ID ="cmd";
-	 @Override
-	   public Object execute(ExecutionEvent event) throws ExecutionException {
-		 
-         SelectChecker check =new SelectChecker();
-	       AdressbookEditorInput input = new AdressbookEditorInput();
-	       try {
-	    		   
-	           ((IWorkbenchPage) check.getPage()).openEditor(input, AdressBookEditor.ID);
-	    	   
-	       } catch (PartInitException e) {
-	           System.out.println("Error:" + this.getClass().getName() + ":" + e);
-	           e.printStackTrace();
-	           throw new ExecutionException("Error open UserEditor");
-	       }
-	       return null;
+//	 @Override
+//	   public Object execute(ExecutionEvent event) throws ExecutionException {
+//		 
+//         SelectChecker check =new SelectChecker();
+//	       AdressbookEditorInput input = new AdressbookEditorInput();
+//	       try {
+//	    		   
+////	           ((IWorkbenchPage) check.getPage()).openEditor(input, AdressBookEditor.ID);
+//	    	   
+//	       } catch (PartInitException e) {
+//	           System.out.println("Error:" + this.getClass().getName() + ":" + e);
+//	           e.printStackTrace();
+//	           throw new ExecutionException("Error open UserEditor");
+//	       }
+//	       return null;
+
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	   }
-}
