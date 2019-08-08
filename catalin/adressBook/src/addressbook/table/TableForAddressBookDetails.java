@@ -15,7 +15,7 @@ import addressbook.comparator.ContactDetailsComparator;
 import addressbook.persons.Contact;
 
 public class TableForAddressBookDetails {
-	public static ArrayList<Contact> contactDetailsList = new ArrayList<Contact>();
+	public static ArrayList<Contact> contactDetails = new ArrayList<Contact>();
 
 	private TableViewerColumn createTableViewerColumn(TableViewer viewer, String title, int bound,
 			final int colNumber) {

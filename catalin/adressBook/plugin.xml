@@ -111,5 +111,20 @@
             name="DeleteContactHandler">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="AddressBook.viewContribution"
+            targetID="addressbook.view.addressbookview">
+         <action
+               class="addressbook.action.DeleteAction"
+               enablesFor="1"
+               id="deleteAddressBookAction"
+               label="Delete"
+               style="push"
+               toolbarPath="additions">
+         </action>
+      </viewContribution>
+   </extension>
 
 </plugin>

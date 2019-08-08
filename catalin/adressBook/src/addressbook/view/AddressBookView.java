@@ -5,9 +5,11 @@ import javax.inject.Inject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -19,10 +21,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import addressbook.comparator.ContactComparator;
-import addressbook.contentofeditor.ContentOfEdit;
 import addressbook.editor.AddressBookEditor;
 import addressbook.filter.ContactFilter;
 import addressbook.persons.Contact;
@@ -35,23 +39,33 @@ public class AddressBookView extends ViewPart {
 	@Inject
 	IWorkbench workbench;
 	private ContactComparator comparator;
-	private static TableViewer viewer;
+	private TableViewer viewer;
 	TableForAddressBook tableCreater = new TableForAddressBook();
 
 	private void createDoubleSelector() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection selection = viewer.getStructuredSelection();
-				Contact firstElement = (Contact) selection.getFirstElement();
-				if (!TableForAddressBookDetails.contactDetailsList.contains(firstElement))
-					TableForAddressBookDetails.contactDetailsList.add(firstElement);
+			public void doubleClick(DoubleClickEvent event) 
+			{
+				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				
+				try {
+					activePage.showView(AddressBookDetailsView.ID);
+				} catch (PartInitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+//				IStructuredSelection selection = viewer.getStructuredSelection();
+//				Contact firstElement = (Contact) selection.getFirstElement();
+//				if (!TableForAddressBookDetails.contactDetails.contains(firstElement))
+//					TableForAddressBookDetails.contactDetails.add(firstElement);
+//
+//				AddressBookDetailsView object = new AddressBookDetailsView();
+//				object.refresh();
 
-				AddressBookDetailsView object = new AddressBookDetailsView();
-				object.refresh();
-
-				ContentOfEdit secondObject = new ContentOfEdit();
-				secondObject.clearContactSelected();
+				
 			}
 		});
 	}
@@ -63,7 +77,8 @@ public class AddressBookView extends ViewPart {
 				IStructuredSelection selection = viewer.getStructuredSelection();
 				Contact firstElement = (Contact) selection.getFirstElement();
 
-				ContentOfEdit.contactSelected.add(firstElement);
+//				AddressBookEditor.recentlyElement = firstElement;
+
 			}
 		});
 	}
@@ -87,6 +102,14 @@ public class AddressBookView extends ViewPart {
 
 	public TableViewer getViewer() {
 		return viewer;
+	}
+	
+	public Contact getSelectedItem()
+	{
+		final StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+		final Contact selectedContact = (Contact) selection.getFirstElement();
+		
+		return selectedContact;
 	}
 
 	@Override

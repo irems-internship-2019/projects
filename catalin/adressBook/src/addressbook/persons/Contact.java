@@ -20,6 +20,11 @@ public class Contact {
 		this.emailAddress = emailAddress;
 	}
 
+	public Contact() 
+	{
+		this.address = new Address();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -71,21 +76,21 @@ public class Contact {
 	public enum ContactElements {
 		INSTANCE;
 
-		private ArrayList<Contact> contactList = new ArrayList<Contact>();
+		private ArrayList<Contact> contacts = new ArrayList<Contact>();
 
 		private ContactElements() {
-			contactList.add(new Contact(1, "Ion", "Bala", new Address("Romania", "Cluj", "Iancu.23", "3478902"),
+			contacts.add(new Contact(1, "Ion", "Bala", new Address("Romania", "Cluj", "Iancu.23", "3478902"),
 					0462347, "ion09"));
-			contactList.add(new Contact(2, "Maurice", "Hit", new Address("Franta", "Paris", "King.45", "zt4702145"),
+			contacts.add(new Contact(2, "Maurice", "Hit", new Address("Franta", "Paris", "King.45", "zt4702145"),
 					0323671, "mau00"));
-			contactList.add(new Contact(3, "Krisnov", "Bor", new Address("Bulgaria", "Sofia", "Krus.21", "89to456"),
+			contacts.add(new Contact(3, "Krisnov", "Bor", new Address("Bulgaria", "Sofia", "Krus.21", "89to456"),
 					1690365, "borkr01"));
-			contactList.add(new Contact(4, "Jussepe", "Pir", new Address("Italia", "Torino", "Pacetti.13", "gh093"),
+			contacts.add(new Contact(4, "Jussepe", "Pir", new Address("Italia", "Torino", "Pacetti.13", "gh093"),
 					7613290, "juse11"));
 		}
 
 		public ArrayList<Contact> getContacts() {
-			return contactList;
+			return contacts;
 		}
 	}
 }

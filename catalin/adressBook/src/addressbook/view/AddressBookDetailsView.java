@@ -36,7 +36,7 @@ public class AddressBookDetailsView extends ViewPart {
 
 		viewer.setContentProvider(new ArrayContentProvider());
 
-		viewer.setInput(TableForAddressBookDetails.contactDetailsList);
+		viewer.setInput(TableForAddressBookDetails.contactDetails);
 
 		getSite().setSelectionProvider(viewer);
 

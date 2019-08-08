@@ -20,7 +20,7 @@ public class AddContactHandler extends AbstractHandler {
 		
 		AddressBookEditorInput input = new AddressBookEditorInput();
 		try {
-			AddressBookEditor.numberOfChoice = 1;
+			AddressBookEditor.recentlyElement = null;
 			page.openEditor(input, AddressBookEditor.ID);
 		} catch (PartInitException e) {
 			System.out.println("Error:" + this.getClass().getName() + ":" + e);

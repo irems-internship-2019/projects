@@ -30,7 +30,7 @@ public class DeleteContactHandler extends AbstractHandler {
 
 		if (selection != null && selection instanceof IStructuredSelection) {
 			ArrayList<Contact> persons = ContactElements.INSTANCE.getContacts();
-			ArrayList<Contact> persons2 = TableForAddressBookDetails.contactDetailsList;
+			ArrayList<Contact> persons2 = TableForAddressBookDetails.contactDetails;
 			IStructuredSelection sel = (IStructuredSelection) selection;
 
 			for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {

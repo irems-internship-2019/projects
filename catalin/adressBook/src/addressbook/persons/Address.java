@@ -14,6 +14,10 @@ public class Address {
 		this.postal_code = postal_code;
 	}
 
+	public Address() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getCountry() {
 		return country;
 	}
