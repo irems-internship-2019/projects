@@ -1,7 +1,5 @@
 package rcpbook.contacts;
 
-import java.util.Random;
-
 public class AddressManager {
 
 	private static int index = 1;

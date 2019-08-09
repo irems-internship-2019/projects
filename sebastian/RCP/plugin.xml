@@ -28,6 +28,7 @@
             name="ContactsView">
       </view>
       <view
+            allowMultiple="false"
             class="rcpbook.view.DetailesView"
             id="RCPBook.Detailes"
             name="DetailesView"
@@ -46,16 +47,14 @@
                relative="org.eclipse.ui.editorss">
          </view>
          <view
+               closeable="true"
                id="RCPBook.Detailes"
                minimized="false"
+               moveable="true"
                relationship="right"
-               relative="RCPBook.view">
-         </view>
-         <view
-               id="RCPBook.Create"
-               minimized="false"
-               relationship="right"
-               relative="RCPBook.Detailes">
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               visible="false">
          </view>
       </perspectiveExtension>
    </extension>
@@ -106,15 +105,8 @@
             id="contactView.actions"
             targetID="RCPBook.view">
          <action
-               class="rcpbook.cmd.Create"
-               id="create.contact.id"
-               label="Create"
-               style="push"
-               toolbarPath="actions"
-               tooltip="Create Contact">
-         </action>
-         <action
                class="rcpbook.cmd.Delete"
+               enablesFor="1"
                id="delete.contact.id"
                label="Delete"
                style="push"
@@ -123,11 +115,20 @@
          </action>
          <action
                class="rcpbook.cmd.Edit"
+               enablesFor="1"
                id="edit.contact.id"
                label="Edit"
                style="push"
                toolbarPath="additions"
                tooltip="Edit Contact ">
+         </action>
+         <action
+               class="rcpbook.cmd.Create"
+               id="create.contact.id"
+               label="Create"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Create Contact">
          </action>
       </viewContribution>
    </extension>

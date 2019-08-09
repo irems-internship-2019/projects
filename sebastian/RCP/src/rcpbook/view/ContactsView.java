@@ -16,8 +16,11 @@ public class ContactsView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
+		
 		parent.setLayout(new GridLayout(2, false));
 		createNewTable.CreateTableUI(parent);
+		
+		getSite().setSelectionProvider(vTools.getContactsViewer());
 	}
 
 

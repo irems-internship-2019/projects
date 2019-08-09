@@ -4,10 +4,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -21,11 +18,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 import rcpbook.contacts.AddressModel;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
-import rcpbook.editor.CheckSelected;
+import rcpbook.view.DetailesView;
 import rcpbook.view.ViewerTools;
 
 public class CreateContactUi {
@@ -35,6 +35,7 @@ public class CreateContactUi {
 	private ViewerTools vTools = new ViewerTools();
 	private ContactsFilter contactFilter = new ContactsFilter();
 	private MyViewerComparator comparator;
+	
 
 	public void CreateTableUI(Composite parent) {
 
@@ -186,6 +187,17 @@ public class CreateContactUi {
 				
 				AddressModel address = new AddressModel();
 				address.addNewEntry(firstElement);
+				
+				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				
+				try {
+					if(activePage.findView(DetailesView.ID) == null)
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("RCPBook.Detailes");
+				} catch (PartInitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				vTools.refreshDetailesView();
 			}
 		});

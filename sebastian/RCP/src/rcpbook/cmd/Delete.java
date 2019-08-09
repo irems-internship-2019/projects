@@ -9,7 +9,6 @@ import org.eclipse.ui.IViewPart;
 
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
-import rcpbook.editor.CheckSelected;
 import rcpbook.view.ContactsView;
 import rcpbook.view.ViewerTools;
 
@@ -40,8 +39,8 @@ public class Delete implements IViewActionDelegate {
 	}
 
 	@Override
-	public void selectionChanged(IAction action, ISelection selection) {
-
+	public void selectionChanged(IAction action, ISelection selection) 
+	{
 	}
 
 //	private boolean delete = false;

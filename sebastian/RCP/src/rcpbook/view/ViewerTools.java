@@ -2,8 +2,6 @@ package rcpbook.view;
 
 import org.eclipse.jface.viewers.TableViewer;
 
-import rcpbook.table.CreateContactUi;
-
 public class ViewerTools {
 
 	private static TableViewer contactsViewer;
