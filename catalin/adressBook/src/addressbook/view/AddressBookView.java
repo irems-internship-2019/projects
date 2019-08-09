@@ -5,10 +5,6 @@ import javax.inject.Inject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -27,63 +23,56 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import addressbook.comparator.ContactComparator;
-import addressbook.editor.AddressBookEditor;
 import addressbook.filter.ContactFilter;
 import addressbook.persons.Contact;
 import addressbook.persons.Contact.ContactElements;
 import addressbook.table.TableForAddressBook;
-import addressbook.table.TableForAddressBookDetails;
 
-public class AddressBookView extends ViewPart {
+public class AddressBookView extends ViewPart 
+{
 	public static final String ID = "addressbook.view.addressbookview";
 	@Inject
 	IWorkbench workbench;
 	private ContactComparator comparator;
 	private TableViewer viewer;
-	TableForAddressBook tableCreater = new TableForAddressBook();
+	private TableForAddressBook tableCreater = new TableForAddressBook();
 
-	private void createDoubleSelector() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+	private void createDoubleSelector() 
+	{
+		viewer.addDoubleClickListener(new IDoubleClickListener() 
+		{
 			@Override
 			public void doubleClick(DoubleClickEvent event) 
 			{
 				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				
-				try {
+				try 
+				{
+					if(!AddressBookDetailsView.elementsSelected.contains(getSelectedItem()))
+					{
+					if(activePage.findView(AddressBookDetailsView.ID) == null)
+					{
+					AddressBookDetailsView.elementsSelected.add(getSelectedItem());
 					activePage.showView(AddressBookDetailsView.ID);
-				} catch (PartInitException e) {
+					refreshView();
+					}
+					else 
+					{
+						AddressBookDetailsView.elementsSelected.add(getSelectedItem());
+						refreshView();
+					}
+					}
+				} catch (PartInitException e) 
+				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				
-				
-//				IStructuredSelection selection = viewer.getStructuredSelection();
-//				Contact firstElement = (Contact) selection.getFirstElement();
-//				if (!TableForAddressBookDetails.contactDetails.contains(firstElement))
-//					TableForAddressBookDetails.contactDetails.add(firstElement);
-//
-//				AddressBookDetailsView object = new AddressBookDetailsView();
-//				object.refresh();
-
-				
+				}	
 			}
 		});
 	}
 
-	private void createSelector() {
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = viewer.getStructuredSelection();
-				Contact firstElement = (Contact) selection.getFirstElement();
-
-//				AddressBookEditor.recentlyElement = firstElement;
-
-			}
-		});
-	}
-
-	private void createViewer(Composite parent) {
+	private void createViewer(Composite parent) 
+	{
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tableCreater.createColumns(parent, viewer);
 		final Table table = viewer.getTable();
@@ -100,7 +89,8 @@ public class AddressBookView extends ViewPart {
 
 	}
 
-	public TableViewer getViewer() {
+	public TableViewer getViewer() 
+	{
 		return viewer;
 	}
 	
@@ -113,7 +103,8 @@ public class AddressBookView extends ViewPart {
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(Composite parent) 
+	{
 		ContactFilter filter = new ContactFilter();
 		parent.setLayout(new GridLayout(2, false));
 		Label searchLabel = new Label(parent, SWT.NONE);
@@ -123,28 +114,37 @@ public class AddressBookView extends ViewPart {
 
 		createViewer(parent);
 		createDoubleSelector();
-		createSelector();
 
 		comparator = new ContactComparator();
 		viewer.setComparator(comparator);
 
-		searchText.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent ke) {
+		searchText.addKeyListener(new KeyAdapter() 
+		{
+			public void keyReleased(KeyEvent ke) 
+			{
 				filter.setSearchText(searchText.getText());
 				viewer.refresh();
 			}
 		});
 		viewer.addFilter(filter);
-
-		getSite().setSelectionProvider(viewer);
 	}
 
-	public void refresh() {
+	public void refresh() 
+	{
 		viewer.refresh();
 	}
 
 	@Override
-	public void setFocus() {
+	public void setFocus() 
+	{
 		viewer.getControl().setFocus();
+	}
+	
+	private void refreshView()
+	{
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage.findView(AddressBookDetailsView.ID);
+		
+		addressBookDetailsView.refresh();
 	}
 }

@@ -1,7 +1,5 @@
 package addressbook.table;
 
-import java.util.ArrayList;
-
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -14,11 +12,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import addressbook.comparator.ContactDetailsComparator;
 import addressbook.persons.Contact;
 
-public class TableForAddressBookDetails {
-	public static ArrayList<Contact> contactDetails = new ArrayList<Contact>();
-
+public class TableForAddressBookDetails 
+{
 	private TableViewerColumn createTableViewerColumn(TableViewer viewer, String title, int bound,
-			final int colNumber) {
+			final int colNumber) 
+	{
 		TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
 		TableColumn column = viewerColumn.getColumn();
 		column.setText(title);
@@ -29,10 +27,13 @@ public class TableForAddressBookDetails {
 		return viewerColumn;
 	}
 
-	private SelectionAdapter getSelectionAdapter(TableViewer viewer, TableColumn column, int index) {
-		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+	private SelectionAdapter getSelectionAdapter(TableViewer viewer, TableColumn column, int index) 
+	{
+		SelectionAdapter selectionAdapter = new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				ContactDetailsComparator comparator = (ContactDetailsComparator) viewer.getComparator();
 				comparator.setColumn(index);
 
@@ -45,7 +46,8 @@ public class TableForAddressBookDetails {
 		return selectionAdapter;
 	}
 
-	public void viewerLayout(TableViewer viewer) {
+	public void viewerLayout(TableViewer viewer) 
+	{
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
@@ -55,68 +57,83 @@ public class TableForAddressBookDetails {
 		viewer.getControl().setLayoutData(gridData);
 	}
 
-	public void createColumns(Composite parent, TableViewer viewer) {
+	public void createColumns(Composite parent, TableViewer viewer) 
+	{
 		String[] titles = { "Id", "First name", "Last name", "Country", "City", "Street", "Postal Code" };
 		int[] bounds = { 50, 100 };
 
 		TableViewerColumn column = createTableViewerColumn(viewer, titles[0], bounds[0], 0);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return Integer.toString(select.getId());
 			}
 		});
 
 		column = createTableViewerColumn(viewer, titles[1], bounds[1], 1);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return select.getFirstName();
 			}
 		});
 
 		column = createTableViewerColumn(viewer, titles[2], bounds[1], 2);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return select.getLastName();
 			}
 		});
 
 		column = createTableViewerColumn(viewer, titles[3], bounds[1], 3);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return select.getAddress().getCountry();
 			}
 		});
 
 		column = createTableViewerColumn(viewer, titles[4], bounds[1], 4);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return select.getAddress().getCity();
 			}
 		});
 
 		column = createTableViewerColumn(viewer, titles[5], bounds[1], 5);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return select.getAddress().getStreet();
 			}
 		});
 
 		column = createTableViewerColumn(viewer, titles[6], bounds[1], 6);
-		column.setLabelProvider(new ColumnLabelProvider() {
+		column.setLabelProvider(new ColumnLabelProvider() 
+		{
 			@Override
-			public String getText(Object element) {
+			public String getText(Object element) 
+			{
 				Contact select = (Contact) element;
 				return select.getAddress().getPostal_code();
 			}

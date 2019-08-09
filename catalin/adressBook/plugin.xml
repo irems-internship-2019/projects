@@ -52,37 +52,10 @@
                minimized="false"
                relationship="right"
                relative="org.eclipse.ui.editorss"
-               standalone="true">
+               standalone="true"
+               visible="false">
          </view>
       </perspectiveExtension>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:addressbook.view.addressbookview">
-         <command
-               commandId="addressbook.command.addcontact"
-               icon="icons/add-clipart-to-photos.png"
-               label="Add"
-               style="push"
-               tooltip="Add">
-         </command>
-         <command
-               commandId="addressbook.command.editcontact"
-               icon="icons/descărcare.png"
-               label="Edit"
-               style="push"
-               tooltip="Edit">
-         </command>
-         <command
-               commandId="addressbook.command.deletecontact"
-               icon="icons/Octagon_delete.svg.png"
-               label="Delete"
-               style="push"
-               tooltip="Delete">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -94,24 +67,6 @@
       </editor>
    </extension>
    <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="addressbook.command.AddContactHandler"
-            id="addressbook.command.addcontact"
-            name="AddContactHandler">
-      </command>
-      <command
-            defaultHandler="addressbook.command.EditContactHandler"
-            id="addressbook.command.editcontact"
-            name="EditContactHandler">
-      </command>
-      <command
-            defaultHandler="addressbook.command.DeleteContactHandler"
-            id="addressbook.command.deletecontact"
-            name="DeleteContactHandler">
-      </command>
-   </extension>
-   <extension
          point="org.eclipse.ui.viewActions">
       <viewContribution
             id="AddressBook.viewContribution"
@@ -119,10 +74,31 @@
          <action
                class="addressbook.action.DeleteAction"
                enablesFor="1"
+               icon="icons/Octagon_delete.svg.png"
                id="deleteAddressBookAction"
                label="Delete"
                style="push"
-               toolbarPath="additions">
+               toolbarPath="additions"
+               tooltip="Delete">
+         </action>
+         <action
+               class="addressbook.action.EditAction"
+               enablesFor="1"
+               icon="icons/descărcare.png"
+               id="editAddressBookAction"
+               label="Edit"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Edit">
+         </action>
+         <action
+               class="addressbook.action.AddAction"
+               icon="icons/add-clipart-to-photos.png"
+               id="addAddressBookAction"
+               label="Add"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Add">
          </action>
       </viewContribution>
    </extension>

@@ -1,5 +1,7 @@
 package addressbook.view;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -17,17 +19,21 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.part.ViewPart;
 import addressbook.comparator.ContactDetailsComparator;
 import addressbook.filter.ContactDetailsFilter;
+import addressbook.persons.Contact;
 import addressbook.table.TableForAddressBookDetails;
 
-public class AddressBookDetailsView extends ViewPart {
+public class AddressBookDetailsView extends ViewPart 
+{
 	public static final String ID = "addressbook.view.addressbookdetailsview";
 	@Inject
 	IWorkbench workbench;
 	private ContactDetailsComparator comparator;
-	private static TableViewer viewer;
-	TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
+	private TableViewer viewer;
+	private TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
+	public static ArrayList<Contact> elementsSelected = new ArrayList<Contact>();
 
-	private void createViewer(Composite parent) {
+	private void createViewer(Composite parent) 
+	{
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tableCreater.createColumns(parent, viewer);
 		final Table table = viewer.getTable();
@@ -36,20 +42,19 @@ public class AddressBookDetailsView extends ViewPart {
 
 		viewer.setContentProvider(new ArrayContentProvider());
 
-		viewer.setInput(TableForAddressBookDetails.contactDetails);
-
-		getSite().setSelectionProvider(viewer);
+		viewer.setInput(elementsSelected);
 
 		tableCreater.viewerLayout(viewer);
-
 	}
 
-	public TableViewer getViewer() {
+	public TableViewer getViewer() 
+	{
 		return viewer;
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(Composite parent) 
+	{
 		ContactDetailsFilter filter = new ContactDetailsFilter();
 		parent.setLayout(new GridLayout(2, false));
 		Label searchLabel = new Label(parent, SWT.NONE);
@@ -62,23 +67,25 @@ public class AddressBookDetailsView extends ViewPart {
 		comparator = new ContactDetailsComparator();
 		viewer.setComparator(comparator);
 
-		searchText.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent ke) {
+		searchText.addKeyListener(new KeyAdapter() 
+		{
+			public void keyReleased(KeyEvent ke) 
+			{
 				filter.setSearchText(searchText.getText());
 				viewer.refresh();
 			}
 		});
 		viewer.addFilter(filter);
-
-		getSite().setSelectionProvider(viewer);
 	}
 
-	public void refresh() {
+	public void refresh() 
+	{
 		viewer.refresh();
 	}
 
 	@Override
-	public void setFocus() {
+	public void setFocus() 
+	{
 		viewer.getControl().setFocus();
 	}
 }

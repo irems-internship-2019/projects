@@ -1,12 +1,14 @@
 package addressbook.persons;
 
-public class Address {
+public class Address 
+{
 	private String country;
 	private String city;
 	private String street;
 	private String postal_code;
 
-	public Address(String country, String city, String street, String postal_code) {
+	public Address(String country, String city, String street, String postal_code) 
+	{
 		super();
 		this.country = country;
 		this.city = city;
@@ -14,39 +16,48 @@ public class Address {
 		this.postal_code = postal_code;
 	}
 
-	public Address() {
+	public Address() 
+	{
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getCountry() {
+	public String getCountry() 
+	{
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(String country) 
+	{
 		this.country = country;
 	}
 
-	public String getCity() {
+	public String getCity() 
+	{
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(String city) 
+	{
 		this.city = city;
 	}
 
-	public String getStreet() {
+	public String getStreet() 
+	{
 		return street;
 	}
 
-	public void setStreet(String street) {
+	public void setStreet(String street) 
+	{
 		this.street = street;
 	}
 
-	public String getPostal_code() {
+	public String getPostal_code() 
+	{
 		return postal_code;
 	}
 
-	public void setPostal_code(String postal_code) {
+	public void setPostal_code(String postal_code) 
+	{
 		this.postal_code = postal_code;
 	}
 }

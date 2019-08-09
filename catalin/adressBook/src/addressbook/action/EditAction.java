@@ -7,11 +7,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import addressbook.persons.Contact;
-import addressbook.persons.Contact.ContactElements;
+import addressbook.editor.AddressBookEditor;
 import addressbook.view.AddressBookView;
 
-public class DeleteAction implements IViewActionDelegate 
+public class EditAction implements IViewActionDelegate 
 {
 	private AddressBookView view;
 
@@ -24,20 +23,18 @@ public class DeleteAction implements IViewActionDelegate
 	@Override
 	public void run(IAction action) 
 	{
-		boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Delete",
-				"Do you want to remove?");
+		boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Edit",
+				"Do you want to edit?");
 
 		if (openQuestion) 
 		{
-			Contact deletableContact = view.getSelectedItem();
-			ContactElements.INSTANCE.getContacts().remove(deletableContact);
-
-			view.refresh();
+			AddressBookEditor.openEditor(view.getSelectedItem());
 		}
 	}
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) 
 	{
+		// TODO Auto-generated method stub
 	}
 }

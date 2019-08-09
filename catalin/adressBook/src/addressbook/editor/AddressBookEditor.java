@@ -1,42 +1,34 @@
 package addressbook.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
+
 import addressbook.persons.Address;
 import addressbook.persons.Contact;
 import addressbook.persons.Contact.ContactElements;
-import addressbook.view.AddressBookDetailsView;
 import addressbook.view.AddressBookView;
 
 public class AddressBookEditor extends EditorPart 
 {
 	public static final String ID = "addressbook.editor.addressbookeditor";
-	
 	private ContactElements persons = ContactElements.INSTANCE;
-	
 	private boolean isDirty;
-	
-	private Text textId;
+
 	private Text textFirstName;
 	private Text textLastName;
 	private Text textCountry;
@@ -48,19 +40,18 @@ public class AddressBookEditor extends EditorPart
 
 	private Contact contact;
 
-	public static void openEditor(Contact model)
+	public static void openEditor(Contact model) 
 	{
 		AddressBookEditorInput input = new AddressBookEditorInput();
-		
+
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		
+
 		try 
 		{
 			AddressBookEditor addressBookEditor = (AddressBookEditor) activePage.openEditor(input, ID);
 			addressBookEditor.setModel(model);
 			addressBookEditor.updateWidgets();
-		} 
-		catch (PartInitException e) 
+		} catch (PartInitException e) 
 		{
 			e.printStackTrace();
 		}
@@ -72,51 +63,40 @@ public class AddressBookEditor extends EditorPart
 		parent.setLayout(new FillLayout());
 		Composite body = new Composite(parent, SWT.NONE);
 		body.setLayout(new GridLayout(4, true));
-	
-		createLabel(body, "Id");
-		textId = new Text(body, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textId);
-	
+
 		createLabel(body, "First Name");
 		textFirstName = new Text(body, SWT.BORDER);
 		textFirstName.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textFirstName);
-	
+
 		createLabel(body, "Last Name");
 		textLastName = new Text(body, SWT.BORDER);
 		textLastName.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textLastName);
-	
+
 		createLabel(body, "Country");
 		textCountry = new Text(body, SWT.BORDER);
 		textCountry.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textCountry);
-	
+
 		createLabel(body, "City");
 		textCity = new Text(body, SWT.BORDER);
 		textCity.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textCity);
-	
+
 		createLabel(body, "Street");
 		textStreet = new Text(body, SWT.BORDER);
 		textStreet.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textStreet);
-	
+
 		createLabel(body, "Postal Code");
 		textPostalCode = new Text(body, SWT.BORDER);
 		textPostalCode.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textPostalCode);
-	
+
 		createLabel(body, "Phone Number");
 		textPhoneNumber = new Text(body, SWT.BORDER);
 		textPhoneNumber.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textPhoneNumber);
-	
+
 		createLabel(body, "E-mail");
 		textEmail = new Text(body, SWT.BORDER);
 		textEmail.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1));
-		listenerForText(textEmail);
+
+		listenerForAllText();
 	}
 
 	private void createLabel(Composite parent, String element) 
@@ -128,118 +108,80 @@ public class AddressBookEditor extends EditorPart
 
 	private void listenerForText(Text text) 
 	{
-		text.addKeyListener(new KeyListener() 
+		text.addModifyListener(new ModifyListener() 
 		{
 			@Override
-			public void keyReleased(KeyEvent e) 
-			{
-			}
-	
-			@Override
-			public void keyPressed(KeyEvent e) 
+			public void modifyText(ModifyEvent e) 
 			{
 				setDirty(true);
 			}
 		});
 	}
-	
-	private void updateWidgets()
+
+	private void listenerForAllText() 
 	{
-		textId.setText(Integer.toString(contact.getId()));
-		textFirstName.setText(contact.getFirstName());
-		textLastName.setText(contact.getLastName());
-		textCountry.setText(contact.getAddress().getCountry());
-		textCity.setText(contact.getAddress().getCity());
-		textStreet.setText(contact.getAddress().getStreet());
-		textPostalCode.setText(contact.getAddress().getPostal_code());
-		textPhoneNumber.setText(Integer.toString(contact.getPhoneNumber()));
-		textEmail.setText(contact.getEmailAddress());
+		listenerForText(textFirstName);
+		listenerForText(textLastName);
+		listenerForText(textCountry);
+		listenerForText(textCity);
+		listenerForText(textStreet);
+		listenerForText(textPostalCode);
+		listenerForText(textPhoneNumber);
+		listenerForText(textEmail);
 	}
 
-	
-//	private boolean principalCondition() 
-//	{
-//		String checkNumbers = "[0-9]+";
-//		if (textId.getText().matches(checkNumbers) && textId.getText().length() != 0
-//				&& textFirstName.getText().length() != 0 && textLastName.getText().length() != 0
-//				&& textCountry.getText().length() != 0 && textCity.getText().length() != 0
-//				&& textStreet.getText().length() != 0 && textPostalCode.getText().length() != 0
-//				&& textPhoneNumber.getText().matches(checkNumbers) && textPhoneNumber.getText().length() != 0
-//				&& textEmail.getText().length() != 0)
-//			return true;
-//		else
-//			return false;
-//	}
+	private void updateWidgets() 
+	{
+		if (contact != null) 
+		{
+			textFirstName.setText(contact.getFirstName());
+			textLastName.setText(contact.getLastName());
+			textCountry.setText(contact.getAddress().getCountry());
+			textCity.setText(contact.getAddress().getCity());
+			textStreet.setText(contact.getAddress().getStreet());
+			textPostalCode.setText(contact.getAddress().getPostal_code());
+			textPhoneNumber.setText(contact.getPhoneNumber());
+			textEmail.setText(contact.getEmailAddress());
+			setDirty(false);
+		}
+	}
 
-//	private void conditionForAdd() {
-//		Contact person;
-//		if (principalCondition() == true) {
-//			person = new Contact(Integer.parseInt(textId.getText()), textFirstName.getText(), textLastName.getText(),
-//					new Address(textCountry.getText(), textCity.getText(), textStreet.getText(),
-//							textPostalCode.getText()),
-//					Integer.parseInt(textPhoneNumber.getText()), textEmail.getText());
-//			persons.getContacts().add(person);
-//			object.refresh();
-//			setDirty(false);
-//		}
-//	}
+	private void updateContentOfView() 
+	{
+		if (isDirty == true) 
+		{
+			if (contact == null) 
+			{
+				conditionForAdd();
+			} else
+				conditionForEdit();
+		}
+	}
+
+	private void conditionForAdd() 
+	{
+		Contact person;
+		person = new Contact(textFirstName.getText(), textLastName.getText(),
+				new Address(textCountry.getText(), textCity.getText(), textStreet.getText(), textPostalCode.getText()),
+				textPhoneNumber.getText(), textEmail.getText());
+		persons.getContacts().add(person);
+		refreshView();
+		setDirty(false);
+	}
 
 	private void conditionForEdit() 
 	{
-//		AddressBookDetailsView secondObject = new AddressBookDetailsView();
-
-		contact = new Contact(id, firstName, lastName, address, phoneNumber, emailAddress)
-		
-		if (principalCondition() == true) 
-		{
-			if (!textId.getText().equals(Integer.toString(recentlyElement.getId()))) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement))
-						.setId(Integer.parseInt(textId.getText()));
-				object.refresh();
-			}
-			if (!textFirstName.getText().equals(recentlyElement.getFirstName())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement))
-						.setFirstName(textFirstName.getText());
-				object.refresh();
-			}
-			if (!textLastName.getText().equals(recentlyElement.getLastName())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement))
-						.setLastName(textLastName.getText());
-				object.refresh();
-			}
-			if (!textCountry.getText().equals(recentlyElement.getAddress().getCountry())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement)).getAddress()
-						.setCountry(textCountry.getText());
-				object.refresh();
-			}
-			if (!textCity.getText().equals(recentlyElement.getAddress().getCity())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement)).getAddress()
-						.setCity(textCity.getText());
-				object.refresh();
-			}
-			if (!textStreet.getText().equals(recentlyElement.getAddress().getStreet())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement)).getAddress()
-						.setStreet(textStreet.getText());
-				object.refresh();
-			}
-			if (!textPostalCode.getText().equals(recentlyElement.getAddress().getPostal_code())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement)).getAddress()
-						.setPostal_code(textPostalCode.getText());
-				object.refresh();
-			}
-			if (!textPhoneNumber.getText().equals(Integer.toString(recentlyElement.getPhoneNumber()))) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement))
-						.setPhoneNumber(Integer.parseInt(textPhoneNumber.getText()));
-				object.refresh();
-			}
-			if (!textEmail.getText().equals(recentlyElement.getEmailAddress())) {
-				persons.getContacts().get(persons.getContacts().indexOf(recentlyElement))
-						.setEmailAddress(textEmail.getText());
-				object.refresh();
-			}
-			secondObject.refresh();
-			setDirty(false);
-		}
+		Contact element = new Contact(textFirstName.getText(), textLastName.getText(),
+				new Address(textCountry.getText(), textCity.getText(), textStreet.getText(), textPostalCode.getText()),
+				textPhoneNumber.getText(), textEmail.getText());
+		int idNumber = contact.getId();
+		persons.getContacts().remove(persons.getContacts().indexOf(contact));
+		persons.getContacts().add(element);
+		persons.getContacts().get(persons.getContacts().indexOf(element)).setId(idNumber);
+		contact = element;
+		Contact.index--;
+		refreshView();
+		setDirty(false);
 	}
 
 	private void setModel(Contact model) 
@@ -250,13 +192,12 @@ public class AddressBookEditor extends EditorPart
 	@Override
 	public void doSave(IProgressMonitor monitor) 
 	{
-
+		updateContentOfView();
 	}
 
 	@Override
 	public void doSaveAs() 
 	{
-
 	}
 
 	@Override
@@ -266,7 +207,7 @@ public class AddressBookEditor extends EditorPart
 		{
 			throw new PartInitException("Invalid Input: Must be " + AddressBookEditorInput.class.getName());
 		}
-		
+
 		setSite(site);
 		setInput(input);
 	}
@@ -285,7 +226,7 @@ public class AddressBookEditor extends EditorPart
 	{
 		if (this.isDirty() == isDirty)
 			return;
-		
+
 		this.isDirty = isDirty;
 		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
 	}
@@ -299,5 +240,13 @@ public class AddressBookEditor extends EditorPart
 	@Override
 	public void setFocus() 
 	{
+	}
+
+	private void refreshView() 
+	{
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		AddressBookView addressBookView = (AddressBookView) activePage.findView(AddressBookView.ID);
+
+		addressBookView.refresh();
 	}
 }
