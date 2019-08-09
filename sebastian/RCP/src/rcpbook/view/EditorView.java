@@ -48,15 +48,14 @@ public class EditorView extends EditorPart {
 
 		createEditorFields(parent);
 
-		createAddButton(parent);
 	}
 
 	private void createEditorFields(Composite parent) {
 
 		int i = 0;
 
-		String[] labelTags = { "FirstName: ", "Last Name: ", "Phone Number: ", "Email: ", "Country: ", "City: ",
-				"Street: ", "Postal Code: " };
+		String[] labelTags = { "FirstName: ", "Last Name: ", "Country: ", "City: ", "Street: ", "Postal Code: ",
+				"Phone Number: ", "Email: " };
 
 		for (String str : labelTags) {
 			new Label(parent, SWT.NONE).setText(str);
@@ -72,42 +71,23 @@ public class EditorView extends EditorPart {
 		}
 	}
 
-	private void createAddButton(Composite parent) {
-		Button button = new Button(parent, SWT.NONE);
-		button.setText("Submit");
-		button.addSelectionListener(makeButtonSelectionListner(button));
-	}
-
-	private SelectionListener makeButtonSelectionListner(Button button) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				if (contact != null)
-					editContact();
-				else
-					newContact();
-			}
-		};
-	}
-
 	private void editContact() {
 
 		// this is better if you delete the contact and insert it back at ID - 1
-		
+
 		ContactsManager contact = newContact.getElements().get(this.contact.getIdForComparator() - 1);
 
 		contact.setFirst(textNames[0].getText());
 		contact.setSecond(textNames[1].getText());
-		contact.setPhoneNumber(textNames[2].getText());
-		contact.setEmail(textNames[3].getText());
-		contact.getAddress().setCountry(textNames[4].getText());
-		contact.getAddress().setCity(textNames[5].getText());
-		contact.getAddress().setStreet(textNames[6].getText());
-		contact.getAddress().setPostalCode(textNames[7].getText());
+		contact.getAddress().setCountry(textNames[2].getText());
+		contact.getAddress().setCity(textNames[3].getText());
+		contact.getAddress().setStreet(textNames[4].getText());
+		contact.getAddress().setPostalCode(textNames[5].getText());
+		contact.setPhoneNumber(textNames[6].getText());
+		contact.setEmail(textNames[7].getText());
 		
-        //#########################################################################
-		
+		// #########################################################################
+
 		setDirty(false);
 		// CheckSelected.setSelectedToNull();
 		contact = null;
@@ -127,16 +107,17 @@ public class EditorView extends EditorPart {
 	}
 
 	public void updateWidgets() {
-		if (contact != null) {
-			textNames[0].setText(contact.getFirst());
-			textNames[1].setText(contact.getSecond());
-			textNames[2].setText(contact.getPhone());
-			textNames[3].setText(contact.getEmail());
-			textNames[4].setText(contact.getAddress().getCountry());
-			textNames[5].setText(contact.getAddress().getCity());
-			textNames[6].setText(contact.getAddress().getStreet());
-			textNames[7].setText(contact.getAddress().getPostalCode());
-		}
+
+		textNames[0].setText(contact.getFirst());
+		textNames[1].setText(contact.getSecond());
+		textNames[2].setText(contact.getAddress().getCountry());
+		textNames[3].setText(contact.getAddress().getCity());
+		textNames[4].setText(contact.getAddress().getStreet());
+		textNames[5].setText(contact.getAddress().getPostalCode());
+		textNames[6].setText(contact.getPhone());
+		textNames[7].setText(contact.getEmail());
+	
+
 	}
 
 	public void setModel(ContactsManager model) {
@@ -159,7 +140,8 @@ public class EditorView extends EditorPart {
 
 	public void setModelAndWidget(ContactsManager model) {
 		setModel(model);
-		updateWidgets();
+		if (contact != null)
+			updateWidgets();
 	}
 
 	@Override
@@ -174,7 +156,7 @@ public class EditorView extends EditorPart {
 //	
 //
 //		    editor.doSave(monitor);
-		
+
 		if (contact != null)
 			editContact();
 		else

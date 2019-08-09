@@ -84,7 +84,7 @@ public class CreateContactUi {
 	}
 
 	private void createTableColums(final Composite parent) {
-		String[] columnTitles = { "ID", "First name", "Last name", "Address", "Phone Number", "Email" };
+		String[] columnTitles = { "ID", "First name", "Last name", "Street", "Phone Number", "Email" };
 		int bounds = 100,i = 0;
 		TableViewerColumn colum;
 		

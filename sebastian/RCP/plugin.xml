@@ -59,38 +59,6 @@
       </perspectiveExtension>
    </extension>
    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:RCPBook.view">
-         <command
-               commandId="rcpbook.cmd.AddNewElement"
-               icon="icons/eclipse16.png"
-               label="Create?"
-               style="push"
-               tooltip="Create New Element">
-         </command>
-         <command
-               commandId="rcpbook.cmd.EditElement"
-               label="Edit"
-               style="push">
-         </command>
-      </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="rcpbook.cmd.AddNewElement"
-            id="rcpbook.cmd.AddNewElement"
-            name="NewElement">
-      </command>
-      <command
-            defaultHandler="rcpbook.cmd.EditElement"
-            id="rcpbook.cmd.EditElement"
-            name="EditElement">
-      </command>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="rcpbook.view.EditorView"
