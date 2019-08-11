@@ -39,9 +39,9 @@ public class MyViewerComparator extends ViewerComparator {
 		switch (propertyIndex) {
 		
 		case 0:
-			if (p1.getIdForComparator() == (p2.getIdForComparator()))
+			if (p1.getIntId() == (p2.getIntId()))
 				rc = 0;
-			else if (p1.getIdForComparator() >= (p2.getIdForComparator()))
+			else if (p1.getIntId() >= (p2.getIntId()))
 				rc = 1;
 			else
 				rc = (-1);

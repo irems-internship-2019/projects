@@ -73,26 +73,15 @@ public class EditorView extends EditorPart {
 
 	private void editContact() {
 
-		// this is better if you delete the contact and insert it back at ID - 1
-
-		ContactsManager contact = newContact.getElements().get(this.contact.getIdForComparator() - 1);
-
-		contact.setFirst(textNames[0].getText());
-		contact.setSecond(textNames[1].getText());
-		contact.getAddress().setCountry(textNames[2].getText());
-		contact.getAddress().setCity(textNames[3].getText());
-		contact.getAddress().setStreet(textNames[4].getText());
-		contact.getAddress().setPostalCode(textNames[5].getText());
-		contact.setPhoneNumber(textNames[6].getText());
-		contact.setEmail(textNames[7].getText());
-		
-		// #########################################################################
+		newContact.getElements().remove(newContact.getElements().get(contact.getIntId() - 1));
+		newContact.addContactAtIndex(new ContactsManager(
+				textNames[0].getText(), textNames[1].getText(), new AddressManager(textNames[2].getText(),
+						textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
+				textNames[6].getText(), textNames[7].getText()), contact.getIntId() - 1, contact.getIntId());
 
 		setDirty(false);
-		// CheckSelected.setSelectedToNull();
 		contact = null;
 		vTools.refreshContactsViewer();
-
 	}
 
 	private void newContact() {

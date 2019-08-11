@@ -3,7 +3,7 @@ package rcpbook.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressModel {
+public class DetailesModel {
 
 	// ViewerTools vTools = new ViewerTools();
 

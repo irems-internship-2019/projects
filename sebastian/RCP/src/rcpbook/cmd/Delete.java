@@ -30,7 +30,7 @@ public class Delete implements IViewActionDelegate {
 		if (delete) {
 			ContactsManager deletableContact = view.getSelectedItem();
 			if (deletableContact != null)
-				contact.getElements().remove(contact.getElements().get(deletableContact.getIdForComparator() - 1));
+				contact.getElements().remove(contact.getElements().get(deletableContact.getIntId() - 1));
 			else
 				MessageDialog.openError(Display.getDefault().getActiveShell(), "Delete Contact", "Nothing selected");
 
@@ -39,31 +39,31 @@ public class Delete implements IViewActionDelegate {
 	}
 
 	@Override
-	public void selectionChanged(IAction action, ISelection selection) 
-	{
+	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
-//	private boolean delete = false;
-//
-//	@Override
-//	public void run(IAction action) 
-//	{
-//		delete = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Delete Contact", "Are you shure you want to delete the selected contact?");
-//		
-//		if(delete)
-//		contact.deleteSelectedContact();
-//	
-//	}
-//
-//	@Override
-//	public void selectionChanged(IAction action, ISelection selection) 
-//	{
-//		
-//	}
-//
-//	@Override
-//	public void init(IViewPart view) 
-//	{
-//		
-//	}
+	// private boolean delete = false;
+	//
+	// @Override
+	// public void run(IAction action)
+	// {
+	// delete = MessageDialog.openQuestion(Display.getDefault().getActiveShell(),
+	// "Delete Contact", "Are you shure you want to delete the selected contact?");
+	//
+	// if(delete)
+	// contact.deleteSelectedContact();
+	//
+	// }
+	//
+	// @Override
+	// public void selectionChanged(IAction action, ISelection selection)
+	// {
+	//
+	// }
+	//
+	// @Override
+	// public void init(IViewPart view)
+	// {
+	//
+	// }
 }

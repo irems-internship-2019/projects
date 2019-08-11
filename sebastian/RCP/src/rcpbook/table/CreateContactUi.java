@@ -22,7 +22,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import rcpbook.contacts.AddressModel;
+import rcpbook.contacts.DetailesModel;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
 import rcpbook.view.DetailesView;
@@ -35,7 +35,8 @@ public class CreateContactUi {
 	private ViewerTools vTools = new ViewerTools();
 	private ContactsFilter contactFilter = new ContactsFilter();
 	private MyViewerComparator comparator;
-	
+	private int iterator = 0;
+	int i = 0;
 
 	public void CreateTableUI(Composite parent) {
 
@@ -45,8 +46,8 @@ public class CreateContactUi {
 		createTableColums(parent);
 
 		createFilter();
-		
-		//addSingleClickListner();
+
+		// addSingleClickListner();
 
 		addDoubleClickListner();
 
@@ -85,71 +86,113 @@ public class CreateContactUi {
 
 	private void createTableColums(final Composite parent) {
 		String[] columnTitles = { "ID", "First name", "Last name", "Street", "Phone Number", "Email" };
-		int bounds = 100,i = 0;
-		TableViewerColumn colum;
-		
-		for(String title: columnTitles) 
-		{
-			
+
+		int bounds = 100;
+
+		TableViewerColumn column;
+
+		for (String title : columnTitles) {
+			column = createTableViewerColumn(title, bounds, i);
+			column.setLabelProvider(new ColumnLabelProvider() {
+				public String getText(Object element) {
+					if (element instanceof ContactsManager) {
+
+						switch (iterator) {
+						case 0:
+							iterator++;
+							return ((ContactsManager) element).getID();
+						case 1:
+							iterator++;
+							return ((ContactsManager) element).getFirst();
+						case 2:
+							iterator++;
+							return ((ContactsManager) element).getSecond();
+						case 3:
+							iterator++;
+							return ((ContactsManager) element).getAddress().getStreet();
+						case 4:
+							iterator++;
+							return ((ContactsManager) element).getPhone();
+						case 5:
+							iterator = 0;
+							return ((ContactsManager) element).getEmail();
+						default:
+							// code doesn't reach this
+							iterator = 0;
+							break;
+						}
+					}
+					return super.getText(element);
+				}
+			});
+			i++;
 		}
-		
-		
-		TableViewerColumn column = createTableViewerColumn(columnTitles[0], bounds, 0);
-		column.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ContactsManager)
-					return ((ContactsManager) element).getID();
-				return super.getText(element);
-			}
-		});
 
-		column = createTableViewerColumn(columnTitles[1], bounds, 1);
-		column.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ContactsManager)
-					return ((ContactsManager) element).getFirst();
-				return super.getText(element);
-			}
-
-		});
-
-		column = createTableViewerColumn(columnTitles[2], bounds, 2);
-		column.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ContactsManager)
-					return ((ContactsManager) element).getSecond();
-				return super.getText(element);
-			}
-		});
-
-		column = createTableViewerColumn(columnTitles[3], bounds, 3);
-		column.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ContactsManager)
-					return ((ContactsManager) element).getAddress().getStreet();
-				return super.getText(element);
-			}
-
-		});
-
-		column = createTableViewerColumn(columnTitles[4], bounds, 4);
-		column.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ContactsManager)
-					return ((ContactsManager) element).getPhone();
-				return super.getText(element);
-			}
-		});
-
-		column = createTableViewerColumn(columnTitles[5], bounds, 5);
-		// column.setEditingSupport(new OptionEditingSupport(tableViewer));
-		column.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ContactsManager)
-					return ((ContactsManager) element).getEmail();
-				return super.getText(element);
-			}
-		});
+		// int bounds = 100,i = 0;
+//		TableViewerColumn colum;
+//		
+//		for(String title: columnTitles) 
+//		{
+//			
+//		}
+//		
+//		
+//		TableViewerColumn column = createTableViewerColumn(columnTitles[0], bounds, 0);
+//		column.setLabelProvider(new ColumnLabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ContactsManager)
+//					return ((ContactsManager) element).getID();
+//				return super.getText(element);
+//			}
+//		});
+//
+//		column = createTableViewerColumn(columnTitles[1], bounds, 1);
+//		column.setLabelProvider(new ColumnLabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ContactsManager)
+//					return ((ContactsManager) element).getFirst();
+//				return super.getText(element);
+//			}
+//
+//		});
+//
+//		column = createTableViewerColumn(columnTitles[2], bounds, 2);
+//		column.setLabelProvider(new ColumnLabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ContactsManager)
+//					return ((ContactsManager) element).getSecond();
+//				return super.getText(element);
+//			}
+//		});
+//
+//		column = createTableViewerColumn(columnTitles[3], bounds, 3);
+//		column.setLabelProvider(new ColumnLabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ContactsManager)
+//					return ((ContactsManager) element).getAddress().getStreet();
+//				return super.getText(element);
+//			}
+//
+//		});
+//
+//		column = createTableViewerColumn(columnTitles[4], bounds, 4);
+//		column.setLabelProvider(new ColumnLabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ContactsManager)
+//					return ((ContactsManager) element).getPhone();
+//				return super.getText(element);
+//			}
+//		});
+//
+//		column = createTableViewerColumn(columnTitles[5], bounds, 5);
+//		// column.setEditingSupport(new OptionEditingSupport(tableViewer));
+//		column.setLabelProvider(new ColumnLabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ContactsManager)
+//					return ((ContactsManager) element).getEmail();
+//				return super.getText(element);
+//			}
+//		});
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
@@ -179,41 +222,28 @@ public class CreateContactUi {
 
 	private void addDoubleClickListner() {
 		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			
+
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				IStructuredSelection selection = tableViewer.getStructuredSelection();
 				ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
-				
-				AddressModel address = new AddressModel();
+
+				DetailesModel address = new DetailesModel();
 				address.addNewEntry(firstElement);
-				
+
 				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				
+
 				try {
-					if(activePage.findView(DetailesView.ID) == null)
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("RCPBook.Detailes");
+					if (activePage.findView(DetailesView.ID) == null)
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+								.showView("RCPBook.Detailes");
 				} catch (PartInitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				vTools.refreshDetailesView();
 			}
 		});
 	}
-	
-//	private void addSingleClickListner() {
-//		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-//			
-//			@Override
-//			public void selectionChanged(SelectionChangedEvent event) {
-//				IStructuredSelection selection = tableViewer.getStructuredSelection();
-//			    ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
-//				
-//			    CheckSelected.setSelectedItem(firstElement);
-//				 
-//			}
-//		});
-//	}
 }

@@ -20,13 +20,11 @@ public class ContactsModel {
 	public void addNewContact(ContactsManager newEntry) {
 		contacts.add(newEntry);
 	}
-
-//	public void deleteSelectedContact() {
-//		if (CheckSelected.getSelectedItem() != null) {
-//			contacts.remove(contacts.get(CheckSelected.getSelectedItem().getIdForComparator() - 1));
-//			vTools.refreshContactsViewer();
-//		} else
-//			MessageDialog.openError(Display.getDefault().getActiveShell(), "Delete Contact", "Nothing selected");
-//	}
-
+	
+	public void addContactAtIndex(ContactsManager newEntry, int index, int oldContactIndex) {
+		contacts.add(index, newEntry);
+		//this is used to assign the old index to the new object
+		contacts.get(index).setID(oldContactIndex);
+		
+	}
 }
