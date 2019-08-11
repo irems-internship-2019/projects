@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Adress
 Bundle-SymbolicName: Adress;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: adress.Activator
+Bundle-Activator: address.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.felix.scr,

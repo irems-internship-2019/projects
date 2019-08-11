@@ -1,4 +1,4 @@
-package adress;
+package address;
 
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;

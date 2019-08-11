@@ -1,4 +1,4 @@
-package adress;
+package address;
 
 import javax.inject.Inject;
 
@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -31,10 +32,12 @@ import Model.Contact;
 import Model.ContactProvider;
 import org.eclipse.ui.IWorkbenchPage;
 import comparator.ContactComparator;
+import uiManager.CreateUI;
+
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 
-public class View extends ViewPart {
+public class AddressContactsView extends ViewPart {
 	public static final String ID = "Adress.view";
 
 	@Inject
@@ -43,6 +46,7 @@ public class View extends ViewPart {
 
 	private TableViewer viewer;
 	private ContactComparator comparator;
+	CreateUI uiCreation = new CreateUI();
 
 	private void createDoubleSelector() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -52,14 +56,18 @@ public class View extends ViewPart {
 				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
 				try {
-					activePage.showView(AdressDetailsView.ID);
-                       AdressDetailsView.refreshView();
+
+					AddressDetailsView showView = (AddressDetailsView) activePage.showView(AddressDetailsView.ID);
+
+					showView.getViewer().setInput(getSelectedItem());
+
+					System.out.print("!!!" + getSelectedItem().getId());
+					showView.refresh();
 
 				} catch (PartInitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		});
 	}
@@ -112,6 +120,10 @@ public class View extends ViewPart {
 		int[] bounds = { 50, 100, 100, 100, 100, 100 };
 
 		TableViewerColumn idColumn = createTableViewerColumn(titles[0], bounds[0], 0);
+		TableViewerColumn firstNameColumn = createTableViewerColumn(titles[1], bounds[1], 1);
+		TableViewerColumn lastNameColumn = createTableViewerColumn(titles[2], bounds[2], 2);
+		TableViewerColumn adressNameColumn = createTableViewerColumn(titles[3], bounds[3], 3);
+
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				Contact p = (Contact) element;
@@ -119,7 +131,6 @@ public class View extends ViewPart {
 			}
 		});
 
-		TableViewerColumn firstNameColumn = createTableViewerColumn(titles[1], bounds[1], 1);
 		firstNameColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				Contact p = (Contact) element;
@@ -127,14 +138,12 @@ public class View extends ViewPart {
 			}
 		});
 
-		TableViewerColumn lastNameColumn = createTableViewerColumn(titles[2], bounds[2], 2);
 		lastNameColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				Contact p = (Contact) element;
 				return p.getLastName();
 			}
 		});
-		TableViewerColumn adressNameColumn = createTableViewerColumn(titles[3], bounds[3], 3);
 		adressNameColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				Contact p = (Contact) element;

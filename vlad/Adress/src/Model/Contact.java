@@ -8,7 +8,7 @@ public class Contact {
 	private Address adress;
 	private String phoneNumber;
 	private String emailAdress;
-	private static int contactCounter = 0;
+	public static int contactCounter = 0;
 
 	public Contact() {
 
@@ -31,37 +31,46 @@ public class Contact {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
 	public String getLastName() {
 		return lastName;
+	}
+
+	public String getphoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getEmailAdress() {
+		return emailAdress;
+	}
+
+	public Address getAddress() {
+
+		return adress;
+	}
+
+	public int getIdInt() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	public String getphoneNumber() {
-		return phoneNumber;
-	}
-	
 	public void setPhoneNumber(String phoneNumber) {
-		 this.phoneNumber=phoneNumber;
+		this.phoneNumber = phoneNumber;
 	}
-	
 
-
-
-	public String getEmailAdress() {
-		return emailAdress;
-	}
-	
-
-	public Address getAddress() {
-		
-		return adress;
+	public void setEmailAddress(String email) {
+		this.emailAdress = email;
 	}
 
 }

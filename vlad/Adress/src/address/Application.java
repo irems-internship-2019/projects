@@ -1,4 +1,4 @@
-package adress;
+package address;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;

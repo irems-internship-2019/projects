@@ -5,18 +5,19 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import Model.Address;
-import Model.Contact;
-import adress.View;
-import adress.editor.AdressBookEditor;
+import address.AddressContactsView;
+import adress.editor.AddressBookEditor;
 
-public class ViewActionDelegate3 implements IViewActionDelegate {
-   
+public class EditAction implements IViewActionDelegate {
+
+	AddressContactsView view;
+
 	@Override
 	public void run(IAction action) {
 		// TODO Auto-generated method stub
 		
-		AdressBookEditor.openEditor(null);
+		AddressBookEditor.openEditor(view.getSelectedItem());
+
 	}
 
 	@Override
@@ -28,7 +29,6 @@ public class ViewActionDelegate3 implements IViewActionDelegate {
 	@Override
 	public void init(IViewPart view) {
 		// TODO Auto-generated method stub
-	
+		this.view = (AddressContactsView) view;
 	}
-
 }

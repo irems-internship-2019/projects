@@ -1,15 +1,11 @@
 package adress.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -24,12 +20,10 @@ import org.eclipse.ui.part.EditorPart;
 import Model.Address;
 import Model.Contact;
 import Model.ContactProvider;
-import adress.AdressDetailsView;
-import adress.View;
-import checker.SelectChecker;
-import uiManager.CreateUI;
+import address.AddressContactsView;
+import address.AddressDetailsView;
 
-public class AdressBookEditor extends EditorPart {
+public class AddressBookEditor extends EditorPart {
 
 	private Text firstNameText;
 	private Text lastNameText;
@@ -40,7 +34,6 @@ public class AdressBookEditor extends EditorPart {
 	private Text cityText;
 	private Text postalCodeText;
 	private boolean dirtyCheck;
-	SelectChecker check = new SelectChecker();
 
 	private Contact contact;
 
@@ -49,14 +42,26 @@ public class AdressBookEditor extends EditorPart {
 	public static final String ID = "adress.book.editor";
 
 	public static void openEditor(Contact model) {
-		AdressbookEditorInput input = new AdressbookEditorInput();
+		AddressbookEditorInput input = new AddressbookEditorInput();
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
+		
 		try {
-			AdressBookEditor addressBookEditor = (AdressBookEditor) activePage.openEditor(input, ID);
-			addressBookEditor.setModel(model);
-			addressBookEditor.updateWidgets();
+			AddressBookEditor editor = (AddressBookEditor) activePage.getActiveEditor();
+			
+			  if(editor!=null)
+			  {
+				
+			  editor.setModel(model);
+			  editor.updateWidgets();
+			  }
+			  else 
+			  {
+				  AddressBookEditor createEditor = (AddressBookEditor) activePage.openEditor(input, AddressBookEditor.ID);
+				  createEditor.setModel(model);
+				  createEditor.updateWidgets();
+			  }
 
 		} catch (PartInitException e) {
 			e.printStackTrace();
@@ -69,14 +74,18 @@ public class AdressBookEditor extends EditorPart {
 
 	}
 
-	public AdressBookEditor() {
+	public AddressBookEditor() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-
+		if (contact != null)
+			editState();
+		else
+			InsertState();
+		setDirty(false);
 	}
 
 	@Override
@@ -87,8 +96,8 @@ public class AdressBookEditor extends EditorPart {
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		// TODO Auto-generated method stub
-		if (!(input instanceof AdressbookEditorInput)) {
-			throw new PartInitException("Invalid Input: Must be " + AdressbookEditorInput.class.getName());
+		if (!(input instanceof AddressbookEditorInput)) {
+			throw new PartInitException("Invalid Input: Must be " + AddressbookEditorInput.class.getName());
 		}
 		setSite(site);
 		setInput(input);
@@ -124,9 +133,20 @@ public class AdressBookEditor extends EditorPart {
 			countryText.setText(contact.getAddress().getCountry());
 			cityText.setText(contact.getAddress().getCity());
 			adressText.setText(contact.getAddress().getStreet());
-			postalCodeText.setText(contact.getAddress().getPostal_code());
+			postalCodeText.setText(contact.getAddress().getPostalCode());
 			phoneNumberText.setText(contact.getphoneNumber());
 			emailAdressText.setText(contact.getEmailAdress());
+		}
+		else
+		{
+			firstNameText.setText("");
+			lastNameText.setText("");
+			countryText.setText("");
+			cityText.setText("");
+			adressText.setText("");
+			postalCodeText.setText("");
+			phoneNumberText.setText("");
+			emailAdressText.setText("");
 		}
 		listenerForText(firstNameText);
 		listenerForText(lastNameText);
@@ -145,16 +165,13 @@ public class AdressBookEditor extends EditorPart {
 		// If you want to design with WindowBuilder Designer
 		// Change code like: (Important!!!)
 
-		CreateUI uiCreation = new CreateUI();
 		parent.setLayout(new GridLayout(2, false));
-		parent.setLayout(new GridLayout(2, false));
+		
 		Label firstNameLabel = new Label(parent, SWT.NONE);
-		firstNameLabel.setText("First Name");
+		firstNameLabel.setText("Last Name");
 		firstNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		firstNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-//		uiCreation.test(parent, firstNameText);
-
+		
 		Label lastNameLabel = new Label(parent, SWT.NONE);
 		lastNameLabel.setText("Last Name");
 		lastNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
@@ -190,19 +207,18 @@ public class AdressBookEditor extends EditorPart {
 		postalCodeText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		postalCodeText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
-		Button insertButton = new Button(parent, SWT.PUSH);
-		insertButton.setText("Save");
-		insertButton.setFont(JFaceResources.getDialogFont());
-		insertButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if (contact != null)
-					editState(parent);
-				else
-					InsertState(parent);
-				setDirty(false);
-			}
+		if (contact != null)
+			editState();
+		else
+			InsertState();
+		setDirty(false);
+	}
 
-		});
+	private void createFirstNameLabel(Composite parent) {
+		Label firstNameLabel = new Label(parent, SWT.NONE);
+		firstNameLabel.setText("Last Name");
+		firstNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+		firstNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 	}
 
 	private void listenerForText(Text text) {
@@ -217,7 +233,7 @@ public class AdressBookEditor extends EditorPart {
 		});
 	}
 
-	private void editState(Composite parent) {
+	private void editState() {
 
 		if (contact.getFirstName().equals(firstNameText.getText()) == false
 				|| contact.getLastName().equals(lastNameText.getText()) == false
@@ -226,37 +242,70 @@ public class AdressBookEditor extends EditorPart {
 				|| contact.getAddress().getCity().equals(cityText.getText()) == false
 				|| contact.getAddress().getCountry().equals(countryText.getText()) == false
 				|| contact.getAddress().getStreet().equals(adressText.getText()) == false
-				|| contact.getAddress().getPostal_code().equals(postalCodeText.getText()) == false
+				|| contact.getAddress().getPostalCode().equals(postalCodeText.getText()) == false
 
 		) {
 
-			contact.setFirstName(firstNameText.getText());
-			contact.setLastName(lastNameText.getText());
-			contact.setPhoneNumber(phoneNumberText.getText());
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).setFirstName(firstNameText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).setLastName(lastNameText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact))
+					.setPhoneNumber(phoneNumberText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact))
+					.setEmailAddress(emailAdressText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
+			.setCity(cityText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
+			.setCountry(countryText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
+					.setStreet(adressText.getText());
+			
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
+			.setPostalCode(postalCodeText.getText());
+	
 
+
+			refreshContactView();
 		}
-		View part = (View) getSite().getPage().findView(View.ID);
-		part.refresh();
-
-
+	
 	}
 
-	private void InsertState(Composite parent) {
+	private void InsertState() {
 
 		contacts.addContacts(new Contact(firstNameText.getText(),
 				new Address(countryText.getText(), cityText.getText(), adressText.getText(), postalCodeText.getText()),
 				lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
-		View part = (View) getSite().getPage().findView(View.ID);
-		part.refresh();
+		refreshContactView();
 
 	}
-
-	
 
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
 	}
+
+	private void refreshContactView() {
+
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		AddressContactsView view = (AddressContactsView) activePage.findView(AddressContactsView.ID);
+
+		view.refresh();
+	}
+	
+	public void closePage() {
+		
+
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		 
+		
+
+	}
+	
 
 }

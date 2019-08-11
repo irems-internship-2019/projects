@@ -1,7 +1,8 @@
-package adress;
+package address;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -21,19 +22,21 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import Filter.ContactFilter;
+import Model.Address;
 import Model.Contact;
 import Model.ContactProvider;
 import comparator.ContactComparator;
 
-public class AdressDetailsView extends ViewPart {
+public class AddressDetailsView extends ViewPart {
 	public static final String ID = "Adress.view2";
 	ContactFilter contactFilter = new ContactFilter();
 
 	private  TableViewer viewer;
 	private ContactComparator comparator;
+	private Contact Input;
 	
 	
-	public AdressDetailsView() {
+	public AddressDetailsView() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -60,7 +63,16 @@ public class AdressDetailsView extends ViewPart {
 			});
 			viewer.addFilter(contactFilter);
 	}
-	
+public void setNewImput(Contact selectedItem) {
+		this.Input=selectedItem;
+		
+	}
+
+private Contact getNewInput()
+{
+	return Input;
+}
+
 	private void createViewer(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		createColumns(parent, viewer);
@@ -70,7 +82,7 @@ public class AdressDetailsView extends ViewPart {
 		viewer.setContentProvider(new ArrayContentProvider());
 		getSite().setSelectionProvider(viewer);
 		
-		viewer.setInput(ContactProvider.INSTANCE.getContacts());
+
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
@@ -89,7 +101,7 @@ public class AdressDetailsView extends ViewPart {
 		column= createTableViewerColumn(titles[0], bounds[0],0);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			  public String getText(Object element) {
-	                Contact p = (Contact) element;
+				  Contact p = (Contact) element;
 	                return p.getId();
 	            }
 		});
@@ -136,7 +148,7 @@ public class AdressDetailsView extends ViewPart {
 		 column.setLabelProvider(new ColumnLabelProvider() {
 			  public String getText(Object element) {
 	                Contact p = (Contact) element;
-	                return p.getAddress().getPostal_code();
+	                return p.getAddress().getPostalCode();
 	            }
 		});
 		
@@ -177,13 +189,14 @@ public class AdressDetailsView extends ViewPart {
 		// TODO Auto-generated method stub
 		viewer.refresh();
 	}
-	
-	public static void refreshView() {
 
-		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		AdressDetailsView view = (AdressDetailsView) activePage.findView(AdressDetailsView.ID);
-
-		view.refresh();
+	public TableViewer getViewer() {
+		// TODO Auto-generated method stub
+		return viewer;
 	}
+
+	
+	
+	
 	
 }

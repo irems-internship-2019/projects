@@ -1,4 +1,4 @@
-package adress;
+package address;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;

@@ -4,7 +4,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
-public class AdressbookEditorInput implements IEditorInput {
+public class AddressbookEditorInput implements IEditorInput {
 
    @Override
    public Object getAdapter(Class adapter) {

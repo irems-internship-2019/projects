@@ -7,14 +7,14 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="adress.Application">
+               class="address.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="adress.Perspective"
+            class="address.Perspective"
             name="Perspective"
             id="Adress.perspective">
       </perspective>
@@ -22,13 +22,13 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="adress.View"
+            class="address.AddressContactsView"
             name="View"
             id="Adress.view"
             inject="true">
       </view>
       <view
-            class="adress.AdressDetailsView"
+            class="address.AddressDetailsView"
             id="Adress.view2"
             name="Details View"
             restorable="true">
@@ -97,7 +97,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="adress.editor.AdressBookEditor"
+            class="adress.editor.AddressBookEditor"
             default="false"
             icon="icons/eclipse16.png"
             id="adress.book.editor"
@@ -112,21 +112,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="adress.cmd.AdressEditorCommand"
-            id="cmd"
-            name="Add Contact Command">
-      </command>
-      <command
-            defaultHandler="Remover.DeleteContact"
-            id="Adress.command1"
-            name="Delete Contact">
-      </command>
-      <command
-            defaultHandler="adress.cmd.AdressEditContactCommand"
-            id="Adress.editor1"
-            name="Edit Contact ">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
@@ -134,7 +119,7 @@
             id="Adress.viewContribution1"
             targetID="Adress.view">
          <action
-               class="adress.actions.ViewActionDelegate1"
+               class="adress.actions.DeleteAction"
                enablesFor="1"
                icon="icons/del.png"
                id="Adress.action1"
@@ -143,7 +128,7 @@
                toolbarPath="additions">
          </action>
          <action
-               class="adress.actions.ViewActionDelegate2"
+               class="adress.actions.EditAction"
                enablesFor="1"
                icon="icons/edit.png"
                id="Adress.action2"
@@ -152,7 +137,7 @@
                toolbarPath="additions">
          </action>
          <action
-               class="adress.actions.ViewActionDelegate3"
+               class="adress.actions.CreateAction"
                icon="icons/add.png"
                id="Adress.action3"
                label="create"
