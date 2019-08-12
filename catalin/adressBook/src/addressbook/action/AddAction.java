@@ -9,28 +9,29 @@ import org.eclipse.ui.IViewPart;
 
 import addressbook.editor.AddressBookEditor;
 
-public class AddAction implements IViewActionDelegate 
+public class AddAction implements IViewActionDelegate
 {
 
-	@Override
-	public void init(IViewPart view) 
-	{
-	}
+    @Override
+    public void init(IViewPart view)
+    {
+    }
 
-	@Override
-	public void run(IAction action) 
+    @Override
+    public void run(IAction action)
+    {
+	boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Add",
+		"Do you want to add?");
+	if (openQuestion)
 	{
-		boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Add",
-				"Do you want to add?");
-		if (openQuestion) {
-			AddressBookEditor.openEditor(null);
-		}
+	    AddressBookEditor.openEditor(null);
 	}
+    }
 
-	@Override
-	public void selectionChanged(IAction action, ISelection selection) 
-	{
-		// TODO Auto-generated method stub
+    @Override
+    public void selectionChanged(IAction action, ISelection selection)
+    {
+	// TODO Auto-generated method stub
 
-	}
+    }
 }

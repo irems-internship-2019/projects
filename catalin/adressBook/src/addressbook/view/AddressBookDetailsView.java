@@ -22,70 +22,65 @@ import addressbook.filter.ContactDetailsFilter;
 import addressbook.persons.Contact;
 import addressbook.table.TableForAddressBookDetails;
 
-public class AddressBookDetailsView extends ViewPart 
+public class AddressBookDetailsView extends ViewPart
 {
-	public static final String ID = "addressbook.view.addressbookdetailsview";
-	@Inject
-	IWorkbench workbench;
-	private ContactDetailsComparator comparator;
-	private TableViewer viewer;
-	private TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
-	public static ArrayList<Contact> elementsSelected = new ArrayList<Contact>();
+    public static final String ID = "addressbook.view.addressbookdetailsview";
+    @Inject
+    IWorkbench workbench;
+    private ContactDetailsComparator comparator;
+    private TableViewer viewer;
+    private TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
+    public static ArrayList<Contact> elementsSelected = new ArrayList<Contact>();
 
-	private void createViewer(Composite parent) 
+    private void createViewer(Composite parent)
+    {
+	viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+	tableCreater.createColumns(parent, viewer);
+	final Table table = viewer.getTable();
+	table.setHeaderVisible(true);
+	table.setLinesVisible(true);
+
+	viewer.setContentProvider(new ArrayContentProvider());
+
+	viewer.setInput(elementsSelected);
+
+	tableCreater.viewerLayout(viewer);
+    }
+
+    @Override
+    public void createPartControl(Composite parent)
+    {
+	ContactDetailsFilter filter = new ContactDetailsFilter();
+	parent.setLayout(new GridLayout(2, false));
+	Label searchLabel = new Label(parent, SWT.NONE);
+	searchLabel.setText("Search: ");
+	Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+	searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+
+	createViewer(parent);
+
+	comparator = new ContactDetailsComparator();
+	viewer.setComparator(comparator);
+
+	searchText.addKeyListener(new KeyAdapter()
 	{
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		tableCreater.createColumns(parent, viewer);
-		final Table table = viewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-
-		viewer.setContentProvider(new ArrayContentProvider());
-
-		viewer.setInput(elementsSelected);
-
-		tableCreater.viewerLayout(viewer);
-	}
-
-	public TableViewer getViewer() 
-	{
-		return viewer;
-	}
-
-	@Override
-	public void createPartControl(Composite parent) 
-	{
-		ContactDetailsFilter filter = new ContactDetailsFilter();
-		parent.setLayout(new GridLayout(2, false));
-		Label searchLabel = new Label(parent, SWT.NONE);
-		searchLabel.setText("Search: ");
-		Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		createViewer(parent);
-
-		comparator = new ContactDetailsComparator();
-		viewer.setComparator(comparator);
-
-		searchText.addKeyListener(new KeyAdapter() 
-		{
-			public void keyReleased(KeyEvent ke) 
-			{
-				filter.setSearchText(searchText.getText());
-				viewer.refresh();
-			}
-		});
-		viewer.addFilter(filter);
-	}
-
-	public void refresh() 
-	{
+	    public void keyReleased(KeyEvent ke)
+	    {
+		filter.setSearchText(searchText.getText());
 		viewer.refresh();
-	}
+	    }
+	});
+	viewer.addFilter(filter);
+    }
 
-	@Override
-	public void setFocus() 
-	{
-		viewer.getControl().setFocus();
-	}
+    public void refresh()
+    {
+	viewer.refresh();
+    }
+
+    @Override
+    public void setFocus()
+    {
+	viewer.getControl().setFocus();
+    }
 }
