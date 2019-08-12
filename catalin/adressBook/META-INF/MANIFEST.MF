@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AdressBook
+Bundle-Name: AddressBook
 Bundle-SymbolicName: AddressBook;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: addressbook.Activator
@@ -10,5 +10,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.equinox.util,
  org.eclipse.equinox.event
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Automatic-Module-Name: AdressBook
+Automatic-Module-Name: AddressBook
 Bundle-ActivationPolicy: lazy
