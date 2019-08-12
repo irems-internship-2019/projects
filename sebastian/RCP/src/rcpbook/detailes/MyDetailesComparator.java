@@ -1,4 +1,4 @@
-package rcpbook.table;
+package rcpbook.detailes;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -6,13 +6,13 @@ import org.eclipse.swt.SWT;
 
 import rcpbook.contacts.ContactsManager;
 
-public class MyViewerComparator extends ViewerComparator
+public class MyDetailesComparator extends ViewerComparator
 {
     private int propertyIndex;
     private static final int DESCENDING = 1;
     private int direction = DESCENDING;
 
-    public MyViewerComparator()
+    public MyDetailesComparator()
     {
 	this.propertyIndex = 0;
 	direction = DESCENDING;
@@ -47,12 +47,7 @@ public class MyViewerComparator extends ViewerComparator
 	    {
 
 	    case 0:
-		if (p1.getIntId() == (p2.getIntId()))
-		    rc = 0;
-		else if (p1.getIntId() >= (p2.getIntId()))
-		    rc = 1;
-		else
-		    rc = (-1);
+		rc = Integer.compare(p1.getIntId(), p2.getIntId());
 		break;
 	    case 1:
 		rc = p1.getFirst().compareTo(p2.getFirst());
@@ -61,13 +56,16 @@ public class MyViewerComparator extends ViewerComparator
 		rc = p1.getSecond().compareTo(p2.getSecond());
 		break;
 	    case 3:
-		rc = p1.getAddress().getStreet().compareTo(p2.getAddress().getStreet());
+		rc = p1.getAddress().getCountry().compareTo(p2.getAddress().getCountry());
 		break;
 	    case 4:
-		rc = p1.getPhone().compareTo(p2.getPhone());
+		rc = p1.getAddress().getCity().compareTo(p2.getAddress().getCity());
 		break;
 	    case 5:
-		rc = p1.getEmail().compareTo(p2.getEmail());
+		rc = p1.getAddress().getStreet().compareTo(p2.getAddress().getStreet());
+		break;
+	    case 6:
+		rc = p1.getAddress().getPostalCode().compareTo(p2.getAddress().getPostalCode());
 		break;
 	    default:
 		rc = 0;

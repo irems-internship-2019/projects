@@ -1,57 +1,68 @@
 package rcpbook.contacts;
 
-public class AddressManager {
+public class AddressManager
+{
 
-	private static int index = 1;
-	private int ID = 0;
+    private static int index = 1;
+    private int ID = 0;
 
-	private String country;
-	private String city;
-	private String street;
-	private String postalCode;
+    private String country;
+    private String city;
+    private String street;
+    private String postalCode;
 
-	public AddressManager(String country, String city, String street, String postalCode) {
-		// super();
-		this.ID = index++;
-		this.country = country;
-		this.city = city;
-		this.street = street;
-		this.postalCode = postalCode;
-	}
+    public AddressManager(String country, String city, String street, String postalCode)
+    {
+	// super();
+	this.ID = index++;
+	this.country = country;
+	this.city = city;
+	this.street = street;
+	this.postalCode = postalCode;
+    }
 
-	public String getID() {
-		return Integer.toString(ID);
-	}
+    public String getID()
+    {
+	return Integer.toString(ID);
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public String getCountry()
+    {
+	return country;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public String getCity()
+    {
+	return city;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    public String getStreet()
+    {
+	return street;
+    }
 
-	public String getPostalCode() {
-		return postalCode;
-	}
+    public String getPostalCode()
+    {
+	return postalCode;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public void setCountry(String country)
+    {
+	this.country = country;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setCity(String city)
+    {
+	this.city = city;
+    }
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    public void setStreet(String street)
+    {
+	this.street = street;
+    }
 
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+    public void setPostalCode(String postalCode)
+    {
+	this.postalCode = postalCode;
+    }
 }

@@ -92,8 +92,10 @@
          </action>
          <action
                class="rcpbook.cmd.Create"
+               icon="icons/eclipse16.png"
                id="create.contact.id"
                label="Create"
+               mode="FORCE_TEXT"
                style="push"
                toolbarPath="additions"
                tooltip="Create Contact">
