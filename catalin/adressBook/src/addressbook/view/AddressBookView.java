@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -45,22 +46,22 @@ public class AddressBookView extends ViewPart
 	    public void doubleClick(DoubleClickEvent event)
 	    {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
+		AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
+			.findView(AddressBookDetailsView.ID);
+		
 		try
 		{
-		    if (!AddressBookDetailsView.elementsSelected.contains(getSelectedItem()))
-		    {
-			if (activePage.findView(AddressBookDetailsView.ID) == null)
+			if (addressBookDetailsView == null)
 			{
-			    AddressBookDetailsView.elementsSelected.add(getSelectedItem());
-			    activePage.showView(AddressBookDetailsView.ID);
-			    refreshDetailsView();
-			} else
+			    AddressBookDetailsView openedAddressBookDetailsViewer = (AddressBookDetailsView) activePage.showView(AddressBookDetailsView.ID);
+			    openedAddressBookDetailsViewer.setInput(getSelectedItem());
+			    openedAddressBookDetailsViewer.refresh();
+			} 
+			else
 			{
-			    AddressBookDetailsView.elementsSelected.add(getSelectedItem());
-			    refreshDetailsView();
+			    addressBookDetailsView.setInput(getSelectedItem());
+			    addressBookDetailsView.refresh();
 			}
-		    }
 		} catch (PartInitException e)
 		{
 		    // TODO Auto-generated catch block
@@ -85,7 +86,6 @@ public class AddressBookView extends ViewPart
 	getSite().setSelectionProvider(viewer);
 
 	tableCreater.viewerLayout(viewer);
-
     }
 
     public Contact getSelectedItem()
@@ -132,14 +132,5 @@ public class AddressBookView extends ViewPart
     public void setFocus()
     {
 	viewer.getControl().setFocus();
-    }
-
-    private void refreshDetailsView()
-    {
-	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
-		.findView(AddressBookDetailsView.ID);
-
-	addressBookDetailsView.refresh();
     }
 }

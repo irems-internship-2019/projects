@@ -10,10 +10,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartConstants;
@@ -42,7 +39,7 @@ public class AddressBookEditor extends EditorPart
     private Text textPhoneNumber;
     private Text textEmail;
 
-    public static Contact contact;
+    private Contact contact;
 
     public static void openEditor(Contact model)
     {
@@ -219,7 +216,12 @@ public class AddressBookEditor extends EditorPart
 
     private void setModel(Contact model)
     {
-	contact = model;
+	this.contact = model;
+    }
+    
+    public Contact getModel()
+    {
+	return this.contact;
     }
 
     @Override

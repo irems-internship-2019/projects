@@ -24,41 +24,6 @@ public class Contact
 	this.emailAddress = emailAddress;
     }
 
-    public static int getIndex()
-    {
-        return index;
-    }
-
-    public static void setIndex(int index)
-    {
-        Contact.index = index;
-    }
-
-    public void setFirstName(String firstName)
-    {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName)
-    {
-        this.lastName = lastName;
-    }
-
-    public void setAddress(Address address)
-    {
-        this.address = address;
-    }
-
-    public void setPhoneNumber(String phoneNumber)
-    {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
-    }
-
     public int getId()
     {
 	return id;
@@ -74,9 +39,19 @@ public class Contact
 	return firstName;
     }
 
+    public void setFirstName(String firstName)
+    {
+	this.firstName = firstName;
+    }
+
     public String getLastName()
     {
 	return lastName;
+    }
+
+    public void setLastName(String lastName)
+    {
+	this.lastName = lastName;
     }
 
     public Address getAddress()
@@ -89,9 +64,19 @@ public class Contact
 	return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber)
+    {
+	this.phoneNumber = phoneNumber;
+    }
+
     public String getEmailAddress()
     {
 	return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress)
+    {
+	this.emailAddress = emailAddress;
     }
 
     public enum ContactElements

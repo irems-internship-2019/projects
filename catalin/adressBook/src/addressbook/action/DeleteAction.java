@@ -35,7 +35,8 @@ public class DeleteAction implements IViewActionDelegate
 	if (openQuestion)
 	{
 	    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
+	    AddressBookEditor editor = (AddressBookEditor) activePage.getActiveEditor();
+	    
 	    Contact deletableContact = view.getSelectedItem();
 	    int idNumber = deletableContact.getId();
 	    persons.getContacts().remove(deletableContact);
@@ -43,8 +44,8 @@ public class DeleteAction implements IViewActionDelegate
 	    setIndex(deletableContact, idNumber);
 	    view.refresh();
 
-	    if (AddressBookEditor.contact == deletableContact)
-		activePage.closeAllEditors(false);
+	    if (editor != null && editor.getModel() == deletableContact)
+		activePage.closeEditor(editor, false);
 
 	    if (!AddressBookDetailsView.elementsSelected.isEmpty())
 	    {

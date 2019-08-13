@@ -41,9 +41,6 @@ public class AddressBookDetailsView extends ViewPart
 	table.setLinesVisible(true);
 
 	viewer.setContentProvider(new ArrayContentProvider());
-
-	viewer.setInput(elementsSelected);
-
 	tableCreater.viewerLayout(viewer);
     }
 
@@ -76,6 +73,14 @@ public class AddressBookDetailsView extends ViewPart
     public void refresh()
     {
 	viewer.refresh();
+    }
+    
+    public void setInput(Contact contact)
+    {
+	ArrayList<Contact> contactList = new ArrayList<Contact>();
+	contactList.add(contact);
+	
+	viewer.setInput(contactList);
     }
 
     @Override
