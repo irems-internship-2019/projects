@@ -46,7 +46,8 @@ public class AddressBookEditor extends EditorPart
 	AddressBookEditorInput input = new AddressBookEditorInput();
 
 	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
+	activePage.setEditorAreaVisible(true);
+	
 	try
 	{
 	    AddressBookEditor editor = (AddressBookEditor) activePage.getActiveEditor();
@@ -189,6 +190,10 @@ public class AddressBookEditor extends EditorPart
 
     private void editContact()
     {
+	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
+		.findView(AddressBookDetailsView.ID);
+	
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setFirstName(textFirstName.getText());
 
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setLastName(textLastName.getText());
@@ -208,8 +213,8 @@ public class AddressBookEditor extends EditorPart
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setEmailAddress(textEmail.getText());
 
 	refreshView();
-	if (AddressBookDetailsView.elementsSelected.contains(contact))
-	    refreshDetailsView();
+	if (addressBookDetailsView != null)
+	    addressBookDetailsView.refresh();
 
 	setDirty(false);
     }
@@ -281,14 +286,5 @@ public class AddressBookEditor extends EditorPart
 	AddressBookView addressBookView = (AddressBookView) activePage.findView(AddressBookView.ID);
 
 	addressBookView.refresh();
-    }
-
-    private void refreshDetailsView()
-    {
-	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
-		.findView(AddressBookDetailsView.ID);
-
-	addressBookDetailsView.refresh();
     }
 }

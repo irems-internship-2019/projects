@@ -30,7 +30,7 @@ public class AddressBookDetailsView extends ViewPart
     private ContactDetailsComparator comparator;
     private TableViewer viewer;
     private TableForAddressBookDetails tableCreater = new TableForAddressBookDetails();
-    public static ArrayList<Contact> elementsSelected = new ArrayList<Contact>();
+    private ArrayList<Contact> contactElement;
 
     private void createViewer(Composite parent)
     {
@@ -75,12 +75,17 @@ public class AddressBookDetailsView extends ViewPart
 	viewer.refresh();
     }
     
-    public void setInput(Contact contact)
+    public void setDetailsViewInput(Contact contact)
     {
-	ArrayList<Contact> contactList = new ArrayList<Contact>();
-	contactList.add(contact);
+	contactElement = new ArrayList<Contact>();
+	contactElement.add(contact);
 	
-	viewer.setInput(contactList);
+	viewer.setInput(contactElement);
+    }
+    
+    public ArrayList<Contact> getDetailsViewContact()
+    {
+	return contactElement;
     }
 
     @Override

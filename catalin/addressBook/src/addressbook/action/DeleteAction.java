@@ -36,6 +36,8 @@ public class DeleteAction implements IViewActionDelegate
 	{
 	    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	    AddressBookEditor editor = (AddressBookEditor) activePage.getActiveEditor();
+	    AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
+			.findView(AddressBookDetailsView.ID);
 	    
 	    Contact deletableContact = view.getSelectedItem();
 	    int idNumber = deletableContact.getId();
@@ -43,15 +45,16 @@ public class DeleteAction implements IViewActionDelegate
 
 	    setIndex(deletableContact, idNumber);
 	    view.refresh();
-
+	    
 	    if (editor != null && editor.getModel() == deletableContact)
-		activePage.closeEditor(editor, false);
-
-	    if (!AddressBookDetailsView.elementsSelected.isEmpty())
+		editor.getEditorSite().getPage().setEditorAreaVisible(false);    
+	    
+	    if (addressBookDetailsView != null)
 	    {
-		if (AddressBookDetailsView.elementsSelected.contains(deletableContact))
-		    AddressBookDetailsView.elementsSelected.remove(deletableContact);
-		refresDetailshView();
+		if (addressBookDetailsView.getDetailsViewContact().contains(deletableContact))
+		    activePage.hideView(addressBookDetailsView);
+		else
+		    addressBookDetailsView.refresh();
 	    }
 	}
     }
@@ -76,14 +79,5 @@ public class DeleteAction implements IViewActionDelegate
 	    }
 	} else
 	    Contact.index = 1;
-    }
-
-    private void refresDetailshView()
-    {
-	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
-		.findView(AddressBookDetailsView.ID);
-
-	addressBookDetailsView.refresh();
     }
 }

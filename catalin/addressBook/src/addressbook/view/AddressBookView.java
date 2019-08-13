@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -54,12 +53,12 @@ public class AddressBookView extends ViewPart
 			if (addressBookDetailsView == null)
 			{
 			    AddressBookDetailsView openedAddressBookDetailsViewer = (AddressBookDetailsView) activePage.showView(AddressBookDetailsView.ID);
-			    openedAddressBookDetailsViewer.setInput(getSelectedItem());
+			    openedAddressBookDetailsViewer.setDetailsViewInput(getSelectedItem());
 			    openedAddressBookDetailsViewer.refresh();
 			} 
 			else
 			{
-			    addressBookDetailsView.setInput(getSelectedItem());
+			    addressBookDetailsView.setDetailsViewInput(getSelectedItem());
 			    addressBookDetailsView.refresh();
 			}
 		} catch (PartInitException e)
