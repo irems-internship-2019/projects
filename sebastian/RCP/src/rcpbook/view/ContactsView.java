@@ -1,10 +1,15 @@
 package rcpbook.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -13,6 +18,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -34,16 +40,14 @@ import rcpbook.table.MyViewerComparator;
 public class ContactsView extends ViewPart
 {
     public static final String ID = "RCPBook.view";
-    // private CreateContactUi createNewTable = new CreateContactUi();
-    //private ViewerTools vTools = new ViewerTools();
 
     private TableViewer tableViewer;
     private ContactsModel model = new ContactsModel();
-    // private ViewerTools vTools = new ViewerTools();
+
     private ContactsFilter contactFilter = new ContactsFilter();
     private MyViewerComparator comparator;
     private ContactEnum temporary = ContactEnum.ID;
-    // private int iterator = 0;
+    private static List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
     int i = 0;
 
     @Override
@@ -61,26 +65,107 @@ public class ContactsView extends ViewPart
 
 	tableViewer = new TableViewer(parent,
 		SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-
-	createTableColums(parent);
-
+	
+	
 	createFilter(parent);
 
 	addDoubleClickListner();
 
-	//vTools.assignContactsViewer(tableViewer);
+	// vTools.assignContactsViewer(tableViewer);
 
 	tableViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, SWT.FILL));
 	tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+	tableViewer.setInput(model.getElements());
 
+	tableViewer.setLabelProvider(new InnerLabelProvider());// (new ColumnLabelProvider());
+	createTableColums(parent);
+
+	
 	comparator = new MyViewerComparator();
 	tableViewer.setComparator(comparator);
-
-	tableViewer.setInput(model.getElements());
 
 	final Table table = tableViewer.getTable();
 	table.setHeaderVisible(true);
 	table.setLinesVisible(true);
+    }
+
+    public class InnerLabelProvider implements ITableLabelProvider
+    {
+
+	@Override
+	public void addListener(ILabelProviderListener listener)
+	{
+	    // TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose()
+	{
+	    // TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isLabelProperty(Object element, String property)
+	{
+	    // TODO Auto-generated method stub
+	    return false;
+	}
+
+	@Override
+	public void removeListener(ILabelProviderListener listener)
+	{
+	    // TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Image getColumnImage(Object element, int columnIndex)
+	{
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
+	@Override
+	public String getColumnText(Object element, int columnIndex)
+	{
+//	    0 pentru test macar...
+//	    tableCollums.get(0).setLabelProvider(new ColumnLabelProvider()
+//	    {
+//
+//	    });
+
+	    if (element instanceof ContactsManager)
+	    {
+		// ContactEnum tableContent = temporary;
+
+		ContactsManager contactMgr = (ContactsManager) element;
+
+		switch (columnIndex)
+		    {
+		    case 0:
+			return contactMgr.getID();
+		    case 1:
+			return contactMgr.getFirstName();
+		    case 2:
+			return contactMgr.getLastName();
+		    case 3:
+			return contactMgr.getAddress().getStreet();
+		    case 4:
+			return contactMgr.getPhone();
+		    case 5:
+			return contactMgr.getEmail();
+		    default:
+			// System.out.println("Unimplemented thing");
+			break;
+		    }
+	    }
+
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
     }
 
     private void createFilter(Composite parent)
@@ -107,53 +192,68 @@ public class ContactsView extends ViewPart
     private void createTableColums(final Composite parent)
     {
 	int bounds = 100;
-
-	TableViewerColumn column;
+	InnerLabelProvider inner = new InnerLabelProvider();
+	// TableViewerColumn column;
 
 	for (ContactEnum title : ContactEnum.values())
 	{
-	    column = createTableViewerColumn(title.getColumn(), bounds, i);
+	    // column = createTableViewerColumn(title.getColumn(), bounds, i);
+	    tableCollums.add(createTableViewerColumn(title.getColumn(), bounds, i));
+
+//	    tableCollums.get(0).setLabelProvider(new ColumnLabelProvider()
+//		    {
+//	
+//		    });
+	    inner.getColumnText(model.getElements(), i);
+
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    // ContactEnum tableContent = ContactEnum.ID;
 
-	    column.setLabelProvider(new ColumnLabelProvider()
-	    {
-
-		public String getText(Object element)
-		{
-		    if (element instanceof ContactsManager)
-		    {
-			ContactEnum tableContent = temporary;
-
-			ContactsManager contactMgr = (ContactsManager) element;
-
-			switch (temporary)
-			    {
-			    case ID:
-				temporary = tableContent.next();
-				return contactMgr.getID();
-			    case FIRSTNAME:
-				temporary = tableContent.next();
-				return contactMgr.getFirstName();
-			    case LASTNAME:
-				temporary = tableContent.next();
-				return contactMgr.getLastName();
-			    case STREET:
-				temporary = tableContent.next();
-				return contactMgr.getAddress().getStreet();
-			    case PHONENUMBER:
-				temporary = tableContent.next();
-				return contactMgr.getPhone();
-			    case EMAIL:
-				temporary = ContactEnum.ID;
-				return contactMgr.getEmail();
-			    default:
-				// System.out.println("Unimplemented thing");
-				break;
-			    }
-		    }
-		    return super.getText(element);
-		}
-	    });
+//	    column.setLabelProvider(new ColumnLabelProvider()
+//	    {
+//
+//		public String getText(Object element)
+//		{
+//		    if (element instanceof ContactsManager)
+//		    {
+//			ContactEnum tableContent = temporary;
+//
+//			ContactsManager contactMgr = (ContactsManager) element;
+//
+//			switch (temporary)
+//			    {
+//			    case ID:
+//				temporary = tableContent.next();
+//				return contactMgr.getID();
+//			    case FIRSTNAME:
+//				temporary = tableContent.next();
+//				return contactMgr.getFirstName();
+//			    case LASTNAME:
+//				temporary = tableContent.next();
+//				return contactMgr.getLastName();
+//			    case STREET:
+//				temporary = tableContent.next();
+//				return contactMgr.getAddress().getStreet();
+//			    case PHONENUMBER:
+//				temporary = tableContent.next();
+//				return contactMgr.getPhone();
+//			    case EMAIL:
+//				temporary = ContactEnum.ID;
+//				return contactMgr.getEmail();
+//			    default:
+//				// System.out.println("Unimplemented thing");
+//				break;
+//			    }
+//		    }
+//		    return super.getText(element);
+//		}
+//	    });
 	    i++;
 	}
     }
@@ -200,37 +300,27 @@ public class ContactsView extends ViewPart
 
 //		DetailesModel address = new DetailesModel();
 //		address.addNewEntry(firstElement);
-//		detailesViewer.setInput(tableImput.getAddresses());
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-		// activePage.findView(DetailesView.ID)
 
 		try
 		{
 		    if (activePage.findView(DetailesView.ID) == null)
 		    {
-//			DetailesView showView = (DetailesView) activePage.showView(DetailesView.ID);
-
 			DetailesView showView = (DetailesView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().showView("RCPBook.Detailes");
-//			DetailesView showView = (DetailesView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-//				.getActivePage();
-//			
 			showView.setInput(firstElement);
+		    } else
+		    {
 
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.showView("RCPBook.Detailes");
-
-			// vTools.refreshDetailesView();
+			((DetailesView) activePage.findView(DetailesView.ID)).setInput(firstElement);
 		    }
+
 		} catch (PartInitException e)
 		{
 		    // TODO Auto-generated catch block
 		    e.printStackTrace();
 		}
-
-		// vTools.refreshDetailesView();
 	    }
 	});
     }

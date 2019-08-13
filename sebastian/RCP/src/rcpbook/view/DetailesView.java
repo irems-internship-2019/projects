@@ -1,5 +1,8 @@
 package rcpbook.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -14,6 +17,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
+import rcpbook.cmd.Delete;
 import rcpbook.contacts.ContactsManager;
 //import rcpbook.contacts.DetailesModel;
 import rcpbook.detailes.MyDetailesComparator;
@@ -26,12 +30,13 @@ public class DetailesView extends ViewPart
     // private CreateDetailesUI newDetailes = new CreateDetailesUI();
 
     private TableViewer detailesViewer;
-    // private DetailesModel tableImput = new DetailesModel();
+  //  private DetailesModel tableImput = new DetailesModel();
     // private ViewerTools vTools = new ViewerTools();
     private int i = 0;
     private MyDetailesComparator comparator;
     private DetailesEnum temporary = DetailesEnum.ID;
-
+  
+    
     public DetailesView()
     {
 	// TODO Auto-generated constructor stub
@@ -45,11 +50,15 @@ public class DetailesView extends ViewPart
 	detailesUI(parent);
     }
 
-    public void setInput(ContactsManager firstElement)
+    public void setInput(ContactsManager contact)
     {
-	detailesViewer.setContentProvider(ArrayContentProvider.getInstance());
-	detailesViewer.setInput(firstElement);
-	// detailesViewer.add(firstElement);
+	 List<ContactsManager> addresses = new ArrayList<ContactsManager>();
+	 
+	addresses.add(contact);
+	detailesViewer.setInput(addresses);
+	  Delete delete = new Delete();
+	delete.earlySelection(contact);
+	
 	detailesViewer.refresh();
     }
 
@@ -68,7 +77,8 @@ public class DetailesView extends ViewPart
 	comparator = new MyDetailesComparator();
 	detailesViewer.setComparator(comparator);
 
-	// detailesViewer.setInput(tableImput.getAddresses());
+	detailesViewer.setContentProvider(ArrayContentProvider.getInstance());
+	//detailesViewer.setInput(tableImput.getAddresses());
 
 	final Table table = detailesViewer.getTable();
 	table.setHeaderVisible(true);

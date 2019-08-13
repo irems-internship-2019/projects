@@ -22,6 +22,7 @@ import rcpbook.contacts.AddressManager;
 import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
 import rcpbook.editor.AddressBookNewContactImput;
+import rcpbook.enums.EditorLabelEnum;
 //import rcpbook.editor.CreateEditorUI;
 
 public class EditorView extends EditorPart
@@ -35,6 +36,137 @@ public class EditorView extends EditorPart
     public ContactsManager contact;
     private Text[] textNames = new Text[8];
 
+    
+    
+    /*//Not Working properly#################################################################
+     // private Text[] textNames;
+
+    private Text firstName;
+    private Text lastName;
+    private Text country;
+    private Text city;
+    private Text street;
+    private Text postalCode;
+    private Text phoneNumber;
+    private Text email;
+
+    private void addTextToArray()
+    {
+	textNames = new Text[] { firstName, lastName, country, city, street, postalCode, phoneNumber, email };
+    }
+
+    @Override
+    public void createPartControl(Composite parent)
+    {
+	parent.setLayout(new GridLayout(2, false));
+	EditorUI(parent);
+    }
+
+    public void EditorUI(Composite parent)
+    {
+
+	createEditorFields(parent);
+
+    }
+
+    private void createEditorFields(Composite parent)
+    {
+      firstName = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      lastName = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      country = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      city = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      street = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      postalCode = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      phoneNumber = new Text(parent, SWT.BORDER | SWT.SEARCH);
+      email = new Text(parent, SWT.BORDER | SWT.SEARCH);
+    
+    
+	addTextToArray();
+
+	int i = 0;
+
+	for (EditorLabelEnum text : EditorLabelEnum.values())
+	{
+	    new Label(parent, SWT.NONE).setText(text.getText());
+	    
+	    textNames[i].setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+	    textNames[i].addModifyListener(new ModifyListener()
+	    {
+		@Override
+		public void modifyText(ModifyEvent evt)
+		{
+		    setDirty(true);
+		}
+	    });
+	    i++;
+	}
+    }
+    
+    private void createText() 
+    {
+	
+    }
+
+    private void editContact()
+    {
+
+	// this is better if you delete the contact and insert it back at ID - 1
+
+	ContactsManager contact = newContact.getElements().get(this.contact.getIntId() - 1);
+
+	contact.setFirstName(firstName.getText());
+	contact.setLastName(lastName.getText());
+	contact.getAddress().setCountry(country.getText());
+	contact.getAddress().setCity(city.getText());
+	contact.getAddress().setStreet(street.getText());
+	contact.getAddress().setPostalCode(postalCode.getText());
+	contact.setPhoneNumber(phoneNumber.getText());
+	contact.setEmail(email.getText());
+
+	// #########################################################################
+
+	setDirty(false);
+	contact = null;
+	refreshContactView();
+    }
+
+    private void newContact()
+    {
+	newContact.addNewContact(new ContactsManager(
+		firstName.getText(), lastName.getText(), new AddressManager(country.getText(),
+			city.getText(), street.getText(), postalCode.getText()),
+		phoneNumber.getText(), email.getText()));
+
+	setDirty(false);
+
+	refreshContactView();
+    }
+
+    public void updateWidgets()
+    {
+
+	if (contact != null)
+	{
+	    firstName.setText(contact.getFirstName());
+	    lastName.setText(contact.getLastName());
+	    country.setText(contact.getAddress().getCountry());
+	    city.setText(contact.getAddress().getCity());
+	    street.setText(contact.getAddress().getStreet());
+	    postalCode.setText(contact.getAddress().getPostalCode());
+	    phoneNumber.setText(contact.getPhone());
+	    email.setText(contact.getEmail());
+	} else
+	{
+	    for (Text text : textNames)
+	    {
+		text.setText("");
+	    }
+	}
+    }
+     //*##################################################################################### */
+    
+    
+    
     @Override
     public void createPartControl(Composite parent)
     {
@@ -54,13 +186,12 @@ public class EditorView extends EditorPart
     {
 
 	int i = 0;
+	
 
-	String[] labelTags = { "FirstName: ", "Last Name: ", "Country: ", "City: ", "Street: ", "Postal Code: ",
-		"Phone Number: ", "Email: " };
-
-	for (String str : labelTags)
+	for (EditorLabelEnum text : EditorLabelEnum.values())
 	{
-	    new Label(parent, SWT.NONE).setText(str);
+	    new Label(parent, SWT.NONE).setText(text.getText());
+	    
 	    textNames[i] = new Text(parent, SWT.BORDER | SWT.SEARCH);
 	    textNames[i].setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 	    textNames[i].addModifyListener(new ModifyListener()
