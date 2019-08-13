@@ -47,7 +47,7 @@ public class DeleteAction implements IViewActionDelegate
 	    view.refresh();
 	    
 	    if (editor != null && editor.getModel() == deletableContact)
-		editor.getEditorSite().getPage().setEditorAreaVisible(false);    
+		activePage.setEditorAreaVisible(false);    
 	    
 	    if (addressBookDetailsView != null)
 	    {
