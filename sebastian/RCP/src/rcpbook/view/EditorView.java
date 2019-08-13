@@ -30,7 +30,7 @@ public class EditorView extends EditorPart
     public static final String ID = "RCPBook.Create";
 
     private boolean dirty = false;
-    private ViewerTools vTools = new ViewerTools();
+   // private ViewerTools vTools = new ViewerTools();
     private ContactsModel newContact = new ContactsModel();
     public ContactsManager contact;
     private Text[] textNames = new Text[8];
@@ -49,6 +49,7 @@ public class EditorView extends EditorPart
 
     }
 
+    
     private void createEditorFields(Composite parent)
     {
 
@@ -81,8 +82,8 @@ public class EditorView extends EditorPart
 
 	ContactsManager contact = newContact.getElements().get(this.contact.getIntId() - 1);
 
-	contact.setFirst(textNames[0].getText());
-	contact.setSecond(textNames[1].getText());
+	contact.setFirstName(textNames[0].getText());
+	contact.setLastName(textNames[1].getText());
 	contact.getAddress().setCountry(textNames[2].getText());
 	contact.getAddress().setCity(textNames[3].getText());
 	contact.getAddress().setStreet(textNames[4].getText());
@@ -94,7 +95,7 @@ public class EditorView extends EditorPart
 
 	setDirty(false);
 	contact = null;
-	vTools.refreshContactsViewer();
+	refreshContactView();
     }
 
     private void newContact()
@@ -106,7 +107,7 @@ public class EditorView extends EditorPart
 
 	setDirty(false);
 
-	vTools.refreshContactsViewer();
+	refreshContactView();
     }
 
     public void updateWidgets()
@@ -114,8 +115,8 @@ public class EditorView extends EditorPart
 
 	if (contact != null)
 	{
-	    textNames[0].setText(contact.getFirst());
-	    textNames[1].setText(contact.getSecond());
+	    textNames[0].setText(contact.getFirstName());
+	    textNames[1].setText(contact.getLastName());
 	    textNames[2].setText(contact.getAddress().getCountry());
 	    textNames[3].setText(contact.getAddress().getCity());
 	    textNames[4].setText(contact.getAddress().getStreet());
@@ -235,5 +236,14 @@ public class EditorView extends EditorPart
     {
 	// TODO Auto-generated method stub
 	return false;
+    }
+    
+    public void refreshContactView() 
+    {
+	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	ContactsView contactView = (ContactsView)  activePage.findView(ContactsView.ID);
+	
+	contactView.refreshView();
+	
     }
 }

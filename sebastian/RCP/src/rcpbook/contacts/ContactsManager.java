@@ -34,12 +34,12 @@ public class ContactsManager
 	return ID;
     }
 
-    public String getFirst()
+    public String getFirstName()
     {
 	return first;
     }
 
-    public String getSecond()
+    public String getLastName()
     {
 	return second;
     }
@@ -59,12 +59,12 @@ public class ContactsManager
 	return email;
     }
 
-    public void setFirst(String first)
+    public void setFirstName(String first)
     {
 	this.first = first;
     }
 
-    public void setSecond(String second)
+    public void setLastName(String second)
     {
 	this.second = second;
     }

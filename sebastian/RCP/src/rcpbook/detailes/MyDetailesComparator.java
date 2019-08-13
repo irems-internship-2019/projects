@@ -50,10 +50,10 @@ public class MyDetailesComparator extends ViewerComparator
 		rc = Integer.compare(p1.getIntId(), p2.getIntId());
 		break;
 	    case 1:
-		rc = p1.getFirst().compareTo(p2.getFirst());
+		rc = p1.getFirstName().compareTo(p2.getFirstName());
 		break;
 	    case 2:
-		rc = p1.getSecond().compareTo(p2.getSecond());
+		rc = p1.getLastName().compareTo(p2.getLastName());
 		break;
 	    case 3:
 		rc = p1.getAddress().getCountry().compareTo(p2.getAddress().getCountry());

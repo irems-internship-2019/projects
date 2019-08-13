@@ -15,19 +15,22 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
 import rcpbook.contacts.ContactsManager;
-import rcpbook.contacts.DetailesModel;
+//import rcpbook.contacts.DetailesModel;
 import rcpbook.detailes.MyDetailesComparator;
+import rcpbook.enums.ContactEnum;
+import rcpbook.enums.DetailesEnum;
 
 public class DetailesView extends ViewPart
 {
     public static final String ID = "RCPBook.Detailes";
-    //private CreateDetailesUI newDetailes = new CreateDetailesUI();
-    
+    // private CreateDetailesUI newDetailes = new CreateDetailesUI();
+
     private TableViewer detailesViewer;
-    private DetailesModel tableImput = new DetailesModel();
-    private ViewerTools vTools = new ViewerTools();
-    private int i = 0, iterator = 0;
+    // private DetailesModel tableImput = new DetailesModel();
+    // private ViewerTools vTools = new ViewerTools();
+    private int i = 0;
     private MyDetailesComparator comparator;
+    private DetailesEnum temporary = DetailesEnum.ID;
 
     public DetailesView()
     {
@@ -41,31 +44,31 @@ public class DetailesView extends ViewPart
 	parent.setLayout(new GridLayout(2, false));
 	detailesUI(parent);
     }
-    
-    public void setInput(ContactsManager firstElement) 
+
+    public void setInput(ContactsManager firstElement)
     {
-	//detailesViewer.setInput(firstElement);
-	detailesViewer.add(firstElement);
+	detailesViewer.setContentProvider(ArrayContentProvider.getInstance());
+	detailesViewer.setInput(firstElement);
+	// detailesViewer.add(firstElement);
 	detailesViewer.refresh();
     }
-    
+
     public void detailesUI(Composite parent)
     {
 
 	detailesViewer = new TableViewer(parent,
 		SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
-	vTools.assignDetailesViewer(detailesViewer);
+	// vTools.assignDetailesViewer(detailesViewer);
 
 	createDetailesColums(parent);
 
 	detailesViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, SWT.FILL));
-	detailesViewer.setContentProvider(ArrayContentProvider.getInstance());
 
 	comparator = new MyDetailesComparator();
 	detailesViewer.setComparator(comparator);
 
-	//detailesViewer.setInput(tableImput.getAddresses());
+	// detailesViewer.setInput(tableImput.getAddresses());
 
 	final Table table = detailesViewer.getTable();
 	table.setHeaderVisible(true);
@@ -74,48 +77,49 @@ public class DetailesView extends ViewPart
 
     private void createDetailesColums(final Composite parent)
     {
-	String[] titles = { "ID", "First name", "Last name", "Country", "City", "Street", "Postal Code" };
 	int bounds = 100;
 
 	TableViewerColumn column;
 
-	for (String title : titles)
+	for (DetailesEnum title : DetailesEnum.values())
 	{
-	    column = createDetailesViewerColumn(title, bounds, i);
+	    column = createDetailesViewerColumn(title.getColumn(), bounds, i);
+
 	    column.setLabelProvider(new ColumnLabelProvider()
 	    {
 		public String getText(Object element)
 		{
 		    if (element instanceof ContactsManager)
 		    {
+			DetailesEnum tableContent = temporary;
+
 			ContactsManager contactMgr = (ContactsManager) element;
-			
-			switch (iterator)
+
+			switch (temporary)
 			    {
-			    case 0:
-				iterator++;
+			    case ID:
+				temporary = tableContent.next();
 				return contactMgr.getID();
-			    case 1:
-				iterator++;
-				return contactMgr.getFirst();
-			    case 2:
-				iterator++;
-				return contactMgr.getSecond();
-			    case 3:
-				iterator++;
-				return contactMgr.getAddress().getCountry();
-			    case 4:
-				iterator++;
-				return contactMgr.getAddress().getCity();
-			    case 5:
-				iterator++;
+			    case FIRSTNAME:
+				temporary = tableContent.next();
+				return contactMgr.getFirstName();
+			    case LASTNAME:
+				temporary = tableContent.next();
+				return contactMgr.getLastName();
+			    case COUNTRY:
+				temporary = tableContent.next();
 				return contactMgr.getAddress().getStreet();
-			    case 6:
-				iterator = 0;
-				return contactMgr.getAddress().getPostalCode();
+			    case CITY:
+				temporary = tableContent.next();
+				return contactMgr.getPhone();
+			    case STREET:
+				temporary = tableContent.next();
+				return contactMgr.getEmail();
+			    case POSTALCODE:
+				temporary = DetailesEnum.ID;
+				return contactMgr.getEmail();
 			    default:
-				// code doesn't reach this
-				iterator = 0;
+				// System.out.println("Unimplemented thing");
 				break;
 			    }
 		    }
@@ -135,7 +139,7 @@ public class DetailesView extends ViewPart
 	column.setResizable(true);
 	column.setMoveable(true);
 	column.addSelectionListener(getSelectionAdapter(column, colNumber));
-	
+
 	return viewerColumn;
     }
 
@@ -150,12 +154,11 @@ public class DetailesView extends ViewPart
 		int dir = comparator.getDirection();
 		detailesViewer.getTable().setSortDirection(dir);
 
-		vTools.refreshDetailesView();
+		detailesViewer.refresh();
 	    }
 	};
 	return selectionAdapter;
     }
-    
 
     @Override
     public void setFocus()

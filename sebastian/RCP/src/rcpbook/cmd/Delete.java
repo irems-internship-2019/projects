@@ -11,12 +11,11 @@ import rcpbook.contacts.ContactsManager;
 import rcpbook.contacts.ContactsModel;
 import rcpbook.view.ContactsView;
 import rcpbook.view.EditorView;
-import rcpbook.view.ViewerTools;
 
 public class Delete implements IViewActionDelegate
 {
     ContactsModel contact = new ContactsModel();
-    ViewerTools vTools = new ViewerTools();
+    //ViewerTools vTools = new ViewerTools();
     private ContactsView view;
 
     @Override
@@ -25,7 +24,7 @@ public class Delete implements IViewActionDelegate
 	this.view = (ContactsView) view;
     }
 
-    @Override
+    @Override 
     public void run(IAction action)
     {
 	boolean delete = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Delete Contact",
@@ -43,7 +42,7 @@ public class Delete implements IViewActionDelegate
 		MessageDialog.openError(Display.getDefault().getActiveShell(), "Delete Contact", "Nothing selected");
 
 	    // contact.rearrangeContactsArray();
-	    vTools.refreshContactsViewer();
+	   view.refreshView();
 	}
     }
 

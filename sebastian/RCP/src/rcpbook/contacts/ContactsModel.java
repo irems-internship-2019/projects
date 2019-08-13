@@ -3,11 +3,9 @@ package rcpbook.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
-import rcpbook.view.ViewerTools;
-
 public class ContactsModel
 {
-    ViewerTools vTools = new ViewerTools();
+    //ViewerTools vTools = new ViewerTools();
     private static int i = 0;
 
     private static List<ContactsManager> contacts = new ArrayList<ContactsManager>();

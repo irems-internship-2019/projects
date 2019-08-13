@@ -31,12 +31,12 @@ public class ContactsFilter extends ViewerFilter
 	    return true;
 	}
 
-	if (p != null && p.getFirst().matches(searchString))
+	if (p != null && p.getFirstName().matches(searchString))
 	{
 	    return true;
 	}
 
-	if (p != null && p.getSecond().matches(searchString))
+	if (p != null && p.getLastName().matches(searchString))
 	{
 	    return true;
 	}
