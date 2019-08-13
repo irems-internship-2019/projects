@@ -9,18 +9,17 @@ public enum ContactProvider {
 	    INSTANCE;
 
 		  private static  ArrayList<Contact> contactList=new ArrayList<Contact>();
+		
 	    private ContactProvider() {
 
 	    }
 
-	    public ArrayList<Contact> getContacts() {
-	        return contactList;
-	    }
-	    
-	      public void addContacts(Contact contact) {
-	    	  contactList.add(contact);
-	      }
-	     
+	public ArrayList<Contact> getContacts() {
+		return contactList;
 	}
 
+	public void addContacts(Contact contact) {
+		contactList.add(contact);
+	}
 
+}

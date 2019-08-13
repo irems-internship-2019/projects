@@ -1,7 +1,9 @@
 package adress.actions;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
@@ -15,8 +17,12 @@ public class CreateAction implements IViewActionDelegate {
 	@Override
 	public void run(IAction action) {
 		// TODO Auto-generated method stub
-		
-		AddressBookEditor.openEditor(null);
+		boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Create",
+				"Do you want to create a new Contact?");
+			if (openQuestion)
+			{
+			    AddressBookEditor.openEditor(null);
+			}	
 		
 	}
 

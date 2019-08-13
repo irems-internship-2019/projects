@@ -46,7 +46,7 @@ public class AddressContactsView extends ViewPart {
 
 	private TableViewer viewer;
 	private ContactComparator comparator;
-	CreateUI uiCreation = new CreateUI();
+	ContactProvider provider = ContactProvider.INSTANCE;
 
 	private void createDoubleSelector() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -59,9 +59,7 @@ public class AddressContactsView extends ViewPart {
 
 					AddressDetailsView showView = (AddressDetailsView) activePage.showView(AddressDetailsView.ID);
 
-					showView.getViewer().setInput(getSelectedItem());
-
-					System.out.print("!!!" + getSelectedItem().getId());
+					showView.setInputForViewer(getSelectedItem());
 					showView.refresh();
 
 				} catch (PartInitException e) {
@@ -123,6 +121,8 @@ public class AddressContactsView extends ViewPart {
 		TableViewerColumn firstNameColumn = createTableViewerColumn(titles[1], bounds[1], 1);
 		TableViewerColumn lastNameColumn = createTableViewerColumn(titles[2], bounds[2], 2);
 		TableViewerColumn adressNameColumn = createTableViewerColumn(titles[3], bounds[3], 3);
+		TableViewerColumn phoneNumberColumn = createTableViewerColumn(titles[4], bounds[4], 4);
+		TableViewerColumn emailAdress = createTableViewerColumn(titles[5], bounds[5], 5);
 
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
@@ -151,7 +151,6 @@ public class AddressContactsView extends ViewPart {
 			}
 		});
 
-		TableViewerColumn phoneNumberColumn = createTableViewerColumn(titles[4], bounds[4], 4);
 		phoneNumberColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				Contact p = (Contact) element;
@@ -159,7 +158,6 @@ public class AddressContactsView extends ViewPart {
 			}
 		});
 
-		TableViewerColumn emailAdress = createTableViewerColumn(titles[5], bounds[5], 5);
 		emailAdress.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				Contact p = (Contact) element;

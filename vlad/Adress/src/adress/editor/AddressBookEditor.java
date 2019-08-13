@@ -10,9 +10,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartConstants;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -46,22 +48,18 @@ public class AddressBookEditor extends EditorPart {
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-		
 		try {
 			AddressBookEditor editor = (AddressBookEditor) activePage.getActiveEditor();
-			
-			  if(editor!=null)
-			  {
-				
-			  editor.setModel(model);
-			  editor.updateWidgets();
-			  }
-			  else 
-			  {
-				  AddressBookEditor createEditor = (AddressBookEditor) activePage.openEditor(input, AddressBookEditor.ID);
-				  createEditor.setModel(model);
-				  createEditor.updateWidgets();
-			  }
+
+			if (editor != null) {
+
+				editor.setModel(model);
+				editor.updateWidgets();
+			} else {
+				AddressBookEditor createEditor = (AddressBookEditor) activePage.openEditor(input, AddressBookEditor.ID);
+				createEditor.setModel(model);
+				createEditor.updateWidgets();
+			}
 
 		} catch (PartInitException e) {
 			e.printStackTrace();
@@ -136,9 +134,7 @@ public class AddressBookEditor extends EditorPart {
 			postalCodeText.setText(contact.getAddress().getPostalCode());
 			phoneNumberText.setText(contact.getphoneNumber());
 			emailAdressText.setText(contact.getEmailAdress());
-		}
-		else
-		{
+		} else {
 			firstNameText.setText("");
 			lastNameText.setText("");
 			countryText.setText("");
@@ -159,66 +155,67 @@ public class AddressBookEditor extends EditorPart {
 
 	}
 
+	private Text newText(Composite parent) {
+		Text text = new Text(parent, SWT.BORDER | SWT.SEARCH);
+		text.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		return text;
+	}
+
+	private Label newLabel(Composite parent, String text) {
+		Label label = new Label(parent, SWT.NONE);
+		label.setText(text);
+		return label;
+	}
+
+	private void createDetailsInput(Composite parent) {
+		parent.setLayout(new GridLayout(2, false));
+
+		newLabel(parent, "First Name");
+
+		firstNameText = newText(parent);
+
+		newLabel(parent, "Last Name");
+
+		lastNameText = newText(parent);
+
+		newLabel(parent, "Phone Number");
+
+		phoneNumberText = newText(parent);
+
+		newLabel(parent, "Adress");
+
+		adressText = newText(parent);
+
+		newLabel(parent, "E-mail");
+
+		emailAdressText = newText(parent);
+
+		newLabel(parent, "Country");
+
+		countryText = newText(parent);
+
+		newLabel(parent, "City");
+
+		cityText = newText(parent);
+
+		newLabel(parent, "Postal Code");
+
+		postalCodeText = newText(parent);
+	}
+
 	@Override
 	public void createPartControl(Composite parent) {
 		// Add Code.
 		// If you want to design with WindowBuilder Designer
 		// Change code like: (Important!!!)
 
-		parent.setLayout(new GridLayout(2, false));
-		
-		Label firstNameLabel = new Label(parent, SWT.NONE);
-		firstNameLabel.setText("Last Name");
-		firstNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		firstNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		
-		Label lastNameLabel = new Label(parent, SWT.NONE);
-		lastNameLabel.setText("Last Name");
-		lastNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		lastNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label phoneNumberLabel = new Label(parent, SWT.NONE);
-		phoneNumberLabel.setText("Phone Number");
-		phoneNumberText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		phoneNumberText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label adressLabel = new Label(parent, SWT.NONE);
-		adressLabel.setText("Adress");
-		adressText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		adressText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label emailAdressLabel = new Label(parent, SWT.NONE);
-		emailAdressLabel.setText("E-mail");
-		emailAdressText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		emailAdressText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label countryLabel = new Label(parent, SWT.NONE);
-		countryLabel.setText("Country");
-		countryText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		countryText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label cityLabel = new Label(parent, SWT.NONE);
-		cityLabel.setText("City");
-		cityText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		cityText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-
-		Label postalCodeLabel = new Label(parent, SWT.NONE);
-		postalCodeLabel.setText("Postal Code");
-		postalCodeText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		postalCodeText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		createDetailsInput(parent);
 
 		if (contact != null)
 			editState();
 		else
 			InsertState();
 		setDirty(false);
-	}
-
-	private void createFirstNameLabel(Composite parent) {
-		Label firstNameLabel = new Label(parent, SWT.NONE);
-		firstNameLabel.setText("Last Name");
-		firstNameText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-		firstNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 	}
 
 	private void listenerForText(Text text) {
@@ -247,40 +244,41 @@ public class AddressBookEditor extends EditorPart {
 		) {
 
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).setFirstName(firstNameText.getText());
-			
+
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).setLastName(lastNameText.getText());
-			
+
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact))
 					.setPhoneNumber(phoneNumberText.getText());
-			
+
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact))
 					.setEmailAddress(emailAdressText.getText());
-			
+
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
-			.setCity(cityText.getText());
-			
+					.setCity(cityText.getText());
+
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
-			.setCountry(countryText.getText());
-			
+					.setCountry(countryText.getText());
+
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
 					.setStreet(adressText.getText());
-			
-			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
-			.setPostalCode(postalCodeText.getText());
-	
 
+			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
+					.setPostalCode(postalCodeText.getText());
 
 			refreshContactView();
 		}
-	
+
 	}
 
 	private void InsertState() {
 
-		contacts.addContacts(new Contact(firstNameText.getText(),
-				new Address(countryText.getText(), cityText.getText(), adressText.getText(), postalCodeText.getText()),
-				lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
-		refreshContactView();
+		if (isDirty()) {
+			contacts.addContacts(new Contact(firstNameText.getText(),
+					new Address(countryText.getText(), cityText.getText(), adressText.getText(),
+							postalCodeText.getText()),
+					lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
+			refreshContactView();
+		}
 
 	}
 
@@ -296,16 +294,17 @@ public class AddressBookEditor extends EditorPart {
 		AddressContactsView view = (AddressContactsView) activePage.findView(AddressContactsView.ID);
 
 		view.refresh();
+		
+	}
+
+	public void closePage() {
+
+		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchPage page = workbenchWindow.getActivePage();
+		page.closeEditor(this, true);
+
 	}
 	
-	public void closePage() {
-		
-
-		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		 
-		
-
-	}
 	
 
 }
