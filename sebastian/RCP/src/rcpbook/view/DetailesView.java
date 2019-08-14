@@ -26,14 +26,11 @@ import rcpbook.tableLabelProvider.DetailesLabelProvider;
 public class DetailesView extends ViewPart
 {
     public static final String ID = "RCPBook.Detailes";
-    // private CreateDetailesUI newDetailes = new CreateDetailesUI();
-
+    
     private TableViewer detailesViewer;
-    // private DetailesModel tableImput = new DetailesModel();
-    // private ViewerTools vTools = new ViewerTools();
-    private int i = 0;
+
     private MyDetailesComparator comparator;
-    //private DetailesEnum temporary = DetailesEnum.ID;
+
     private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
     
     public DetailesView()
@@ -87,7 +84,7 @@ public class DetailesView extends ViewPart
 
     private void createDetailesColums(final Composite parent)
     {
-	int bounds = 100;
+	int bounds = 100, i = 0;
 
 	for (DetailesEnum title : DetailesEnum.values())
 	{

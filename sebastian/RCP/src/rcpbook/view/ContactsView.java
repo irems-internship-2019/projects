@@ -48,7 +48,6 @@ public class ContactsView extends ViewPart
     private MyViewerComparator comparator;
     //private ContactEnum temporary = ContactEnum.ID;
     private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
-    int i = 0;
     
 
     @Override
@@ -90,7 +89,7 @@ public class ContactsView extends ViewPart
 
     private void createTableColums(final Composite parent)
     {
-	int bounds = 100;
+	int bounds = 100, i = 0 ;
 
 	for (ContactEnum title : ContactEnum.values())
 	{

@@ -209,8 +209,6 @@ public class EditorView extends EditorPart
     private void editContact()
     {
 
-	// this is better if you delete the contact and insert it back at ID - 1
-
 	ContactsManager contact = newContact.getElements().get(this.contact.getIntId() - 1);
 
 	contact.setFirstName(textNames[0].getText());
@@ -221,8 +219,6 @@ public class EditorView extends EditorPart
 	contact.getAddress().setPostalCode(textNames[5].getText());
 	contact.setPhoneNumber(textNames[6].getText());
 	contact.setEmail(textNames[7].getText());
-
-	// #########################################################################
 
 	setDirty(false);
 	contact = null;
