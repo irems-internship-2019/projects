@@ -72,6 +72,13 @@ public class AddressBookEditor extends EditorPart {
 
 	}
 
+	public Contact getModel() {
+		
+		return this.contact;
+
+	}
+	 
+
 	public AddressBookEditor() {
 		// TODO Auto-generated constructor stub
 	}

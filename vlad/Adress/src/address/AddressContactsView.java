@@ -1,5 +1,8 @@
 package address;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -32,6 +35,8 @@ import Model.Contact;
 import Model.ContactProvider;
 import org.eclipse.ui.IWorkbenchPage;
 import comparator.ContactComparator;
+import enums.ContactsEnums;
+import labelsprovider.ContactsLabelProvider;
 import uiManager.CreateUI;
 
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -47,6 +52,7 @@ public class AddressContactsView extends ViewPart {
 	private TableViewer viewer;
 	private ContactComparator comparator;
 	ContactProvider provider = ContactProvider.INSTANCE;
+	private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
 
 	private void createDoubleSelector() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -96,7 +102,9 @@ public class AddressContactsView extends ViewPart {
 
 	private void createViewer(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		createColumns(parent, viewer);
+		createTableColums(parent);
+		viewer.setLabelProvider(new ContactsLabelProvider(tableCollums));
+
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -113,58 +121,16 @@ public class AddressContactsView extends ViewPart {
 		viewer.getControl().setLayoutData(gridData);
 	}
 
-	private void createColumns(final Composite parent, final TableViewer viewer) {
-		String[] titles = { "Id", "First Name", "Last Name", "Adress", "Phone Number", "Email Adress" };
-		int[] bounds = { 50, 100, 100, 100, 100, 100 };
+	private void createTableColums(final Composite parent) {
+		int bounds = 100, i = 0;
 
-		TableViewerColumn idColumn = createTableViewerColumn(titles[0], bounds[0], 0);
-		TableViewerColumn firstNameColumn = createTableViewerColumn(titles[1], bounds[1], 1);
-		TableViewerColumn lastNameColumn = createTableViewerColumn(titles[2], bounds[2], 2);
-		TableViewerColumn adressNameColumn = createTableViewerColumn(titles[3], bounds[3], 3);
-		TableViewerColumn phoneNumberColumn = createTableViewerColumn(titles[4], bounds[4], 4);
-		TableViewerColumn emailAdress = createTableViewerColumn(titles[5], bounds[5], 5);
+		for (ContactsEnums title : ContactsEnums.values()) {
+			TableViewerColumn createTableViewerColumn = createTableViewerColumn(title.getColumn(), bounds, i);
 
-		idColumn.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				Contact p = (Contact) element;
-				return p.getId();
-			}
-		});
+			tableCollums.add(createTableViewerColumn);
 
-		firstNameColumn.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				Contact p = (Contact) element;
-				return p.getFirstName();
-			}
-		});
-
-		lastNameColumn.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				Contact p = (Contact) element;
-				return p.getLastName();
-			}
-		});
-		adressNameColumn.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				Contact p = (Contact) element;
-				return p.getAddress().getStreet();
-			}
-		});
-
-		phoneNumberColumn.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				Contact p = (Contact) element;
-				return p.getphoneNumber();
-			}
-		});
-
-		emailAdress.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) {
-				Contact p = (Contact) element;
-				return p.getEmailAdress();
-			}
-		});
-
+			i++;
+		}
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {

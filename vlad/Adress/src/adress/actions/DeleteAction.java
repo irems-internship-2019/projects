@@ -37,7 +37,6 @@ public class DeleteAction implements IViewActionDelegate {
 		List<Contact> contacts = ContactProvider.INSTANCE.getContacts();
 		IStructuredSelection sel = (IStructuredSelection) selection;
 
-		System.out.print("___"+detailsView.getViewer().getTable().getData());
 		
 		boolean openQuestion = MessageDialog.openConfirm(Display.getDefault().getActiveShell(), "Delete",
 				"Are you sure you want to delete the selected contact?");
@@ -51,17 +50,18 @@ public class DeleteAction implements IViewActionDelegate {
 				Contact.contactCounter--;
 				view.refresh();
 			}
-			if (editor != null) {
-				editor.closePage();
-			}
 			
-			if (detailsView != null) {
+			if (detailsView != null && detailsView.equalityCheck(((Contact)sel.getFirstElement()).getIdInt())) {
 				
 				detailsView.closeView();
+				
+			}
+			System.out.println(editor.getModel()+" = "+ (Contact)sel.getFirstElement());
+			if (editor != null && editor.getModel() == view.getSelectedItem())
+				editor.closePage();  
 			}
 		}
-
-	}
+	
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
