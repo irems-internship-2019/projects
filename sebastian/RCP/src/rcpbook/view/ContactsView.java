@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -36,6 +35,7 @@ import rcpbook.contacts.ContactsModel;
 import rcpbook.enums.ContactEnum;
 import rcpbook.table.ContactsFilter;
 import rcpbook.table.MyViewerComparator;
+import rcpbook.tableLabelProvider.ContactsLabelProvider;
 
 public class ContactsView extends ViewPart
 {
@@ -46,7 +46,7 @@ public class ContactsView extends ViewPart
 
     private ContactsFilter contactFilter = new ContactsFilter();
     private MyViewerComparator comparator;
-    private ContactEnum temporary = ContactEnum.ID;
+    //private ContactEnum temporary = ContactEnum.ID;
     private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
     int i = 0;
     
@@ -78,7 +78,7 @@ public class ContactsView extends ViewPart
 	tableViewer.setInput(model.getElements());
 
 	createTableColums(parent);
-	tableViewer.setLabelProvider(new InnerLabelProvider());// (new ColumnLabelProvider());
+	tableViewer.setLabelProvider(new ContactsLabelProvider(tableCollums));
 
 	comparator = new MyViewerComparator();
 	tableViewer.setComparator(comparator);
@@ -91,64 +91,13 @@ public class ContactsView extends ViewPart
     private void createTableColums(final Composite parent)
     {
 	int bounds = 100;
-//	InnerLabelProvider inner = new InnerLabelProvider();
-	// TableViewerColumn column;
 
 	for (ContactEnum title : ContactEnum.values())
 	{
-	    // column = createTableViewerColumn(title.getColumn(), bounds, i);
 	    TableViewerColumn createTableViewerColumn = createTableViewerColumn(title.getColumn(), bounds, i);
-//	    createTableViewerColumn.setLabelProvider(inner);
-	    
+
 	    tableCollums.add(createTableViewerColumn);
 
-//	    tableCollums.get(0).setLabelProvider(new ColumnLabelProvider()
-//		    {
-//	
-//		    });
-//	    inner.getColumnText(model.getElements(), i);
-
-	    // ContactEnum tableContent = ContactEnum.ID;
-
-//	    column.setLabelProvider(new ColumnLabelProvider()
-//	    {
-//
-//		public String getText(Object element)
-//		{
-//		    if (element instanceof ContactsManager)
-//		    {
-//			ContactEnum tableContent = temporary;
-//
-//			ContactsManager contactMgr = (ContactsManager) element;
-//
-//			switch (temporary)
-//			    {
-//			    case ID:
-//				temporary = tableContent.next();
-//				return contactMgr.getID();
-//			    case FIRSTNAME:
-//				temporary = tableContent.next();
-//				return contactMgr.getFirstName();
-//			    case LASTNAME:
-//				temporary = tableContent.next();
-//				return contactMgr.getLastName();
-//			    case STREET:
-//				temporary = tableContent.next();
-//				return contactMgr.getAddress().getStreet();
-//			    case PHONENUMBER:
-//				temporary = tableContent.next();
-//				return contactMgr.getPhone();
-//			    case EMAIL:
-//				temporary = ContactEnum.ID;
-//				return contactMgr.getEmail();
-//			    default:
-//				// System.out.println("Unimplemented thing");
-//				break;
-//			    }
-//		    }
-//		    return super.getText(element);
-//		}
-//	    });
 	    i++;
 	}
     }
@@ -258,90 +207,4 @@ public class ContactsView extends ViewPart
     {
 	tableViewer.refresh();
     }
-
-    public class InnerLabelProvider implements ITableLabelProvider
-        {
-    
-    	@Override
-    	public void addListener(ILabelProviderListener listener)
-    	{
-    	    // TODO Auto-generated method stub
-    
-    	}
-    
-    	@Override
-    	public void dispose()
-    	{
-    	    // TODO Auto-generated method stub
-    
-    	}
-    
-    	@Override
-    	public boolean isLabelProperty(Object element, String property)
-    	{
-    	    // TODO Auto-generated method stub
-    	    return false;
-    	}
-    
-    	@Override
-    	public void removeListener(ILabelProviderListener listener)
-    	{
-    	    // TODO Auto-generated method stub
-    
-    	}
-    
-    	@Override
-    	public Image getColumnImage(Object element, int columnIndex)
-    	{
-    	    // TODO Auto-generated method stub
-    	    return null;
-    	}
-    
-    	@Override
-    	public String getColumnText(Object element, int columnIndex)
-    	{
-    //	    0 pentru test macar...
-    //	    tableCollums.get(0).setLabelProvider(new ColumnLabelProvider()
-    //	    {
-    //
-    //	    });
-    
-    	    if (element instanceof ContactsManager)
-    	    {
-    		// ContactEnum tableContent = temporary;
-    
-    		ContactsManager contactMgr = (ContactsManager) element;
-    
-    		switch (tableCollums.get(columnIndex).getColumn().getText())
-    		    {
-    		
-    		    case "ID":
-    			return contactMgr.getID();
-    		    
-    		    case "First Name":
-    			return contactMgr.getFirstName();
-    		    
-//    		    case ContactEnum.LASTNAME.getColumn():
-//    			return contactMgr.getLastName();
-//    		    
-//    		    case ContactEnum.STREET.getColumn():
-//    			return contactMgr.getAddress().getStreet();
-//    		    
-//    		    case ContactEnum.PHONENUMBER.getColumn():
-//    			return contactMgr.getPhone();
-//    			
-//    		    case ContactEnum.EMAIL.getColumn():
-//    			return contactMgr.getEmail();
-    		    
-    		    default:
-    			return "Test";
-//    			throw new IllegalArgumentException("Case not implemented!!");
-    		    }
-    	    }
-    
-    	    // TODO Auto-generated method stub
-    	    return null;
-    	}
-    
-        }
 }

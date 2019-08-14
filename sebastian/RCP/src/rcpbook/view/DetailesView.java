@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -21,8 +20,8 @@ import rcpbook.cmd.Delete;
 import rcpbook.contacts.ContactsManager;
 //import rcpbook.contacts.DetailesModel;
 import rcpbook.detailes.MyDetailesComparator;
-import rcpbook.enums.ContactEnum;
 import rcpbook.enums.DetailesEnum;
+import rcpbook.tableLabelProvider.DetailesLabelProvider;
 
 public class DetailesView extends ViewPart
 {
@@ -30,12 +29,12 @@ public class DetailesView extends ViewPart
     // private CreateDetailesUI newDetailes = new CreateDetailesUI();
 
     private TableViewer detailesViewer;
-  //  private DetailesModel tableImput = new DetailesModel();
+    // private DetailesModel tableImput = new DetailesModel();
     // private ViewerTools vTools = new ViewerTools();
     private int i = 0;
     private MyDetailesComparator comparator;
-    private DetailesEnum temporary = DetailesEnum.ID;
-  
+    //private DetailesEnum temporary = DetailesEnum.ID;
+    private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
     
     public DetailesView()
     {
@@ -52,13 +51,13 @@ public class DetailesView extends ViewPart
 
     public void setInput(ContactsManager contact)
     {
-	 List<ContactsManager> addresses = new ArrayList<ContactsManager>();
-	 
+	List<ContactsManager> addresses = new ArrayList<ContactsManager>();
+
 	addresses.add(contact);
 	detailesViewer.setInput(addresses);
-	  Delete delete = new Delete();
+	Delete delete = new Delete();
 	delete.earlySelection(contact);
-	
+
 	detailesViewer.refresh();
     }
 
@@ -70,16 +69,17 @@ public class DetailesView extends ViewPart
 
 	// vTools.assignDetailesViewer(detailesViewer);
 
-	createDetailesColums(parent);
-
 	detailesViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, SWT.FILL));
 
 	comparator = new MyDetailesComparator();
 	detailesViewer.setComparator(comparator);
 
 	detailesViewer.setContentProvider(ArrayContentProvider.getInstance());
-	//detailesViewer.setInput(tableImput.getAddresses());
+	// detailesViewer.setInput(tableImput.getAddresses());
 
+	createDetailesColums(parent);
+	detailesViewer.setLabelProvider(new DetailesLabelProvider(tableCollums));
+	
 	final Table table = detailesViewer.getTable();
 	table.setHeaderVisible(true);
 	table.setLinesVisible(true);
@@ -89,53 +89,12 @@ public class DetailesView extends ViewPart
     {
 	int bounds = 100;
 
-	TableViewerColumn column;
-
 	for (DetailesEnum title : DetailesEnum.values())
 	{
-	    column = createDetailesViewerColumn(title.getColumn(), bounds, i);
+	    TableViewerColumn createTableViewerColumn = createDetailesViewerColumn(title.getColumn(), bounds, i);
 
-	    column.setLabelProvider(new ColumnLabelProvider()
-	    {
-		public String getText(Object element)
-		{
-		    if (element instanceof ContactsManager)
-		    {
-			DetailesEnum tableContent = temporary;
+	    tableCollums.add(createTableViewerColumn);
 
-			ContactsManager contactMgr = (ContactsManager) element;
-
-			switch (temporary)
-			    {
-			    case ID:
-				temporary = tableContent.next();
-				return contactMgr.getID();
-			    case FIRSTNAME:
-				temporary = tableContent.next();
-				return contactMgr.getFirstName();
-			    case LASTNAME:
-				temporary = tableContent.next();
-				return contactMgr.getLastName();
-			    case COUNTRY:
-				temporary = tableContent.next();
-				return contactMgr.getAddress().getStreet();
-			    case CITY:
-				temporary = tableContent.next();
-				return contactMgr.getPhone();
-			    case STREET:
-				temporary = tableContent.next();
-				return contactMgr.getEmail();
-			    case POSTALCODE:
-				temporary = DetailesEnum.ID;
-				return contactMgr.getEmail();
-			    default:
-				// System.out.println("Unimplemented thing");
-				break;
-			    }
-		    }
-		    return super.getText(element);
-		}
-	    });
 	    i++;
 	}
     }
