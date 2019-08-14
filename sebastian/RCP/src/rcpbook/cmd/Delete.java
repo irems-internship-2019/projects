@@ -44,7 +44,7 @@ public class Delete implements IViewActionDelegate
 	{
 	    ContactsManager deletableContact = view.getSelectedItem();
 	    if (deletableContact != null)
-	    {
+	    { 
 		contact.getElements().remove(contact.getElements().get(deletableContact.getIntId() - 1));
 		contact.rearrangeContactsArray();
 		EditorView.openEditor(null);
