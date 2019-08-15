@@ -21,8 +21,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.part.ViewPart;
-
-import addressbook.comparator.ContactComparator;
 import addressbook.comparator.ContactDetailsComparator;
 import addressbook.enums.AddressBookDetailsEnum;
 import addressbook.filter.ContactDetailsFilter;
