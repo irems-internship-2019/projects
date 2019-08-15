@@ -219,14 +219,14 @@ public class AddressBookEditor extends EditorPart
 	setDirty(false);
     }
 
-    private void setModel(Contact model)
+    private void setModel(Contact contact)
     {
-	this.contact = model;
+	this.contact = contact;
     }
     
     public Contact getModel()
     {
-	return this.contact;
+	return contact;
     }
 
     @Override

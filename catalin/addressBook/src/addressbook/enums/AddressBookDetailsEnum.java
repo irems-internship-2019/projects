@@ -7,9 +7,9 @@ public enum AddressBookDetailsEnum
 
     private final String columnHeader;
 
-    AddressBookDetailsEnum(String columnHeadder)
+    AddressBookDetailsEnum(String columnHeader)
     {
-	this.columnHeader = columnHeadder;
+	this.columnHeader = columnHeader;
     }
 
     public String getColumn()
