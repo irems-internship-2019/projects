@@ -87,9 +87,7 @@ public class InnerDetailsLabelProvider implements ITableLabelProvider
 		throw new IllegalArgumentException("Case not implemented!!");
 	    }
 	}
-
 	// TODO Auto-generated method stub
 	return null;
     }
-
 }
