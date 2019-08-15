@@ -97,7 +97,7 @@ public class AddressBookDetailsView extends ViewPart
 	    @Override
 	    public void widgetSelected(SelectionEvent e)
 	    {
-		ContactComparator comparator = (ContactComparator) viewer.getComparator();
+		ContactDetailsComparator comparator = (ContactDetailsComparator) viewer.getComparator();
 		comparator.setColumn(index);
 
 		int direction = comparator.getDirection();
