@@ -61,7 +61,7 @@ public class AddressBookDetailsView extends ViewPart
 	searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
 	createViewer(parent);
-	createTableColumns(parent);
+	createTableColumns();
 	viewer.setLabelProvider(new InnerDetailsLabelProvider(tableColumns));
 
 	comparator = new ContactDetailsComparator();
@@ -109,7 +109,7 @@ public class AddressBookDetailsView extends ViewPart
 	return selectionAdapter;
     }
 
-    private void createTableColumns(final Composite parent)
+    private void createTableColumns()
     {
 	int count = 0;
 	int bounds = 100;

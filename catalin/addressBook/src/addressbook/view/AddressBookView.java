@@ -113,7 +113,7 @@ public class AddressBookView extends ViewPart
 
 	createViewer(parent);
 	createDoubleSelector();
-	createTableColumns(parent);
+	createTableColumns();
 	viewer.setLabelProvider(new InnerLabelProvider(tableColumns));
 
 	comparator = new ContactComparator();
@@ -161,7 +161,7 @@ public class AddressBookView extends ViewPart
 	return selectionAdapter;
     }
 
-    private void createTableColumns(final Composite parent)
+    private void createTableColumns()
     {
 	int count = 0;
 	int bounds = 100;
