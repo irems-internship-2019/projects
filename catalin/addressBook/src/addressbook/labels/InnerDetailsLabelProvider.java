@@ -13,9 +13,9 @@ public class InnerDetailsLabelProvider implements ITableLabelProvider
 {
     private ArrayList<TableViewerColumn> tableDetails = new ArrayList<TableViewerColumn>();
 
-    public InnerDetailsLabelProvider(ArrayList<TableViewerColumn> list)
+    public InnerDetailsLabelProvider(ArrayList<TableViewerColumn> tableDetails)
     {
-	this.tableDetails = list;
+	this.tableDetails = tableDetails;
     }
 
     @Override
