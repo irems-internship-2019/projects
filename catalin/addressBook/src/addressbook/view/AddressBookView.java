@@ -28,12 +28,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+
+
 import addressbook.comparator.ContactComparator;
 import addressbook.enums.AddressBookEnum;
 import addressbook.filter.ContactFilter;
 import addressbook.labels.InnerLabelProvider;
 import addressbook.persons.Contact;
 import addressbook.persons.Contact.ContactElements;
+import addressbook.services.ServerServices;
 
 public class AddressBookView extends ViewPart
 {
@@ -104,6 +107,8 @@ public class AddressBookView extends ViewPart
     @Override
     public void createPartControl(Composite parent)
     {
+	ServerServices manager = new ServerServices();
+	
 	ContactFilter filter = new ContactFilter();
 	parent.setLayout(new GridLayout(2, false));
 	Label searchLabel = new Label(parent, SWT.NONE);
@@ -115,6 +120,8 @@ public class AddressBookView extends ViewPart
 	createDoubleSelector();
 	createTableColumns();
 	viewer.setLabelProvider(new InnerLabelProvider(tableColumns));
+	
+	manager.getServerContacts();
 
 	comparator = new ContactComparator();
 	viewer.setComparator(comparator);

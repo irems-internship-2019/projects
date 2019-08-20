@@ -21,6 +21,8 @@ import org.eclipse.ui.part.EditorPart;
 import addressbook.persons.Address;
 import addressbook.persons.Contact;
 import addressbook.persons.Contact.ContactElements;
+import addressbook.server.ServerManager;
+import addressbook.services.ServerServices;
 import addressbook.view.AddressBookDetailsView;
 import addressbook.view.AddressBookView;
 
@@ -40,6 +42,7 @@ public class AddressBookEditor extends EditorPart
     private Text textEmail;
 
     private Contact contact;
+    private ServerServices manager = new ServerServices();
 
     public static void openEditor(Contact model)
     {
@@ -183,6 +186,10 @@ public class AddressBookEditor extends EditorPart
 	Contact person = new Contact(textFirstName.getText(), textLastName.getText(),
 		new Address(textCountry.getText(), textCity.getText(), textStreet.getText(), textPostalCode.getText()),
 		textPhoneNumber.getText(), textEmail.getText());
+	
+	person.setId(setNumberOfId() + 1);
+	
+	manager.addServerContact(person);
 	persons.getContacts().add(person);
 	refreshView();
 	setDirty(false);
@@ -212,6 +219,8 @@ public class AddressBookEditor extends EditorPart
 
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setEmailAddress(textEmail.getText());
 
+	manager.editServerContact(persons.getContacts().get(persons.getContacts().indexOf(contact)));;
+	
 	refreshView();
 	if (addressBookDetailsView != null)
 	    addressBookDetailsView.refresh();
@@ -227,6 +236,14 @@ public class AddressBookEditor extends EditorPart
     public Contact getModel()
     {
 	return contact;
+    }
+    
+    private int setNumberOfId()
+    {
+	int idNumber = 1;
+	for(Contact element : persons.getContacts())
+	    if(element.getId() > idNumber) idNumber = element.getId();
+	    return idNumber;
     }
 
     @Override
