@@ -7,10 +7,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import Model.Address;
-import Model.Contact;
 import address.AddressContactsView;
 import adress.editor.AddressBookEditor;
+import model.Address;
+import model.Contact;
 
 public class CreateAction implements IViewActionDelegate {
    

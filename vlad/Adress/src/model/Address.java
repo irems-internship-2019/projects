@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 
@@ -17,6 +17,10 @@ public class Address {
 		this.city = city;
 		this.street = street;
 		this.postalCode = postalCode;
+	}
+
+	public Address() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public ArrayList<Address> getAddresses() {
