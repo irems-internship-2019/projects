@@ -7,14 +7,14 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="rcpbook.Application_SQL2">
+               class="rcpbook.application.Application_SQL2">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="rcpbook.Perspective"
+            class="rcpbook.application.Perspective"
             name="Perspective"
             id="RCPBook.perspective">
       </perspective>
@@ -22,14 +22,14 @@
    <extension
          point="org.eclipse.ui.views"> 
       <view
-            class="rcpbook.view.ContactsView"
+            class="ui.views.ContactsView"
             id="RCPBook.view"
             inject="true"
             name="ContactsView">
       </view>
       <view
             allowMultiple="false"
-            class="rcpbook.view.DetailesView"
+            class="ui.views.DetailesView"
             id="RCPBook.Detailes"
             name="DetailesView"
             restorable="true">
@@ -61,7 +61,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="rcpbook.view.EditorView"
+            class="services.editor.EditorView"
             default="false"
             id="RCPBook.Create"
             name="Editor">
@@ -73,7 +73,7 @@
             id="contactView.actions"
             targetID="RCPBook.view">
          <action
-               class="rcpbook.cmd.Delete"
+               class="services.commands.Delete"
                enablesFor="1"
                id="delete.contact.id"
                label="Delete"
@@ -82,7 +82,7 @@
                tooltip="Delete Contact">
          </action>
          <action
-               class="rcpbook.cmd.Edit"
+               class="services.commands.Edit"
                enablesFor="1"
                id="edit.contact.id"
                label="Edit"
@@ -91,7 +91,7 @@
                tooltip="Edit Contact ">
          </action>
          <action
-               class="rcpbook.cmd.Create"
+               class="services.commands.Create"
                icon="icons/eclipse16.png"
                id="create.contact.id"
                label="Create"
