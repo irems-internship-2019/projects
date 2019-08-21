@@ -1,4 +1,4 @@
-package addressbook.server;
+package services.server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

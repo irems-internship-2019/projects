@@ -22,13 +22,13 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="addressbook.view.AddressBookView"
+            class="ui.views.AddressBookView"
             id="addressbook.view.addressbookview"
             name="AddressBookView"
             restorable="true">
       </view>
       <view
-            class="addressbook.view.AddressBookDetailsView"
+            class="ui.views.AddressBookDetailsView"
             id="addressbook.view.addressbookdetailsview"
             name="AddressBookDetailsView"
             restorable="true">
@@ -60,7 +60,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="addressbook.editor.AddressBookEditor"
+            class="services.editor.AddressBookEditor"
             default="false"
             id="addressbook.editor.addressbookeditor"
             name="AddressBookEditor">
@@ -72,7 +72,7 @@
             id="AddressBook.viewContribution"
             targetID="addressbook.view.addressbookview">
          <action
-               class="addressbook.action.DeleteAction"
+               class="ui.actions.DeleteAction"
                enablesFor="1"
                icon="icons/Octagon_delete.svg.png"
                id="deleteAddressBookAction"
@@ -82,7 +82,7 @@
                tooltip="Delete">
          </action>
          <action
-               class="addressbook.action.EditAction"
+               class="ui.actions.EditAction"
                enablesFor="1"
                icon="icons/descărcare.png"
                id="editAddressBookAction"
@@ -92,7 +92,7 @@
                tooltip="Edit">
          </action>
          <action
-               class="addressbook.action.AddAction"
+               class="ui.actions.AddAction"
                icon="icons/add-clipart-to-photos.png"
                id="addAddressBookAction"
                label="Add"

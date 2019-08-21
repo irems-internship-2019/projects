@@ -1,4 +1,4 @@
-package addressbook.action;
+package ui.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -9,12 +9,12 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import addressbook.editor.AddressBookEditor;
-import addressbook.persons.Contact;
-import addressbook.persons.Contact.ContactElements;
-import addressbook.services.ServerServices;
-import addressbook.view.AddressBookDetailsView;
-import addressbook.view.AddressBookView;
+import models.persons.Contact;
+import models.persons.Contact.ContactElements;
+import services.editor.AddressBookEditor;
+import services.server.ServerServices;
+import ui.views.AddressBookDetailsView;
+import ui.views.AddressBookView;
 
 public class DeleteAction implements IViewActionDelegate
 {

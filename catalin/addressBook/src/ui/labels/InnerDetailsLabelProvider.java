@@ -1,4 +1,4 @@
-package addressbook.labels;
+package ui.labels;
 
 import java.util.ArrayList;
 
@@ -7,13 +7,13 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.graphics.Image;
 
-import addressbook.persons.Contact;
+import models.persons.Contact;
 
-public class InnerLabelProvider implements ITableLabelProvider
+public class InnerDetailsLabelProvider implements ITableLabelProvider
 {
     private ArrayList<TableViewerColumn> tableDetails = new ArrayList<TableViewerColumn>();
 
-    public InnerLabelProvider(ArrayList<TableViewerColumn> tableDetails)
+    public InnerDetailsLabelProvider(ArrayList<TableViewerColumn> tableDetails)
     {
 	this.tableDetails = tableDetails;
     }
@@ -71,14 +71,17 @@ public class InnerLabelProvider implements ITableLabelProvider
 	    case "Last Name":
 		return contact.getLastName();
 
+	    case "Country":
+		return contact.getAddress().getCountry();
+
+	    case "City":
+		return contact.getAddress().getCity();
+
 	    case "Street":
 		return contact.getAddress().getStreet();
 
-	    case "Phone Number":
-		return contact.getPhoneNumber();
-
-	    case "Email":
-		return contact.getEmailAddress();
+	    case "Postal Code":
+		return contact.getAddress().getPostal_code();
 
 	    default:
 		throw new IllegalArgumentException("Case not implemented!!");

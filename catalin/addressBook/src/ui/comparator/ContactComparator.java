@@ -1,10 +1,10 @@
-package addressbook.comparator;
+package ui.comparator;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
-import addressbook.persons.Contact;
+import models.persons.Contact;
 
 public class ContactComparator extends ViewerComparator
 {

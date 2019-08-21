@@ -1,10 +1,13 @@
-package addressbook.view;
+package ui.views;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -20,22 +23,60 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import addressbook.comparator.ContactDetailsComparator;
-import addressbook.enums.AddressBookDetailsEnum;
-import addressbook.filter.ContactDetailsFilter;
-import addressbook.labels.InnerDetailsLabelProvider;
-import addressbook.persons.Contact;
 
-public class AddressBookDetailsView extends ViewPart
+import models.enums.AddressBookEnum;
+import models.persons.Contact;
+import models.persons.Contact.ContactElements;
+import services.server.ServerServices;
+import ui.comparator.ContactComparator;
+import ui.filter.ContactFilter;
+import ui.labels.InnerLabelProvider;
+
+public class AddressBookView extends ViewPart
 {
-    public static final String ID = "addressbook.view.addressbookdetailsview";
+    public static final String ID = "addressbook.view.addressbookview";
     @Inject
     IWorkbench workbench;
-    private ContactDetailsComparator comparator;
+    private ContactComparator comparator;
     private TableViewer viewer;
     private ArrayList<TableViewerColumn> tableColumns = new ArrayList<TableViewerColumn>();
-    private ArrayList<Contact> contactElement;
+
+    private void createDoubleSelector()
+    {
+	viewer.addDoubleClickListener(new IDoubleClickListener()
+	{
+	    @Override
+	    public void doubleClick(DoubleClickEvent event)
+	    {
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
+			.findView(AddressBookDetailsView.ID);
+
+		try
+		{
+		    if (addressBookDetailsView == null)
+		    {
+			AddressBookDetailsView openedAddressBookDetailsViewer = (AddressBookDetailsView) activePage
+				.showView(AddressBookDetailsView.ID);
+			openedAddressBookDetailsViewer.setDetailsViewInput(getSelectedItem());
+			openedAddressBookDetailsViewer.refresh();
+		    } else
+		    {
+			addressBookDetailsView.setDetailsViewInput(getSelectedItem());
+			addressBookDetailsView.refresh();
+		    }
+		} catch (PartInitException e)
+		{
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
+	    }
+	});
+    }
 
     private void createViewer(Composite parent)
     {
@@ -45,13 +86,28 @@ public class AddressBookDetailsView extends ViewPart
 	table.setLinesVisible(true);
 
 	viewer.setContentProvider(new ArrayContentProvider());
+
+	viewer.setInput(ContactElements.INSTANCE.getContacts());
+
+	getSite().setSelectionProvider(viewer);
+
 	viewerLayout();
+    }
+
+    public Contact getSelectedItem()
+    {
+	final StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+	final Contact selectedContact = (Contact) selection.getFirstElement();
+
+	return selectedContact;
     }
 
     @Override
     public void createPartControl(Composite parent)
     {
-	ContactDetailsFilter filter = new ContactDetailsFilter();
+	ServerServices manager = new ServerServices();
+	
+	ContactFilter filter = new ContactFilter();
 	parent.setLayout(new GridLayout(2, false));
 	Label searchLabel = new Label(parent, SWT.NONE);
 	searchLabel.setText("Search: ");
@@ -59,10 +115,13 @@ public class AddressBookDetailsView extends ViewPart
 	searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
 	createViewer(parent);
+	createDoubleSelector();
 	createTableColumns();
-	viewer.setLabelProvider(new InnerDetailsLabelProvider(tableColumns));
+	viewer.setLabelProvider(new InnerLabelProvider(tableColumns));
+	
+	manager.getServerContacts();
 
-	comparator = new ContactDetailsComparator();
+	comparator = new ContactComparator();
 	viewer.setComparator(comparator);
 
 	searchText.addKeyListener(new KeyAdapter()
@@ -95,7 +154,7 @@ public class AddressBookDetailsView extends ViewPart
 	    @Override
 	    public void widgetSelected(SelectionEvent e)
 	    {
-		ContactDetailsComparator comparator = (ContactDetailsComparator) viewer.getComparator();
+		ContactComparator comparator = (ContactComparator) viewer.getComparator();
 		comparator.setColumn(index);
 
 		int direction = comparator.getDirection();
@@ -112,7 +171,7 @@ public class AddressBookDetailsView extends ViewPart
 	int count = 0;
 	int bounds = 100;
 
-	for (AddressBookDetailsEnum title : AddressBookDetailsEnum.values())
+	for (AddressBookEnum title : AddressBookEnum.values())
 	{
 	    TableViewerColumn createTableViewerColumn = createTableViewerColumn(title.getColumn(), bounds, count);
 
@@ -135,19 +194,6 @@ public class AddressBookDetailsView extends ViewPart
     public void refresh()
     {
 	viewer.refresh();
-    }
-
-    public void setDetailsViewInput(Contact contact)
-    {
-	contactElement = new ArrayList<Contact>();
-	contactElement.add(contact);
-
-	viewer.setInput(contactElement);
-    }
-
-    public ArrayList<Contact> getDetailsViewContact()
-    {
-	return contactElement;
     }
 
     @Override

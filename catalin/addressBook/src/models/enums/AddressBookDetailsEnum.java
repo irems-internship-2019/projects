@@ -1,4 +1,4 @@
-package addressbook.enums;
+package models.enums;
 
 public enum AddressBookDetailsEnum
 {

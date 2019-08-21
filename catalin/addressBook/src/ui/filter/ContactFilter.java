@@ -1,9 +1,9 @@
-package addressbook.filter;
+package ui.filter;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import addressbook.persons.Contact;
+import models.persons.Contact;
 
 public class ContactFilter extends ViewerFilter
 {

@@ -1,4 +1,4 @@
-package addressbook.editor;
+package services.editor;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;

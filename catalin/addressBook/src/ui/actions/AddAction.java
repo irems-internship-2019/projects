@@ -1,4 +1,4 @@
-package addressbook.action;
+package ui.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import addressbook.editor.AddressBookEditor;
+import services.editor.AddressBookEditor;
 
 public class AddAction implements IViewActionDelegate
 {

@@ -1,4 +1,4 @@
-package addressbook.persons;
+package models.persons;
 
 import java.util.ArrayList;
 

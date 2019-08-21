@@ -1,4 +1,4 @@
-package addressbook.editor;
+package services.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -18,13 +18,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
-import addressbook.persons.Address;
-import addressbook.persons.Contact;
-import addressbook.persons.Contact.ContactElements;
-import addressbook.server.ServerManager;
-import addressbook.services.ServerServices;
-import addressbook.view.AddressBookDetailsView;
-import addressbook.view.AddressBookView;
+import models.persons.Address;
+import models.persons.Contact;
+import models.persons.Contact.ContactElements;
+import services.server.ServerServices;
+import ui.views.AddressBookDetailsView;
+import ui.views.AddressBookView;
 
 public class AddressBookEditor extends EditorPart
 {
@@ -50,7 +49,7 @@ public class AddressBookEditor extends EditorPart
 
 	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	activePage.setEditorAreaVisible(true);
-	
+
 	try
 	{
 	    AddressBookEditor editor = (AddressBookEditor) activePage.getActiveEditor();
@@ -186,11 +185,11 @@ public class AddressBookEditor extends EditorPart
 	Contact person = new Contact(textFirstName.getText(), textLastName.getText(),
 		new Address(textCountry.getText(), textCity.getText(), textStreet.getText(), textPostalCode.getText()),
 		textPhoneNumber.getText(), textEmail.getText());
-	
-	person.setId(setNumberOfId() + 1);
-	
+
 	manager.addServerContact(person);
+	person.setId(manager.getIdNumber());
 	persons.getContacts().add(person);
+
 	refreshView();
 	setDirty(false);
     }
@@ -200,7 +199,7 @@ public class AddressBookEditor extends EditorPart
 	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
 		.findView(AddressBookDetailsView.ID);
-	
+
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setFirstName(textFirstName.getText());
 
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setLastName(textLastName.getText());
@@ -219,8 +218,9 @@ public class AddressBookEditor extends EditorPart
 
 	persons.getContacts().get(persons.getContacts().indexOf(contact)).setEmailAddress(textEmail.getText());
 
-	manager.editServerContact(persons.getContacts().get(persons.getContacts().indexOf(contact)));;
-	
+	manager.editServerContact(persons.getContacts().get(persons.getContacts().indexOf(contact)));
+	;
+
 	refreshView();
 	if (addressBookDetailsView != null)
 	    addressBookDetailsView.refresh();
@@ -232,18 +232,10 @@ public class AddressBookEditor extends EditorPart
     {
 	this.contact = contact;
     }
-    
+
     public Contact getModel()
     {
 	return contact;
-    }
-    
-    private int setNumberOfId()
-    {
-	int idNumber = 1;
-	for(Contact element : persons.getContacts())
-	    if(element.getId() > idNumber) idNumber = element.getId();
-	    return idNumber;
     }
 
     @Override
