@@ -8,18 +8,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activatores extends AbstractUIPlugin {
+public class ActivatorSQL extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "RCPBook"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "RCPBook_SQL2"; //$NON-NLS-1$
 
 	// The shared instance
-	private static Activatores plugin;
+	private static ActivatorSQL plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activatores() {
+	public ActivatorSQL() {
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class Activatores extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activatores getDefault() {
+	public static ActivatorSQL getDefault() {
 		return plugin;
 	}
 

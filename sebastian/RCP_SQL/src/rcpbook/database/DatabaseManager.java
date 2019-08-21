@@ -46,12 +46,8 @@ public class DatabaseManager
 	{
 
 	    statement = connection.createStatement();
-	    ResultSet contactsSet = statement.executeQuery("SELECT * FROM public.contacts a\r\n" + 
-	    	"FULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
-//	    
-//	    statement2 = connection.createStatement();
-//	    ResultSet addressesSet = statement2.executeQuery("SELECT * FROM public.addresses WHERE address_id > "
-//		    + currentDatabasePK + " ORDER BY address_id LIMIT 2");
+	    ResultSet contactsSet = statement.executeQuery("SELECT * FROM public.contacts a\r\n"
+		    + "FULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
 
 	    while (contactsSet.next())
 	    {
@@ -85,34 +81,7 @@ public class DatabaseManager
 	{
 	    statement = connection.createStatement();
 	    ResultSet maxID = statement.executeQuery("SELECT MAX(contacts_id) FROM public.contacts");
-	    
-	    if (maxID.next())
-	    {
-		max = maxID.getInt(1);
-	    }
 
-	    return max;
-
-	} catch (SQLException e)
-	{
-	    MessageDialog.openInformation(Display.getDefault().getActiveShell(), "ERROR", "Could not get max!");
-	    e.printStackTrace();
-	}
-	return max;
-    }
-    
-    public int checkAddressesMaxId()
-    {
-	int max = 0;
-	Statement statement;
-
-	if (!establishConnection())
-	    return max;
-	try
-	{
-	    statement = connection.createStatement();
-	    ResultSet maxID = statement.executeQuery("SELECT MAX(address_id) FROM public.addresses");
-	    
 	    if (maxID.next())
 	    {
 		max = maxID.getInt(1);
@@ -130,28 +99,23 @@ public class DatabaseManager
 
     public void addNewContactToDatabase(ContactsManager contact)
     {
-	Statement statement, statement2,sst;
+	Statement statement;
 
 	if (!establishConnection())
 	    return;
 
 	try
 	{
-	     statement2 = connection.createStatement();
-	     String sql = "INSERT INTO public.addresses(\r\n" + "country, city, street, postal_code)\r\n"
-		    + "	VALUES ('" + contact.getAddress().getCountry() + "', '"
-		    + contact.getAddress().getCity() + "', '" + contact.getAddress().getStreet() + "','"
-		    + contact.getAddress().getPostalCode() + "')";
-	    statement2.executeUpdate(sql);
-
 	    statement = connection.createStatement();
-	     sql = "INSERT INTO public.contacts(\r\n"
-		    + "first_name, last_name, phone_number, email, address_fk)\r\n" + "VALUES ('"
-		    + contact.getFirstName() + "', '" + contact.getLastName() + "', '"
-		    + contact.getPhone() + "','" + contact.getEmail() + "','"+checkAddressesMaxId()+"')";
+	    String sql = " with insert_query as (INSERT INTO public.addresses (country, city, street, postal_code)"
+		    + "VALUES ('" + contact.getAddress().getCountry() + "','" + contact.getAddress().getCity() + "','"
+		    + contact.getAddress().getStreet() + "','" + contact.getAddress().getPostalCode() + "')"
+		    + "returning address_id) INSERT INTO public.contacts (first_name, last_name, phone_number, email, address_fk)"
+		    + "VALUES ('" + contact.getFirstName() + "','" + contact.getLastName() + "','" + contact.getPhone()
+		    + "','" + contact.getEmail() + "',(select address_id from insert_query))";
 	    statement.executeUpdate(sql);
 
-	  // loadFromDatabase();
+	    // loadFromDatabase();
 
 	} catch (SQLException e)
 	{
@@ -164,25 +128,24 @@ public class DatabaseManager
 
     public void updateDatabaseContact(ContactsManager contact)
     {
-	Statement statement, statement2;
+	Statement statement;
 	if (!establishConnection())
 	    return;
 
 	try
 	{
 	    statement = connection.createStatement();
-	    String sql = "UPDATE public.contacts\r\n" + "SET first_name='"
-		    + contact.getFirstName() + "', last_name='" + contact.getLastName() + "', phone_number='"
-		    + contact.getPhone() + "', email='" + contact.getEmail() + "'\r\n" + "WHERE  contacts_id= "
-		    + contact.getIntId() + "";
+	    String sql = "with update_query as (UPDATE public.contacts SET first_name= '" + contact.getFirstName()
+		    + "', last_name='" + contact.getLastName() + "', phone_number='" + contact.getPhone() + "', email='"
+		    + contact.getEmail() + "' WHERE contacts_id = " + contact.getIntId() + ""
+		    + "returning address_fk) UPDATE public.addresses SET  country ='"
+		    + contact.getAddress().getCountry() + "' , city ='" + contact.getAddress().getCity()
+		    + "' , street ='" + contact.getAddress().getStreet() + "' , postal_code ='"
+		    + contact.getAddress().getPostalCode()
+		    + "'WHERE (address_id) IN (select address_fk from update_query)";
+
 	    statement.executeUpdate(sql);
 
-	    statement2 = connection.createStatement();
-	    sql = "UPDATE public.addresses\r\n" + "SET country='"
-		    + contact.getAddress().getCountry() + "', city='" + contact.getAddress().getCity() + "', street='"
-		    + contact.getAddress().getStreet() + "', postal_code='" + contact.getAddress().getPostalCode()
-		    + "'WHERE address_id = " + contact.getIntId() + "";
-	    statement2.executeUpdate(sql);
 	} catch (SQLException e)
 	{
 	    MessageDialog.openInformation(Display.getDefault().getActiveShell(), "ERROR",
@@ -193,21 +156,18 @@ public class DatabaseManager
 
     public void deleteDatabaseContact(int deleteIndex)
     {
-	Statement statement, statement2;
+	Statement statement;
 
 	if (!establishConnection())
 	    return;
 
 	try
 	{
-//	    statement = connection.createStatement();
-//	    String sql = "DELETE FROM public.contacts\r\n" + "WHERE contacts_id= " + deleteIndex + "";
-//	    statement.executeUpdate(sql);
 
-	    statement2 = connection.createStatement();
-	    String sql = "DELETE FROM public.addresses WHERE address_id = \r\n" + 
-	    	 "(SELECT address_fk FROM public.contacts WHERE contacts_id = "+deleteIndex+")";
-	    statement2.executeUpdate(sql);
+	    statement = connection.createStatement();
+	    String sql = "DELETE FROM public.addresses WHERE address_id = \r\n"
+		    + "(SELECT address_fk FROM public.contacts WHERE contacts_id = " + deleteIndex + ")";
+	    statement.executeUpdate(sql);
 	} catch (SQLException e)
 	{
 	    MessageDialog.openInformation(Display.getDefault().getActiveShell(), "ERROR",

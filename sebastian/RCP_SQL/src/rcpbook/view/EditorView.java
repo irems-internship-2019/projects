@@ -202,8 +202,12 @@ public class EditorView extends EditorPart
 			textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
 		textNames[6].getText(), textNames[7].getText());
 
-	newCont.setPrimaryKeyID(dbs.checkContactsMaxId() + 1);
-	newContact.addNewContact(newCont);
+	//newCont.setPrimaryKeyID(dbs.checkContactsMaxId() + 1);
+	dbs.addNewContactToDatabase(newCont);
+	ContactsModel newContact = new ContactsModel();
+	newContact.clearContactsList();
+	dbs.loadFromDatabase();
+	//newContact.addNewContact(newCont);
 
 	// map.createHashMap();
 

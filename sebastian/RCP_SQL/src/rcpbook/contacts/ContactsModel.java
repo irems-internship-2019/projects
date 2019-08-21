@@ -18,19 +18,6 @@ public class ContactsModel
     public void addNewContact(ContactsManager newEntry)
     {
 	contacts.add(newEntry);
-	// dbs.getNextIndex(newEntry);
-	DatabaseManager dbs = new DatabaseManager();
-
-	if (newEntry.getIntId() > dbs.checkContactsMaxId())
-	{
-	    dbs.addNewContactToDatabase(newEntry);
-	    
-	    ContactsModel newContact = new ContactsModel();
-	    newContact.clearContactsList();
-	    
-	    dbs.loadFromDatabase();
-	}
-
     }
 
     public int returnLastId()

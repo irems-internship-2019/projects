@@ -10,7 +10,7 @@ import org.eclipse.ui.PlatformUI;
  * This class controls all aspects of the application's execution
  */
 
-//this class is for SQL
+//this class is for SQL2
 public class Application_SQL2 implements IApplication {
 
 	@Override

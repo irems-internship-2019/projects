@@ -18,8 +18,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import rcpbook.cmd.Delete;
 import rcpbook.contacts.ContactsManager;
-//import rcpbook.contacts.DetailesModel;
-import rcpbook.detailes.MyDetailesComparator;
 import rcpbook.enums.DetailesEnum;
 import rcpbook.tableLabelProvider.DetailesLabelProvider;
 
@@ -28,8 +26,6 @@ public class DetailesView extends ViewPart
     public static final String ID = "RCPBook.Detailes";
     
     private TableViewer detailesViewer;
-
-    private MyDetailesComparator comparator;
 
     private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
     
@@ -70,8 +66,6 @@ public class DetailesView extends ViewPart
 
 	detailesViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, SWT.FILL));
 
-	comparator = new MyDetailesComparator();
-	detailesViewer.setComparator(comparator);
 
 	detailesViewer.setContentProvider(ArrayContentProvider.getInstance());
 	// detailesViewer.setInput(tableImput.getAddresses());
@@ -106,27 +100,10 @@ public class DetailesView extends ViewPart
 	column.setWidth(bound);
 	column.setResizable(true);
 	column.setMoveable(true);
-	column.addSelectionListener(getSelectionAdapter(column, colNumber));
-
+	
 	return viewerColumn;
     }
 
-    private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index)
-    {
-	SelectionAdapter selectionAdapter = new SelectionAdapter()
-	{
-	    @Override
-	    public void widgetSelected(SelectionEvent e)
-	    {
-		comparator.setColumn(index);
-		int dir = comparator.getDirection();
-		detailesViewer.getTable().setSortDirection(dir);
-
-		detailesViewer.refresh();
-	    }
-	};
-	return selectionAdapter;
-    }
 
     @Override
     public void setFocus()

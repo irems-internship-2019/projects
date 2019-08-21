@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RCPBook
-Bundle-SymbolicName: RCPBook;singleton:=true
+Bundle-Name: RCPBook_SQL2
+Bundle-SymbolicName: RCPBook_SQL2;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: rcpbook.Activatores
+Bundle-Activator: rcpbook.ActivatorSQL
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.felix.scr,
