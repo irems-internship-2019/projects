@@ -22,13 +22,13 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="ui.views.AddressContactsView"
+            class="address.AddressContactsView"
             name="View"
             id="Adress.view"
             inject="true">
       </view>
       <view
-            class="ui.views.AddressDetailsView"
+            class="address.AddressDetailsView"
             id="Adress.view2"
             name="Details View"
             restorable="true">
@@ -99,7 +99,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="ui.editors.AddressBookEditor"
+            class="adress.editor.AddressBookEditor"
             default="false"
             icon="icons/eclipse16.png"
             id="adress.book.editor"
@@ -121,7 +121,7 @@
             id="Adress.viewContribution1"
             targetID="Adress.view">
          <action
-               class="ui.actions.DeleteAction"
+               class="adress.actions.DeleteAction"
                enablesFor="1"
                icon="icons/del.png"
                id="Adress.action1"
@@ -130,7 +130,7 @@
                toolbarPath="additions">
          </action>
          <action
-               class="ui.actions.EditAction"
+               class="adress.actions.EditAction"
                enablesFor="1"
                icon="icons/edit.png"
                id="Adress.action2"
@@ -139,7 +139,7 @@
                toolbarPath="additions">
          </action>
          <action
-               class="ui.actions.CreateAction"
+               class="adress.actions.CreateAction"
                icon="icons/add.png"
                id="Adress.action3"
                label="create"

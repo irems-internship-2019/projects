@@ -1,5 +1,6 @@
 package address;
 
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -32,6 +33,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	       configurer.setShowFastViewBars(true);
 	       // Show ProgressIndicator
 	       configurer.setShowProgressIndicator(true);
-		configurer.setTitle("RCP Application");
+		configurer.setTitle("RCP NoSQL Application");
 	}
 }

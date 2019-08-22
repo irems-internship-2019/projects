@@ -4,12 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import model.Address;
 import model.Contact;
 import model.ContactProvider;
-import ui.messagedialogs.ExceptionDialogs;
 
 public class DataBaseServices {
 
@@ -36,14 +34,12 @@ public class DataBaseServices {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
-		System.out.println("Operation done successfully");
-
-		
+		System.out.println("Records created successfully");
 	}
 
-	public ArrayList<Contact> loadContacts() {
+	public void showContacts() {
 		Statement newStatment;
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
+
 		try {
 
 			Connection conn = manager.connectToDataBase();
@@ -63,16 +59,15 @@ public class DataBaseServices {
 
 				contact.setId(result.getInt("contact_id"));
 
-				contacts.add(contact);
-			}
+				ContactProvider.INSTANCE.addContacts(contact);
 
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		System.out.println("Operation done successfully");
-		return contacts;
 	}
 
 	public void updateContact(int id, String firstName, String lastName, String phoneNum, String eMail, String country,
