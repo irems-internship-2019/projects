@@ -24,14 +24,14 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import Filter.ContactFilter;
-import Model.Contact;
-import Model.ContactProvider;
 import comparator.ContactComparator;
 import enums.AdressEnums;
 import enums.ContactsEnums;
 import labelsprovider.AdressLabelProvider;
 import labelsprovider.ContactsLabelProvider;
+import model.Contact;
+import model.ContactProvider;
+import ui.filter.ContactFilter;
 
 public class AddressDetailsView extends ViewPart {
 	public static final String ID = "Adress.view2";

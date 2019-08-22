@@ -13,18 +13,20 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import Model.Contact;
-import Model.ContactProvider;
 import address.AddressContactsView;
 import address.AddressDetailsView;
 import adress.editor.AddressBookEditor;
 import adress.editor.AddressbookEditorInput;
+import dataBaseManager.DataBaseManager;
+import dataBaseManager.DataBaseServices;
+import model.Contact;
+import model.ContactProvider;
 
 public class DeleteAction implements IViewActionDelegate {
 
 	private AddressContactsView view;
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
+	DataBaseServices dataManager =new DataBaseServices();
 	@Override
 	public void run(IAction action) {
 		// TODO Auto-generated method stub
@@ -46,20 +48,18 @@ public class DeleteAction implements IViewActionDelegate {
 				Contact contact = iterator.next();
 
 				contacts.remove(contact);
-
+				dataManager.deleteContact(contact.getIdInt());
 				Contact.contactCounter--;
 				view.refresh();
 			}
 			
-			if (detailsView != null && detailsView.equalityCheck(((Contact)sel.getFirstElement()).getIdInt())) {
+			if (detailsView != null && detailsView.equalityCheck(((Contact)sel.getFirstElement()).getIdInt())) 
 				
 				detailsView.closeView();
+			}
 				
-			}
-			System.out.println(editor.getModel()+" = "+ (Contact)sel.getFirstElement());
-			if (editor != null && editor.getModel() == view.getSelectedItem())
-				editor.closePage();  
-			}
+			
+			
 		}
 	
 

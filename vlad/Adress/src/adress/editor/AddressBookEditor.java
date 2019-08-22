@@ -19,11 +19,13 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
-import Model.Address;
-import Model.Contact;
-import Model.ContactProvider;
 import address.AddressContactsView;
 import address.AddressDetailsView;
+import dataBaseManager.DataBaseManager;
+import dataBaseManager.DataBaseServices;
+import model.Address;
+import model.Contact;
+import model.ContactProvider;
 
 public class AddressBookEditor extends EditorPart {
 
@@ -36,6 +38,7 @@ public class AddressBookEditor extends EditorPart {
 	private Text cityText;
 	private Text postalCodeText;
 	private boolean dirtyCheck;
+	private DataBaseServices dataManager = new DataBaseServices();
 
 	private Contact contact;
 
@@ -272,6 +275,11 @@ public class AddressBookEditor extends EditorPart {
 			contacts.getContacts().get(contacts.getContacts().indexOf(contact)).getAddress()
 					.setPostalCode(postalCodeText.getText());
 
+			dataManager.updateContact(contact.getIdInt(),firstNameText.getText(), lastNameText.getText(),
+					phoneNumberText.getText(), emailAdressText.getText(), countryText.getText(), cityText.getText(),
+					adressText.getText(),
+					postalCodeText.getText());
+
 			refreshContactView();
 		}
 
@@ -280,10 +288,24 @@ public class AddressBookEditor extends EditorPart {
 	private void InsertState() {
 
 		if (isDirty()) {
-			contacts.addContacts(new Contact(firstNameText.getText(),
+
+			Contact contact = new Contact(firstNameText.getText(),
 					new Address(countryText.getText(), cityText.getText(), adressText.getText(),
 							postalCodeText.getText()),
-					lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText()));
+					lastNameText.getText(), phoneNumberText.getText(), emailAdressText.getText());
+
+			contacts.addContacts(contact);
+
+			dataManager.insertContact(contact.getIdInt(),
+					firstNameText.getText(),
+					lastNameText.getText(),
+					adressText.getText(),
+					phoneNumberText.getText(),
+					emailAdressText.getText(),
+					countryText.getText(),
+					cityText.getText(), 
+					postalCodeText.getText());
+
 			refreshContactView();
 		}
 

@@ -4,7 +4,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
-import Model.Contact;
+import model.Contact;
 
 public class ContactComparator extends ViewerComparator {
     private int propertyIndex;

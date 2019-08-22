@@ -6,9 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -24,23 +22,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-
-import Filter.ContactFilter;
-import Model.Contact;
-import Model.ContactProvider;
 import org.eclipse.ui.IWorkbenchPage;
 import comparator.ContactComparator;
+import dataBaseManager.DataBaseServices;
 import enums.ContactsEnums;
 import labelsprovider.ContactsLabelProvider;
-import uiManager.CreateUI;
+import model.Contact;
+import model.ContactProvider;
+import ui.filter.ContactFilter;
 
 import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 
 public class AddressContactsView extends ViewPart {
 	public static final String ID = "Adress.view";
@@ -48,6 +43,7 @@ public class AddressContactsView extends ViewPart {
 	@Inject
 	IWorkbench workbench;
 	ContactFilter contactFilter = new ContactFilter();
+	DataBaseServices dataManager = new DataBaseServices();
 
 	private TableViewer viewer;
 	private ContactComparator comparator;
@@ -88,6 +84,8 @@ public class AddressContactsView extends ViewPart {
 		createDoubleSelector();
 		comparator = new ContactComparator();
 		viewer.setComparator(comparator);
+		
+		dataManager.showContacts();
 
 		searchText.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent ke) {
