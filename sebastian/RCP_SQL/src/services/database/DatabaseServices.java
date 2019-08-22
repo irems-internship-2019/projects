@@ -2,22 +2,29 @@ package services.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.contacts.AddressManager;
 import model.contacts.ContactsManager;
-import model.contacts.ContactsModel;
+//import model.contacts.ContactsModel;
+import model.enums.ErrorsEnum;
+import ui.exceptions.MyCustomException;
 
 public class DatabaseServices
 {
+    // private DatabaseConnection dbsConnect = new DatabaseConnection();
     private DatabaseConnection dbsConnect = new DatabaseConnection();
-    private ContactsModel newContact = new ContactsModel();
+   // private ContactsModel newContact = new ContactsModel();
 
-    public void loadFromDatabase()
+    public List<ContactsManager> loadFromDatabase() throws MyCustomException
     {
+	List<ContactsManager> localContactsList = new ArrayList<ContactsManager>();
+
 	try
 	{
 	    ResultSet contactsSet = dbsConnect.establishConnection().executeQuery("SELECT * FROM public.contacts a\r\n"
-		    + "FULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
+		    + "XFULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
 
 	    while (contactsSet.next())
 	    {
@@ -29,18 +36,20 @@ public class DatabaseServices
 
 		newCont.setPrimaryKeyID(Integer.parseInt(contactsSet.getString("contacts_id")));
 
-		newContact.addNewContact(newCont);
-
+		//newContact.addNewContact(newCont);
+               localContactsList.add(newCont);
 	    }
+
+	    return localContactsList;
+
 	} catch (SQLException e)
 	{
-
-	    e.printStackTrace();
+	    throw new MyCustomException(e, ErrorsEnum.LOAD);
 	}
 
     }
 
-    public void addNewContactToDatabase(ContactsManager contact)
+    public void addNewContactToDatabase(ContactsManager contact) throws MyCustomException
     {
 
 	try
@@ -54,16 +63,15 @@ public class DatabaseServices
 		    + "','" + contact.getEmail() + "',(select address_id from insert_query))";
 	    dbsConnect.establishConnection().executeUpdate(sql);
 
-
 	} catch (SQLException e)
 	{
-	  
-	    e.printStackTrace();
+
+	    throw new MyCustomException(e, ErrorsEnum.INSERT);
 	}
 
     }
 
-    public void updateDatabaseContact(ContactsManager contact)
+    public void updateDatabaseContact(ContactsManager contact) throws MyCustomException
     {
 
 	try
@@ -82,22 +90,22 @@ public class DatabaseServices
 
 	} catch (SQLException e)
 	{
-	   
-	    e.printStackTrace();
+
+	    throw new MyCustomException(e, ErrorsEnum.UPDATE);
 	}
     }
 
-    public void deleteDatabaseContact(int deleteIndex)
+    public void deleteDatabaseContact(int deleteIndex) throws MyCustomException
     {
 	try
 	{
-	    String sql = "DELETE FROM public.addresses WHERE address_id = \r\n"
-		    + "(SELECT address_fk FROM public.contacts WHERE contacts_id = " + deleteIndex + ")";
+	    String sql = "with delete_query as (DELETE FROM public.contacts WHERE contacts_id = " + deleteIndex
+		    + "returning address_fk) DELETE FROM public.addresses WHERE (address_id) IN (SELECT address_fk FROM delete_query)";
 	    dbsConnect.establishConnection().executeUpdate(sql);
 	} catch (SQLException e)
 	{
-	  
-	    e.printStackTrace();
+
+	    throw new MyCustomException(e, ErrorsEnum.DELETE);
 	}
     }
 }

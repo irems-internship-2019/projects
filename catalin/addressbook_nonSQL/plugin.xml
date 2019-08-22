@@ -7,29 +7,29 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="addressbook.Application">
+               class="addressbook_nonsql.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="addressbook.Perspective"
+            class="addressbook_nonsql.Perspective"
             name="Perspective"
-            id="AddressBook.perspective">
+            id="AddressBook_nonSQL.perspective">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="ui.views.AddressBookView"
-            id="addressbook.view.addressbookview"
+            class="addressbook_nonsql.view.AddressBookView"
+            id="addressbook_nonsql.view.addressbookview"
             name="AddressBookView"
             restorable="true">
       </view>
       <view
-            class="ui.views.AddressBookDetailsView"
-            id="addressbook.view.addressbookdetailsview"
+            class="addressbook_nonsql.view.AddressBookDetailsView"
+            id="addressbook_nonsql.view.addressbookdetailsview"
             name="AddressBookDetailsView"
             restorable="true">
       </view>
@@ -40,7 +40,7 @@
             targetID="*">
          <view
                closeable="true"
-               id="addressbook.view.addressbookview"
+               id="addressbook_nonsql.view.addressbookview"
                minimized="false"
                relationship="left"
                relative="org.eclipse.ui.editorss"
@@ -48,7 +48,7 @@
          </view>
          <view
                closeable="true"
-               id="addressbook.view.addressbookdetailsview"
+               id="addressbook_nonsql.view.addressbookdetailsview"
                minimized="false"
                relationship="right"
                relative="org.eclipse.ui.editorss"
@@ -60,29 +60,29 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="services.editor.AddressBookEditor"
+            class="addressbook_nonsql.editor.AddressBookEditor"
             default="false"
-            id="addressbook.editor.addressbookeditor"
+            id="addressbook_nonsql.editor.addressbookeditor"
             name="AddressBookEditor">
       </editor>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
       <viewContribution
-            id="AddressBook.viewContribution"
-            targetID="addressbook.view.addressbookview">
+            id="AddressBook_nonSQL.viewContribution"
+            targetID="addressbook_nonsql.view.addressbookview">
          <action
-               class="ui.actions.DeleteAction"
+               class="addressbook_nonsql.action.DeleteAction"
                enablesFor="1"
                icon="icons/Octagon_delete.svg.png"
-               id="deleteAddressBookAction"
+               id="deleteAddressBook"
                label="Delete"
                style="push"
                toolbarPath="additions"
                tooltip="Delete">
          </action>
          <action
-               class="ui.actions.EditAction"
+               class="addressbook_nonsql.action.EditAction"
                enablesFor="1"
                icon="icons/descărcare.png"
                id="editAddressBookAction"
@@ -92,9 +92,9 @@
                tooltip="Edit">
          </action>
          <action
-               class="ui.actions.AddAction"
+               class="addressbook_nonsql.action.AddAction"
                icon="icons/add-clipart-to-photos.png"
-               id="addAddressBookAction"
+               id="addAddressBook"
                label="Add"
                style="push"
                toolbarPath="additions"

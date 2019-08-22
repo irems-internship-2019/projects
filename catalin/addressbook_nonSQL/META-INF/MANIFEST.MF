@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AddressBook_nonSQL
+Bundle-SymbolicName: AddressBook_nonSQL;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: addressbook_nonsql.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.apache.felix.scr,
+ org.eclipse.equinox.util,
+ org.eclipse.equinox.event
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: AddressBook_nonSQL
+Bundle-ActivationPolicy: lazy
