@@ -13,6 +13,7 @@ import model.contacts.ContactsManager;
 import model.contacts.ContactsModel;
 import services.database.DatabaseServices;
 import services.editor.EditorView;
+import ui.exceptions.MyCustomException;
 import ui.views.ContactsView;
 import ui.views.DetailesView;
 
@@ -60,7 +61,14 @@ public class Delete implements IViewActionDelegate
 		    activePage.hideView(activePage.findView(DetailesView.ID));
 		}
 		
-		dbs.deleteDatabaseContact(deletableContact.getIntId());
+		try
+		{
+		    dbs.deleteDatabaseContact(deletableContact.getIntId());
+		} catch (MyCustomException e)
+		{
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
 		
 		//rebuild the hashMap
 		//map.createHashMap();

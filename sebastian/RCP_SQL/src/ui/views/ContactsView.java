@@ -33,6 +33,7 @@ import model.contacts.ContactsManager;
 import model.contacts.ContactsModel;
 import model.enums.ContactEnum;
 import services.database.DatabaseServices;
+import ui.exceptions.MyCustomException;
 import ui.lableProviders.ContactsLabelProvider;
 import ui.utilities.ContactsFilter;
 import ui.utilities.MyViewerComparator;
@@ -58,7 +59,14 @@ public class ContactsView extends ViewPart
 	parent.setLayout(new GridLayout(2, false));
 
 	DatabaseServices database = new DatabaseServices();
-	database.loadFromDatabase();
+	try
+	{
+	    database.loadFromDatabase();
+	} catch (MyCustomException e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 
 	createTableUI(parent);
 	getSite().setSelectionProvider(tableViewer);

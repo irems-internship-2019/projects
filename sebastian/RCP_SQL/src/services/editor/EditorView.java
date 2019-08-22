@@ -1,12 +1,14 @@
 package services.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -20,9 +22,12 @@ import org.eclipse.ui.part.EditorPart;
 
 import model.contacts.AddressManager;
 import model.contacts.ContactsManager;
-import model.contacts.ContactsModel;
+//import model.contacts.ContactsModel;
 import model.enums.EditorLabelEnum;
+import model.enums.ErrorsEnum;
 import services.database.DatabaseServices;
+import ui.exceptions.MyCustomException;
+import ui.exceptions.MyUncheckedCustomExceptions;
 //import rcpbook.editor.CreateEditorUI;
 import ui.views.ContactsView;
 
@@ -32,12 +37,11 @@ public class EditorView extends EditorPart
     public static final String ID = "RCPBook.Create";
 
     private boolean dirty = false;
-    // private ViewerTools vTools = new ViewerTools();
-    private ContactsModel newContact = new ContactsModel();
+
+    //private ContactsModel newContact = new ContactsModel();
     public ContactsManager contact;
     private Text[] textNames = new Text[8];
-    // private CreateDatabaseHashMap map = new CreateDatabaseHashMap();
-
+    private RegexValidation regex = new RegexValidation();
 
     private DatabaseServices dbs = new DatabaseServices();
 
@@ -169,7 +173,7 @@ public class EditorView extends EditorPart
 	}
     }
 
-    private void editContact()
+    private void editContact() throws MyCustomException
     {
 
 	ContactsManager contact = newContact.getElements().get(newContact.getElements().indexOf(this.contact)
@@ -181,9 +185,19 @@ public class EditorView extends EditorPart
 	contact.getAddress().setCity(textNames[3].getText());
 	contact.getAddress().setStreet(textNames[4].getText());
 	contact.getAddress().setPostalCode(textNames[5].getText());
+	
+	/*#########################-REGEX-#################################*/
+	if(regex.validatePhoneNumber(textNames[6].getText()))
 	contact.setPhoneNumber(textNames[6].getText());
-	contact.setEmail(textNames[7].getText());
-
+	else
+	   return;
+	
+	if (regex.validateEmail(textNames[7].getText()))
+	    contact.setEmail(textNames[7].getText());
+	else
+	   return;
+	/*#########################-REGEX-#################################*/
+	
 	dbs.updateDatabaseContact(newContact.getElements().get(newContact.getElements().indexOf(this.contact)
 	/* map.getArrayToDatabaseMap().get(this.contact.getIntId()) */));
 
@@ -193,7 +207,7 @@ public class EditorView extends EditorPart
 	refreshContactView();
     }
 
-    private void newContact()
+    private void newContact() throws MyCustomException
     {
 	ContactsManager newCont;
 	newCont = new ContactsManager(
@@ -201,14 +215,13 @@ public class EditorView extends EditorPart
 			textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
 		textNames[6].getText(), textNames[7].getText());
 
-	//newCont.setPrimaryKeyID(dbs.checkContactsMaxId() + 1);
+	
 	dbs.addNewContactToDatabase(newCont);
+	
 	ContactsModel newContact = new ContactsModel();
 	newContact.clearContactsList();
+	
 	dbs.loadFromDatabase();
-	//newContact.addNewContact(newCont);
-
-	// map.createHashMap();
 
 	setDirty(false);
 
@@ -285,18 +298,20 @@ public class EditorView extends EditorPart
     @Override
     public void doSave(IProgressMonitor monitor)
     {
-//		final EditorPart editor = (EditorPart) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-//	
-//
-//		    editor.doSave(monitor);
 
-	if (contact != null)
-	    editContact();
-	else
+	try
 	{
-	    newContact();
-
+	    if (contact != null)
+		editContact();
+	    else
+	    {
+		newContact();
+	    }
+	} catch (Exception e)
+	{
+	    throw new MyUncheckedCustomExceptions(e, ErrorsEnum.BAD);
 	}
+
     }
 
     @Override
