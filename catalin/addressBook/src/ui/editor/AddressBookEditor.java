@@ -1,4 +1,4 @@
-package services.editor;
+package ui.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -20,15 +20,14 @@ import org.eclipse.ui.part.EditorPart;
 
 import models.persons.Address;
 import models.persons.Contact;
-import models.persons.Contact.ContactElements;
+import services.regex.Regex;
 import services.server.ServerServices;
-import ui.views.AddressBookDetailsView;
+import ui.exceptions.ExceptionsDialogs;
 import ui.views.AddressBookView;
 
 public class AddressBookEditor extends EditorPart
 {
     public static final String ID = "addressbook.editor.addressbookeditor";
-    private ContactElements persons = ContactElements.INSTANCE;
     private boolean isDirty;
 
     private Text textFirstName;
@@ -41,6 +40,7 @@ public class AddressBookEditor extends EditorPart
     private Text textEmail;
 
     private Contact contact;
+    private Contact person;
     private ServerServices manager = new ServerServices();
 
     public static void openEditor(Contact model)
@@ -180,51 +180,56 @@ public class AddressBookEditor extends EditorPart
 	}
     }
 
-    private void addContact()
+    private void checkRegex()
     {
-	Contact person = new Contact(textFirstName.getText(), textLastName.getText(),
+	Regex regex = new Regex();
+	textEmail.setText(regex.isValidEmail(textEmail.getText()));
+	textPhoneNumber.setText(regex.isValidPhone(textPhoneNumber.getText()));
+    }
+
+    private Contact setContact()
+    {
+	return new Contact(textFirstName.getText(), textLastName.getText(),
 		new Address(textCountry.getText(), textCity.getText(), textStreet.getText(), textPostalCode.getText()),
 		textPhoneNumber.getText(), textEmail.getText());
+    }
 
-	manager.addServerContact(person);
-	person.setId(manager.getIdNumber());
-	persons.getContacts().add(person);
+    private void addContact()
+    {
+	checkRegex();
 
-	refreshView();
+	person = setContact();
+
+	try
+	{
+	    manager.addServerContact(person);
+	    refreshView();
+	} catch (ExceptionsDialogs e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+
 	setDirty(false);
     }
 
     private void editContact()
     {
-	IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
-		.findView(AddressBookDetailsView.ID);
+	checkRegex();
 
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).setFirstName(textFirstName.getText());
+	person = setContact();
+	person.setId(contact.getId());
 
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).setLastName(textLastName.getText());
-
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).getAddress()
-		.setCountry(textCountry.getText());
-
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).getAddress().setCity(textCity.getText());
-
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).getAddress().setStreet(textStreet.getText());
-
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).getAddress()
-		.setPostal_code(textPostalCode.getText());
-
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).setPhoneNumber(textPhoneNumber.getText());
-
-	persons.getContacts().get(persons.getContacts().indexOf(contact)).setEmailAddress(textEmail.getText());
-
-	manager.editServerContact(persons.getContacts().get(persons.getContacts().indexOf(contact)));
-	;
-
-	refreshView();
-	if (addressBookDetailsView != null)
-	    addressBookDetailsView.refresh();
-
+	try
+	{
+	    manager.editServerContact(person);
+	    refreshView();
+	} catch (ExceptionsDialogs e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	
 	setDirty(false);
     }
 

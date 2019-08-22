@@ -1,4 +1,4 @@
-package services.editor;
+package ui.editor;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;

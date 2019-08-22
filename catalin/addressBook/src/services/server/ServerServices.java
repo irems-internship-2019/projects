@@ -3,17 +3,17 @@ package services.server;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import models.persons.Address;
 import models.persons.Contact;
-import models.persons.Contact.ContactElements;
+import ui.exceptions.ExceptionsDialogs;
 
 public class ServerServices
 {
     private ServerManager manager = new ServerManager();
-    private int idNumber = 0;
 
-    private void applyChangesOnServer(String contact)
+    private void applyChangesOnServer(String contact) throws ExceptionsDialogs 
     {
 	try
 	{
@@ -24,31 +24,13 @@ public class ServerServices
 	    statement.close();
 	} catch (SQLException e)
 	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    throw new ExceptionsDialogs(e);
 	}
     }
 
-    private int getMaxContactId()
+    public ArrayList<Contact> getServerContacts() throws ExceptionsDialogs
     {
-	int number = 0;
-	try
-	{
-	    Statement statement = manager.setConnection();
-	    ResultSet maxId = statement.executeQuery("SELECT MAX(contactid)\r\n" + "FROM contact;");
-
-	    if (maxId.next())
-		number = maxId.getInt(1);
-	} catch (SQLException e)
-	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	return number;
-    }
-
-    public void getServerContacts()
-    {
+	ArrayList<Contact> contactElements = new ArrayList<Contact>();
 	try
 	{
 	    Statement statement = manager.setConnection();
@@ -63,16 +45,16 @@ public class ServerServices
 		Contact contact = new Contact(contacts.getString("firstname"), contacts.getString("lastname"), address,
 			contacts.getString("phonenumber"), contacts.getString("emailaddress"));
 		contact.setId(Integer.parseInt(contacts.getString("contactid")));
-		ContactElements.INSTANCE.createElements(contact);
+		contactElements.add(contact);
 	    }
 	} catch (SQLException e)
 	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    throw new ExceptionsDialogs(e);
 	}
+	return contactElements;
     }
 
-    public void addServerContact(Contact contact)
+    public void addServerContact(Contact contact) throws ExceptionsDialogs
     {
 	String insertContact = "with insert_query as (INSERT INTO public.address(\r\n"
 		+ "country, city, street, postalcode)\r\n" + "	VALUES ('" + contact.getAddress().getCountry() + "', '"
@@ -83,10 +65,9 @@ public class ServerServices
 		+ contact.getEmailAddress() + "', (SELECT addressid FROM insert_query))";
 
 	applyChangesOnServer(insertContact);
-	idNumber = getMaxContactId();
     }
 
-    public void editServerContact(Contact contact)
+    public void editServerContact(Contact contact) throws ExceptionsDialogs
     {
 	String updateContact = "with update_query as (UPDATE public.contact SET firstname = '" + contact.getFirstName()
 		+ "', lastname = '" + contact.getLastName() + "', phonenumber = '" + contact.getPhoneNumber()
@@ -99,16 +80,11 @@ public class ServerServices
 	applyChangesOnServer(updateContact);
     }
 
-    public void deleteServerContact(Contact contact)
+    public void deleteServerContact(Contact contact) throws ExceptionsDialogs
     {
 	String deleteContact = "with delete_query as (DELETE FROM public.contact WHERE contactid = " + contact.getId() + ""
 		+ "returning address_fk) DELETE FROM public.address WHERE (addressid) IN (SELECT address_fk FROM delete_query)";
 
 	applyChangesOnServer(deleteContact);
-    }
-
-    public int getIdNumber()
-    {
-	return idNumber;
     }
 }

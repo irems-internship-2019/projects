@@ -1,7 +1,5 @@
 package models.persons;
 
-import java.util.ArrayList;
-
 public class Contact
 {
     private int id;
@@ -74,23 +72,5 @@ public class Contact
     public void setEmailAddress(String emailAddress)
     {
 	this.emailAddress = emailAddress;
-    }
-
-    public enum ContactElements
-    {
-	INSTANCE;
-
-	private ArrayList<Contact> contacts = new ArrayList<Contact>();
-
-	public void createElements(Contact contact)
-	{
-	    
-	    contacts.add(contact);
-	}
-
-	public ArrayList<Contact> getContacts()
-	{
-	    return contacts;
-	}
     }
 }

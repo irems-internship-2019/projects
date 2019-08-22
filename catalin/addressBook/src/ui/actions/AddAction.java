@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import services.editor.AddressBookEditor;
+import ui.editor.AddressBookEditor;
 
 public class AddAction implements IViewActionDelegate
 {

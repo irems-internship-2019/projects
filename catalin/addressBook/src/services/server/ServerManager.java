@@ -1,24 +1,33 @@
 package services.server;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+
+import ui.exceptions.ExceptionsDialogs;
 
 public class ServerManager
 {
-    public Statement setConnection()
+    public Statement setConnection() throws ExceptionsDialogs
     {
 	try
-	{
-	    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:54323/postgres", "postgres", "1234");
+	{   FileInputStream files=new FileInputStream("C:\\Users\\Fujitsu\\Documents\\git\\projects\\catalin\\addressBook\\src\\services\\server\\connection.properties"); 
+            Properties properties=new Properties (); 
+            properties.load (files); 
+            String dname= (String) properties.get ("Dname"); 
+            String url= (String) properties.get ("URL"); 
+            String username= (String) properties.get ("Uname"); 
+            String password= (String) properties.get ("password"); 
+            Class.forName(dname);    
+            
+	    Connection connection = DriverManager.getConnection(url, username, password);
 	    Statement statement = connection.createStatement();
 	    return statement;
-	} catch (SQLException e)
+	} catch (Exception e)
 	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	   throw new ExceptionsDialogs(e);
 	}
-	return null;
     }
 }

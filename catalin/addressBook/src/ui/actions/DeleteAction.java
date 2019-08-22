@@ -10,9 +10,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 import models.persons.Contact;
-import models.persons.Contact.ContactElements;
-import services.editor.AddressBookEditor;
 import services.server.ServerServices;
+import ui.editor.AddressBookEditor;
+import ui.exceptions.ExceptionsDialogs;
 import ui.views.AddressBookDetailsView;
 import ui.views.AddressBookView;
 
@@ -29,7 +29,6 @@ public class DeleteAction implements IViewActionDelegate
     @Override
     public void run(IAction action)
     {
-	ContactElements persons = ContactElements.INSTANCE;
 	ServerServices manager = new ServerServices();
 	
 	boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Delete",
@@ -42,11 +41,16 @@ public class DeleteAction implements IViewActionDelegate
 	    AddressBookDetailsView addressBookDetailsView = (AddressBookDetailsView) activePage
 		    .findView(AddressBookDetailsView.ID);
 
-	    Contact deletableContact = view.getSelectedItem();
-	    persons.getContacts().remove(deletableContact);
-	    manager.deleteServerContact(deletableContact);
-
-	    view.refresh();
+	    Contact deletableContact = view.getSelectedItem(); 
+	    try
+	    {
+		manager.deleteServerContact(deletableContact);
+		view.refresh();
+	    } catch (ExceptionsDialogs e)
+	    {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
 
 	    if (editor != null && editor.getModel() == deletableContact)
 		activePage.setEditorAreaVisible(false);

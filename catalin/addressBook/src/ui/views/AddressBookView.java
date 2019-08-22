@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -18,6 +19,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -30,9 +32,9 @@ import org.eclipse.ui.part.ViewPart;
 
 import models.enums.AddressBookEnum;
 import models.persons.Contact;
-import models.persons.Contact.ContactElements;
 import services.server.ServerServices;
 import ui.comparator.ContactComparator;
+import ui.exceptions.ExceptionsDialogs;
 import ui.filter.ContactFilter;
 import ui.labels.InnerLabelProvider;
 
@@ -44,6 +46,7 @@ public class AddressBookView extends ViewPart
     private ContactComparator comparator;
     private TableViewer viewer;
     private ArrayList<TableViewerColumn> tableColumns = new ArrayList<TableViewerColumn>();
+    private ServerServices manager = new ServerServices();
 
     private void createDoubleSelector()
     {
@@ -71,8 +74,7 @@ public class AddressBookView extends ViewPart
 		    }
 		} catch (PartInitException e)
 		{
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
+		    MessageDialog.openError(Display.getDefault().getActiveShell(), "Error", "Can't open the view");
 		}
 	    }
 	});
@@ -87,7 +89,14 @@ public class AddressBookView extends ViewPart
 
 	viewer.setContentProvider(new ArrayContentProvider());
 
-	viewer.setInput(ContactElements.INSTANCE.getContacts());
+	try
+	{
+	    viewer.setInput(manager.getServerContacts());
+	} catch (ExceptionsDialogs e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 
 	getSite().setSelectionProvider(viewer);
 
@@ -105,8 +114,6 @@ public class AddressBookView extends ViewPart
     @Override
     public void createPartControl(Composite parent)
     {
-	ServerServices manager = new ServerServices();
-	
 	ContactFilter filter = new ContactFilter();
 	parent.setLayout(new GridLayout(2, false));
 	Label searchLabel = new Label(parent, SWT.NONE);
@@ -118,8 +125,6 @@ public class AddressBookView extends ViewPart
 	createDoubleSelector();
 	createTableColumns();
 	viewer.setLabelProvider(new InnerLabelProvider(tableColumns));
-	
-	manager.getServerContacts();
 
 	comparator = new ContactComparator();
 	viewer.setComparator(comparator);
@@ -193,7 +198,15 @@ public class AddressBookView extends ViewPart
 
     public void refresh()
     {
-	viewer.refresh();
+	try
+	{
+	    viewer.setInput(manager.getServerContacts());
+	    viewer.refresh();
+	} catch (ExceptionsDialogs e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
 
     @Override

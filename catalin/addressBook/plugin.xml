@@ -60,7 +60,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="services.editor.AddressBookEditor"
+            class="ui.editor.AddressBookEditor"
             default="false"
             id="addressbook.editor.addressbookeditor"
             name="AddressBookEditor">
