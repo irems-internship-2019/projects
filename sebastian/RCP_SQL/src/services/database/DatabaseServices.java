@@ -24,7 +24,7 @@ public class DatabaseServices
 	try
 	{
 	    ResultSet contactsSet = dbsConnect.establishConnection().executeQuery("SELECT * FROM public.contacts a\r\n"
-		    + "XFULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
+		    + "FULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
 
 	    while (contactsSet.next())
 	    {
@@ -36,7 +36,6 @@ public class DatabaseServices
 
 		newCont.setPrimaryKeyID(Integer.parseInt(contactsSet.getString("contacts_id")));
 
-		//newContact.addNewContact(newCont);
                localContactsList.add(newCont);
 	    }
 

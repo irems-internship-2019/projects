@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 import model.contacts.ContactsManager;
-import model.contacts.ContactsModel;
+//import model.contacts.ContactsModel;
 import services.database.DatabaseServices;
 import services.editor.EditorView;
 import ui.exceptions.MyCustomException;
@@ -19,7 +19,7 @@ import ui.views.DetailesView;
 
 public class Delete implements IViewActionDelegate
 {
-    ContactsModel contact = new ContactsModel();
+   //ContactsModel contact = new ContactsModel();
     // ViewerTools vTools = new ViewerTools();
     private ContactsView view;
     private static ContactsManager earlyContac;
@@ -49,18 +49,6 @@ public class Delete implements IViewActionDelegate
 	    ContactsManager deletableContact = view.getSelectedItem();
 	    if (deletableContact != null)
 	    {
-		contact.getElements().remove(deletableContact
-			/*contact.getElements().get(map.getArrayToDatabaseMap().get(deletableContact.getIntId()))*/);
-	
-		EditorView addressBookEditor = (EditorView) activePage.getActiveEditor();
-		if (addressBookEditor != null)
-		    EditorView.openEditor(null);
-
-		if (activePage.findView(DetailesView.ID) != null && deletableContact.equals(earlyContac))
-		{
-		    activePage.hideView(activePage.findView(DetailesView.ID));
-		}
-		
 		try
 		{
 		    dbs.deleteDatabaseContact(deletableContact.getIntId());
@@ -70,13 +58,18 @@ public class Delete implements IViewActionDelegate
 		    e.printStackTrace();
 		}
 		
-		//rebuild the hashMap
-		//map.createHashMap();
+		EditorView addressBookEditor = (EditorView) activePage.getActiveEditor();
+		if (addressBookEditor != null)
+		    EditorView.openEditor(null);
+
+		if (activePage.findView(DetailesView.ID) != null && deletableContact.equals(earlyContac))
+		{
+		    activePage.hideView(activePage.findView(DetailesView.ID));
+		}
 		
 	    } else
 		MessageDialog.openError(Display.getDefault().getActiveShell(), "Delete Contact", "Nothing selected");
 
-	    // contact.rearrangeContactsArray();
 	    view.refreshView();
 	}
     }

@@ -3,8 +3,7 @@ package model.contacts;
 public class ContactsManager
 {
 
-    //private static int index = 1;
-    private int ID = 0;
+       private int ID = 0;
 
     private String first;
     private String second;

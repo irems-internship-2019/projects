@@ -30,10 +30,12 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import model.contacts.ContactsManager;
-import model.contacts.ContactsModel;
+//import model.contacts.ContactsModel;
 import model.enums.ContactEnum;
+import model.enums.ErrorsEnum;
 import services.database.DatabaseServices;
 import ui.exceptions.MyCustomException;
+import ui.exceptions.MyUncheckedCustomExceptions;
 import ui.lableProviders.ContactsLabelProvider;
 import ui.utilities.ContactsFilter;
 import ui.utilities.MyViewerComparator;
@@ -43,7 +45,7 @@ public class ContactsView extends ViewPart
     public static final String ID = "RCPBook.view";
 
     private TableViewer tableViewer;
-    private ContactsModel model = new ContactsModel();
+    //private ContactsModel model = new ContactsModel();
 
     private ContactsFilter contactFilter = new ContactsFilter();
     private MyViewerComparator comparator;
@@ -51,28 +53,34 @@ public class ContactsView extends ViewPart
     // private ContactEnum temporary = ContactEnum.ID;
     private List<TableViewerColumn> tableCollums = new ArrayList<TableViewerColumn>();
     // private CreateDatabaseHashMap map = new CreateDatabaseHashMap();
-
+    private DatabaseServices dbs = new DatabaseServices();
     @Override
     public void createPartControl(Composite parent)
     {
 
 	parent.setLayout(new GridLayout(2, false));
 
-	DatabaseServices database = new DatabaseServices();
 	try
 	{
-	    database.loadFromDatabase();
+	    dbs.loadFromDatabase();
 	} catch (MyCustomException e)
 	{
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
-	createTableUI(parent);
+	try
+	{
+	    createTableUI(parent);
+	} catch (MyCustomException e)
+	{
+	    throw new MyUncheckedCustomExceptions(e, ErrorsEnum.BAD);
+	 
+	}
 	getSite().setSelectionProvider(tableViewer);
     }
 
-    public void createTableUI(Composite parent)
+    public void createTableUI(Composite parent) throws MyCustomException
     {
 
 	tableViewer = new TableViewer(parent,
@@ -88,7 +96,13 @@ public class ContactsView extends ViewPart
 
 	tableViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, SWT.FILL));
 	tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-	tableViewer.setInput(model.getElements());
+	try
+	{
+	    tableViewer.setInput(dbs.loadFromDatabase());
+	} catch (MyCustomException e)
+	{
+	    throw new MyCustomException(e, ErrorsEnum.BAD);
+	}
 
 	createTableColums(parent);
 	tableViewer.setLabelProvider(new ContactsLabelProvider(tableCollums));
@@ -237,7 +251,7 @@ public class ContactsView extends ViewPart
 	    @Override
 	    public void widgetSelected(SelectionEvent e)
 	    {
-		DatabaseServices database = new DatabaseServices();
+		
 		switch (strNum) 
 		{
 		case ">>":
@@ -261,6 +275,14 @@ public class ContactsView extends ViewPart
 
     public void refreshView()
     {
+	try
+	{
+	    tableViewer.setInput(dbs.loadFromDatabase());
+	} catch (MyCustomException e)
+	{
+	
+	    e.printStackTrace();
+	}
 	tableViewer.refresh();
     }
 }

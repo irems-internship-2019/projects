@@ -176,9 +176,6 @@ public class EditorView extends EditorPart
     private void editContact() throws MyCustomException
     {
 
-	ContactsManager contact = newContact.getElements().get(newContact.getElements().indexOf(this.contact)
-	/* map.getArrayToDatabaseMap().get(this.contact.getIntId()) */);
-
 	contact.setFirstName(textNames[0].getText());
 	contact.setLastName(textNames[1].getText());
 	contact.getAddress().setCountry(textNames[2].getText());
@@ -198,8 +195,7 @@ public class EditorView extends EditorPart
 	   return;
 	/*#########################-REGEX-#################################*/
 	
-	dbs.updateDatabaseContact(newContact.getElements().get(newContact.getElements().indexOf(this.contact)
-	/* map.getArrayToDatabaseMap().get(this.contact.getIntId()) */));
+	dbs.updateDatabaseContact(contact);
 
 	setDirty(false);
 	contact = null;
@@ -218,11 +214,6 @@ public class EditorView extends EditorPart
 	
 	dbs.addNewContactToDatabase(newCont);
 	
-	ContactsModel newContact = new ContactsModel();
-	newContact.clearContactsList();
-	
-	dbs.loadFromDatabase();
-
 	setDirty(false);
 
 	refreshContactView();
@@ -267,7 +258,6 @@ public class EditorView extends EditorPart
 
 	    if (addressBookEditor != null)
 	    {
-		// activePage.openEditor(input, ID);
 		addressBookEditor.setModelAndWidget(model);
 	    } else
 	    {
@@ -350,7 +340,7 @@ public class EditorView extends EditorPart
 
 	this.dirty = dirty;
 
-//			 //Notify PROP_DIRTY changes to Workbench.
+//	Notify PROP_DIRTY changes to Workbench.
 	firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
     }
 
