@@ -73,7 +73,7 @@ public class AddressDetailsView extends ViewPart {
 		viewer.setLabelProvider(new AdressLabelProvider(tableCollums));
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		table.setLinesVisible(true);  
 		viewer.setContentProvider(new ArrayContentProvider());
 		getSite().setSelectionProvider(viewer);
 		GridData gridData = new GridData();
