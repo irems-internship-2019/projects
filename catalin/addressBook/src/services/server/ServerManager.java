@@ -27,7 +27,7 @@ public class ServerManager
 	    return statement;
 	} catch (Exception e)
 	{
-	   throw new ExceptionsDialogs(e);
+	   throw new ExceptionsDialogs();
 	}
     }
 }

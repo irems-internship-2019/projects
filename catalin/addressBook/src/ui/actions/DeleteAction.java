@@ -52,10 +52,13 @@ public class DeleteAction implements IViewActionDelegate
 		e.printStackTrace();
 	    }
 
-	    if (editor != null && editor.getModel() == deletableContact)
+	    if (editor != null && editor.getModel() != null)
+	    {
+		if(editor.getModel().getId() == deletableContact.getId())
 		activePage.setEditorAreaVisible(false);
+	    }
 
-	    if (addressBookDetailsView != null && addressBookDetailsView.getDetailsViewContact().contains(deletableContact))
+	    if (addressBookDetailsView != null && addressBookDetailsView.getDetailsViewContact().get(0).getId() == deletableContact.getId())
 		activePage.hideView(addressBookDetailsView);
 	}
     }

@@ -24,7 +24,7 @@ public class ServerServices
 	    statement.close();
 	} catch (SQLException e)
 	{
-	    throw new ExceptionsDialogs(e);
+	    throw new ExceptionsDialogs();
 	}
     }
 
@@ -49,7 +49,7 @@ public class ServerServices
 	    }
 	} catch (SQLException e)
 	{
-	    throw new ExceptionsDialogs(e);
+	    throw new ExceptionsDialogs();
 	}
 	return contactElements;
     }
