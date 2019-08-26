@@ -13,5 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: RCPBook
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/postgresql-42.2.6.jar,
+ lib/eclipselink.jar,
+ lib/javax.persistence.jar,
  .
 

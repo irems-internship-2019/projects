@@ -3,7 +3,7 @@ package model.contacts;
 public class ContactsManager
 {
 
-       private int ID = 0;
+       private long ID = 0;
 
     private String first;
     private String second;
@@ -12,10 +12,10 @@ public class ContactsManager
     private String phoneNumber;
     private String email;
 
-    public ContactsManager(String first, String second, AddressManager address, String phoneNumber, String email)
+    public ContactsManager(long ID, String first, String second, AddressManager address, String phoneNumber, String email)
     {
 	// super();
-	this.ID = 0;
+	this.ID = ID;
 	this.first = first;
 	this.second = second;
 	this.address = address;
@@ -25,10 +25,10 @@ public class ContactsManager
 
     public String getID()
     {
-	return Integer.toString(ID);
+	return Long.toString(ID);
     }
 
-    public int getIntId()
+    public long getLongID()
     {
 	return ID;
     }
@@ -81,5 +81,10 @@ public class ContactsManager
     public void setPrimaryKeyID(int iD) 
     {
 	ID = iD;
+    }
+
+    public void setID(long iD)
+    {
+        ID = iD;
     }
 }

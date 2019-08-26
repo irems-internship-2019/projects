@@ -51,7 +51,7 @@ public class Delete implements IViewActionDelegate
 	    {
 		try
 		{
-		    dbs.deleteDatabaseContact(deletableContact.getIntId());
+		    dbs.deleteDatabaseContact(deletableContact.getLongID());
 		} catch (MyCustomException e)
 		{
 		    // TODO Auto-generated catch block

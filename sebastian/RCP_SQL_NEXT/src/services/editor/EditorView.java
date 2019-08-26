@@ -38,7 +38,7 @@ public class EditorView extends EditorPart
 
     private boolean dirty = false;
 
-    //private ContactsModel newContact = new ContactsModel();
+    // private ContactsModel newContact = new ContactsModel();
     public ContactsManager contact;
     private Text[] textNames = new Text[8];
     private RegexValidation regex = new RegexValidation();
@@ -182,19 +182,19 @@ public class EditorView extends EditorPart
 	contact.getAddress().setCity(textNames[3].getText());
 	contact.getAddress().setStreet(textNames[4].getText());
 	contact.getAddress().setPostalCode(textNames[5].getText());
-	
-	/*#########################-REGEX-#################################*/
-	if(regex.validatePhoneNumber(textNames[6].getText()))
-	contact.setPhoneNumber(textNames[6].getText());
+
+	/* #########################-REGEX-################################# */
+	if (regex.validatePhoneNumber(textNames[6].getText()))
+	    contact.setPhoneNumber(textNames[6].getText());
 	else
-	   return;
-	
+	    return;
+
 	if (regex.validateEmail(textNames[7].getText()))
 	    contact.setEmail(textNames[7].getText());
 	else
-	   return;
-	/*#########################-REGEX-#################################*/
-	
+	    return;
+	/* #########################-REGEX-################################# */
+
 	dbs.updateDatabaseContact(contact);
 
 	setDirty(false);
@@ -206,14 +206,13 @@ public class EditorView extends EditorPart
     private void newContact() throws MyCustomException
     {
 	ContactsManager newCont;
-	newCont = new ContactsManager(
-		textNames[0].getText(), textNames[1].getText(), new AddressManager(textNames[2].getText(),
-			textNames[3].getText(), textNames[4].getText(), textNames[5].getText()),
+	newCont = new ContactsManager(/* this dont matter */0, textNames[0].getText(), textNames[1].getText(),
+		new AddressManager(textNames[2].getText(), textNames[3].getText(), textNames[4].getText(),
+			textNames[5].getText()),
 		textNames[6].getText(), textNames[7].getText());
 
-	
 	dbs.addNewContactToDatabase(newCont);
-	
+
 	setDirty(false);
 
 	refreshContactView();

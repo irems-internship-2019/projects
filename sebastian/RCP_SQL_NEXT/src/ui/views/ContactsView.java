@@ -62,8 +62,8 @@ public class ContactsView extends ViewPart
 
 	try
 	{
-	    dbs.loadFromDatabase();
-	} catch (MyCustomException e)
+	    dbs.loadFromDatabase(); 
+	} catch (MyCustomException e) 
 	{
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
@@ -91,6 +91,8 @@ public class ContactsView extends ViewPart
 	addDoubleClickListner();
 
 	createButtons(parent);
+	
+	   //dbs.doSomethingJPA();
 
 	// vTools.assignContactsViewer(tableViewer);
 

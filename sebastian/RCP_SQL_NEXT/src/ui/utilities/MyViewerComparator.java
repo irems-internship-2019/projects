@@ -47,9 +47,9 @@ public class MyViewerComparator extends ViewerComparator
 	    {
 
 	    case 0:
-		if (p1.getIntId() == (p2.getIntId()))
+		if (p1.getLongID() == (p2.getLongID()))
 		    rc = 0;
-		else if (p1.getIntId() >= (p2.getIntId()))
+		else if (p1.getLongID() >= (p2.getLongID()))
 		    rc = 1;
 		else
 		    rc = (-1);

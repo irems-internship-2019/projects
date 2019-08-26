@@ -38,7 +38,7 @@ public class DetailesView extends ViewPart
     public void createPartControl(Composite parent)
     {
 
-	parent.setLayout(new GridLayout(2, false));
+	parent.setLayout(new GridLayout(2, false)); 
 	detailesUI(parent);
     }
 

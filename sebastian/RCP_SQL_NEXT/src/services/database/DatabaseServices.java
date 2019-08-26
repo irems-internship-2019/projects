@@ -5,64 +5,80 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
 import model.contacts.AddressManager;
 import model.contacts.ContactsManager;
 //import model.contacts.ContactsModel;
 import model.enums.ErrorsEnum;
+import services.database.BookContacts;
+//import simple.model.Todo;
 import ui.exceptions.MyCustomException;
+
 
 public class DatabaseServices
 {
     // private DatabaseConnection dbsConnect = new DatabaseConnection();
-    private DatabaseConnection dbsConnect = new DatabaseConnection();
-   // private ContactsModel newContact = new ContactsModel();
+    private JpaEntityMgr dbs = new JpaEntityMgr();
+    // private ContactsModel newContact = new ContactsModel();
 
     public List<ContactsManager> loadFromDatabase() throws MyCustomException
     {
 	List<ContactsManager> localContactsList = new ArrayList<ContactsManager>();
-
 	try
 	{
-	    ResultSet contactsSet = dbsConnect.establishConnection().executeQuery("SELECT * FROM public.contacts a\r\n"
-		    + "FULL JOIN public.addresses b ON a.address_fk = b.address_id ORDER BY a.contacts_id;");
-
-	    while (contactsSet.next())
+	    Query q = dbs.EntityMgr().createQuery("SELECT c  FROM BookContacts c");
+	    List<BookContacts> contactsList = q.getResultList();
+	    for (BookContacts contact : contactsList)
 	    {
-		ContactsManager newCont = new ContactsManager(contactsSet.getString("first_name"),
-			contactsSet.getString("last_name"),
-			new AddressManager(contactsSet.getString("country"), contactsSet.getString("city"),
-				contactsSet.getString("street"), contactsSet.getString("postal_code")),
-			contactsSet.getString("phone_number"), contactsSet.getString("email"));
+		ContactsManager newCont = new ContactsManager(contact.getContacts_id(), contact.getFirst_name(),
+			contact.getLast_name(),
+			new AddressManager(contact.getAddress().getCountry(), contact.getAddress().getCity(),
+				contact.getAddress().getStreet(), contact.getAddress().getPostal_code()),
+			contact.getPhone_number(), contact.getEmail());
 
-		newCont.setPrimaryKeyID(Integer.parseInt(contactsSet.getString("contacts_id")));
-
-               localContactsList.add(newCont);
+		localContactsList.add(newCont);
 	    }
-
-	    return localContactsList;
-
-	} catch (SQLException e)
+	} catch (Exception e)
 	{
-	    throw new MyCustomException(e, ErrorsEnum.LOAD);
+	    e.printStackTrace();
 	}
-
+	return localContactsList;
     }
 
     public void addNewContactToDatabase(ContactsManager contact) throws MyCustomException
     {
-
 	try
 	{
+	    EntityManager em = dbs.EntityMgr();
+	    
+	    em.getTransaction().begin();
+	    BookAddresses addressPersist = new BookAddresses();
+	    BookContacts contactPersist = new BookContacts();
 
-	    String sql = " with insert_query as (INSERT INTO public.addresses (country, city, street, postal_code)"
-		    + "VALUES ('" + contact.getAddress().getCountry() + "','" + contact.getAddress().getCity() + "','"
-		    + contact.getAddress().getStreet() + "','" + contact.getAddress().getPostalCode() + "')"
-		    + "returning address_id) INSERT INTO public.contacts (first_name, last_name, phone_number, email, address_fk)"
-		    + "VALUES ('" + contact.getFirstName() + "','" + contact.getLastName() + "','" + contact.getPhone()
-		    + "','" + contact.getEmail() + "',(select address_id from insert_query))";
-	    dbsConnect.establishConnection().executeUpdate(sql);
+	    addressPersist.setCountry(contact.getAddress().getCountry());
+	    addressPersist.setCity(contact.getAddress().getCity());
+	    addressPersist.setStreet(contact.getAddress().getStreet());
+	    addressPersist.setPostal_code(contact.getAddress().getPostalCode());
 
-	} catch (SQLException e)
+	    contactPersist.setFirst_name(contact.getFirstName());
+	    contactPersist.setLast_name(contact.getLastName());
+	    contactPersist.setPhone_number(contact.getPhone());
+	    contactPersist.setEmail(contact.getEmail());
+	    contactPersist.setAddress(addressPersist);
+
+	    em.persist(contactPersist);
+	    em.persist(addressPersist);
+	    em.getTransaction().commit();
+
+	    em.close();
+
+
+
+	} catch (Exception e)
 	{
 
 	    throw new MyCustomException(e, ErrorsEnum.INSERT);
@@ -75,33 +91,45 @@ public class DatabaseServices
 
 	try
 	{
+	    EntityManager em = dbs.EntityMgr();
+	    BookContacts transactionContact = em.find(BookContacts.class, contact.getLongID());
+	  
 
-	    String sql = "with update_query as (UPDATE public.contacts SET first_name= '" + contact.getFirstName()
-		    + "', last_name='" + contact.getLastName() + "', phone_number='" + contact.getPhone() + "', email='"
-		    + contact.getEmail() + "' WHERE contacts_id = " + contact.getIntId() + ""
-		    + "returning address_fk) UPDATE public.addresses SET  country ='"
-		    + contact.getAddress().getCountry() + "' , city ='" + contact.getAddress().getCity()
-		    + "' , street ='" + contact.getAddress().getStreet() + "' , postal_code ='"
-		    + contact.getAddress().getPostalCode()
-		    + "'WHERE (address_id) IN (select address_fk from update_query)";
+	    em.getTransaction().begin();
+	    transactionContact.setFirst_name(contact.getFirstName());
+	    transactionContact.setLast_name(contact.getLastName());
+	    transactionContact.setPhone_number(contact.getPhone());
+	    transactionContact.setEmail(contact.getEmail());
+	    
+	    transactionContact.getAddress().setCountry(contact.getAddress().getCountry());
+	    transactionContact.getAddress().setCity(contact.getAddress().getCity());
+	    transactionContact.getAddress().setStreet(contact.getAddress().getStreet());
+	    transactionContact.getAddress().setPostal_code(contact.getAddress().getPostalCode());
+	    
+	    em.getTransaction().commit();
 
-	    dbsConnect.establishConnection().executeUpdate(sql);
 
-	} catch (SQLException e)
+	} catch (Exception e)
 	{
 
 	    throw new MyCustomException(e, ErrorsEnum.UPDATE);
 	}
     }
 
-    public void deleteDatabaseContact(int deleteIndex) throws MyCustomException
+    public void deleteDatabaseContact(long deleteIndex) throws MyCustomException
     {
 	try
 	{
-	    String sql = "with delete_query as (DELETE FROM public.contacts WHERE contacts_id = " + deleteIndex
-		    + "returning address_fk) DELETE FROM public.addresses WHERE (address_id) IN (SELECT address_fk FROM delete_query)";
-	    dbsConnect.establishConnection().executeUpdate(sql);
-	} catch (SQLException e)
+	    EntityManager em = dbs.EntityMgr();
+	    
+	    BookContacts contact = em.find(BookContacts.class, deleteIndex);
+
+	    em.getTransaction().begin();
+	    em.remove(contact.getAddress());
+	    em.remove(contact);
+	    em.getTransaction().commit();
+	    
+	} catch (Exception e)
 	{
 
 	    throw new MyCustomException(e, ErrorsEnum.DELETE);
