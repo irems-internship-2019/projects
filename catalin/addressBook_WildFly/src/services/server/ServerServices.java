@@ -1,9 +1,10 @@
 package services.server;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import models.persons.Address;
 import models.persons.Contact;
@@ -11,43 +12,27 @@ import ui.exceptions.ExceptionsDialogs;
 
 public class ServerServices
 {
-    private ServerManager manager = new ServerManager();
-
-    private void applyChangesOnServer(String contact) throws ExceptionsDialogs 
-    {
-	try
-	{
-	    Statement statement = manager.setConnection();
-
-	    statement.executeUpdate(contact);
-
-	    statement.close();
-	} catch (SQLException e)
-	{
-	    throw new ExceptionsDialogs();
-	}
-    }
-
+   private ServerManager manager = new ServerManager();
+    
     public ArrayList<Contact> getServerContacts() throws ExceptionsDialogs
     {
 	ArrayList<Contact> contactElements = new ArrayList<Contact>();
 	try
 	{
-	    Statement statement = manager.setConnection();
+	    EntityManager entityManger = manager.setConnection();
 
-	    ResultSet contacts = statement.executeQuery(
-		    "SELECT *\r\n" + "FROM contact\r\n" + "INNER JOIN address\r\n" + "ON address_fk = addressid;");
-
-	    while (contacts.next())
+	    Query q = entityManger.createQuery("select c from ContactTable c");
+	    List<ContactTable> contactElemnets = q.getResultList();
+	    for (ContactTable contactElement : contactElemnets)
 	    {
-		Address address = new Address(contacts.getString("country"), contacts.getString("city"),
-			contacts.getString("street"), contacts.getString("postalcode"));
-		Contact contact = new Contact(contacts.getString("firstname"), contacts.getString("lastname"), address,
-			contacts.getString("phonenumber"), contacts.getString("emailaddress"));
-		contact.setId(Integer.parseInt(contacts.getString("contactid")));
+		Contact contact = new Contact(contactElement.getContactid(), contactElement.getFirstName(),
+			contactElement.getLastName(),
+			new Address(contactElement.getAddress().getCountry(), contactElement.getAddress().getCity(),
+				contactElement.getAddress().getStreet(), contactElement.getAddress().getPostalCode()),
+			contactElement.getPhoneNumber(), contactElement.getEmailAddress());
 		contactElements.add(contact);
 	    }
-	} catch (SQLException e)
+	} catch (Exception e)
 	{
 	    throw new ExceptionsDialogs();
 	}
@@ -56,35 +41,58 @@ public class ServerServices
 
     public void addServerContact(Contact contact) throws ExceptionsDialogs
     {
-	String insertContact = "with insert_query as (INSERT INTO public.address(\r\n"
-		+ "country, city, street, postalcode)\r\n" + "	VALUES ('" + contact.getAddress().getCountry() + "', '"
-		+ contact.getAddress().getCity() + "', '" + contact.getAddress().getStreet() + "', '"
-		+ contact.getAddress().getPostal_code() + "')" + "returning addressid) INSERT INTO public.contact(\r\n"
-		+ "firstname, lastname, phonenumber, emailaddress, address_fk)\r\n" + "	VALUES ('"
-		+ contact.getFirstName() + "', '" + contact.getLastName() + "', '" + contact.getPhoneNumber() + "', '"
-		+ contact.getEmailAddress() + "', (SELECT addressid FROM insert_query))";
+	EntityManager entityManger = manager.setConnection();
 
-	applyChangesOnServer(insertContact);
+	entityManger.getTransaction().begin();
+	ContactTable contactElement = new ContactTable();
+	AddressTable addressElement = new AddressTable();
+
+	addressElement.setCountry(contact.getAddress().getCountry());
+	addressElement.setCity(contact.getAddress().getCity());
+	addressElement.setStreet(contact.getAddress().getStreet());
+	addressElement.setPostalCode(contact.getAddress().getPostal_code());
+	entityManger.persist(addressElement);
+
+	contactElement.setFirstname(contact.getFirstName());
+	contactElement.setLastName(contact.getLastName());
+	contactElement.setPhoneNumber(contact.getPhoneNumber());
+	contactElement.setEmailAddress(contact.getEmailAddress());
+	contactElement.setAddress(addressElement);
+	entityManger.persist(contactElement);
+	entityManger.getTransaction().commit();
+
+	entityManger.close();
     }
 
     public void editServerContact(Contact contact) throws ExceptionsDialogs
     {
-	String updateContact = "with update_query as (UPDATE public.contact SET firstname = '" + contact.getFirstName()
-		+ "', lastname = '" + contact.getLastName() + "', phonenumber = '" + contact.getPhoneNumber()
-		+ "', emailaddress = '" + contact.getEmailAddress() + "' WHERE contactid = " + contact.getId() + ""
-		+ "returning address_fk) UPDATE address SET country = '" + contact.getAddress().getCountry()
-		+ "', city = '" + contact.getAddress().getCity() + "', street = '" + contact.getAddress().getStreet()
-		+ "', postalcode = '" + contact.getAddress().getPostal_code()
-		+ "' WHERE (addressid) IN (SELECT address_fk FROM update_query)";
+	EntityManager entityManger = manager.setConnection();
 
-	applyChangesOnServer(updateContact);
+	ContactTable contactElement = entityManger.find(ContactTable.class, contact.getId());
+
+	entityManger.getTransaction().begin();
+
+	contactElement.setFirstname(contact.getFirstName());
+	contactElement.setLastName(contact.getLastName());
+	contactElement.setPhoneNumber(contact.getPhoneNumber());
+	contactElement.setEmailAddress(contact.getEmailAddress());
+	contactElement.getAddress().setCountry(contact.getAddress().getCountry());
+	contactElement.getAddress().setCity(contact.getAddress().getCity());
+	contactElement.getAddress().setStreet(contact.getAddress().getStreet());
+	contactElement.getAddress().setPostalCode(contact.getAddress().getPostal_code());
+
+	entityManger.getTransaction().commit();
     }
 
     public void deleteServerContact(Contact contact) throws ExceptionsDialogs
     {
-	String deleteContact = "with delete_query as (DELETE FROM public.contact WHERE contactid = " + contact.getId() + ""
-		+ "returning address_fk) DELETE FROM public.address WHERE (addressid) IN (SELECT address_fk FROM delete_query)";
+	EntityManager entityManger = manager.setConnection();
 
-	applyChangesOnServer(deleteContact);
+	ContactTable contactElement = entityManger.find(ContactTable.class, contact.getId());
+
+	entityManger.getTransaction().begin();
+	entityManger.remove(contactElement);
+	entityManger.remove(contactElement.getAddress());
+	entityManger.getTransaction().commit();
     }
 }

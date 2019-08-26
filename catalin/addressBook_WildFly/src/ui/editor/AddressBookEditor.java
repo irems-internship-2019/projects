@@ -189,7 +189,7 @@ public class AddressBookEditor extends EditorPart
 
     private Contact setContact()
     {
-	return new Contact(textFirstName.getText(), textLastName.getText(),
+	return new Contact(0, textFirstName.getText(), textLastName.getText(),
 		new Address(textCountry.getText(), textCity.getText(), textStreet.getText(), textPostalCode.getText()),
 		textPhoneNumber.getText(), textEmail.getText());
     }

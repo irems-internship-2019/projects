@@ -2,16 +2,17 @@ package models.persons;
 
 public class Contact
 {
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private Address address;
     private String phoneNumber;
     private String emailAddress;
 
-    public Contact(String firstName, String lastName, Address address, String phoneNumber, String emailAddress)
+    public Contact(long id, String firstName, String lastName, Address address, String phoneNumber, String emailAddress)
     {
 	super();
+	this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.address = address;
@@ -19,12 +20,12 @@ public class Contact
 	this.emailAddress = emailAddress;
     }
 
-    public int getId()
+    public long getId()
     {
 	return id;
     }
 
-    public void setId(int id)
+    public void setId(long id)
     {
 	this.id = id;
     }
