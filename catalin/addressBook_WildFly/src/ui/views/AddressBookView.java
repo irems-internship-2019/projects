@@ -3,6 +3,7 @@ package ui.views;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -39,7 +40,7 @@ import ui.labels.InnerLabelProvider;
 
 public class AddressBookView extends ViewPart
 {
-    public static final String ID = "addressbook.view.addressbookview_wildfly";
+    public static final String ID = "addressbook.view.addressbookview";
     @Inject
     IWorkbench workbench;
     private ContactComparator comparator;

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AddressBook_WildFly
-Bundle-SymbolicName: AddressBook_WildFly;singleton:=true
+Bundle-Name: AddressBookapi
+Bundle-SymbolicName: AddressBookapi;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: addressbook.Activator
 Require-Bundle: org.eclipse.ui,
@@ -13,6 +13,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: AddressBook
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/postgresql-42.2.6.jar,
- .,
- lib/eclipselink.jar,
- lib/javax.persistence.jar
+ .

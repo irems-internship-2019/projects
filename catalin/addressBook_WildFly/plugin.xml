@@ -16,20 +16,20 @@
       <perspective
             class="addressbook.Perspective"
             name="Perspective"
-            id="AddressBook_WildFly.perspective">
+            id="AddressBook.perspective">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
             class="ui.views.AddressBookView"
-            id="addressbook.view.addressbookview_wildfly"
+            id="addressbook.view.addressbookview"
             name="AddressBookView"
             restorable="true">
       </view>
       <view
             class="ui.views.AddressBookDetailsView"
-            id="addressbook.view.addressbookdetailsview_wildfly"
+            id="addressbook.view.addressbookdetailsview"
             name="AddressBookDetailsView"
             restorable="true">
       </view>
@@ -40,7 +40,7 @@
             targetID="*">
          <view
                closeable="true"
-               id="addressbook.view.addressbookview_wildfly"
+               id="addressbook.view.addressbookview"
                minimized="false"
                relationship="left"
                relative="org.eclipse.ui.editorss"
@@ -48,7 +48,7 @@
          </view>
          <view
                closeable="true"
-               id="addressbook.view.addressbookdetailsview_wildfly"
+               id="addressbook.view.addressbookdetailsview"
                minimized="false"
                relationship="right"
                relative="org.eclipse.ui.editorss"
