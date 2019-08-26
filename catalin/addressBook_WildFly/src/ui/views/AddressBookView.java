@@ -1,14 +1,8 @@
 package ui.views;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -38,7 +32,6 @@ import org.eclipse.ui.part.ViewPart;
 import models.enums.AddressBookEnum;
 import models.persons.Contact;
 import services.server.ServerServices;
-import test.Todo;
 import ui.comparator.ContactComparator;
 import ui.exceptions.ExceptionsDialogs;
 import ui.filter.ContactFilter;
@@ -46,16 +39,13 @@ import ui.labels.InnerLabelProvider;
 
 public class AddressBookView extends ViewPart
 {
-    public static final String ID = "addressbook.view.addressbookview";
+    public static final String ID = "addressbook.view.addressbookview_wildfly";
     @Inject
     IWorkbench workbench;
     private ContactComparator comparator;
     private TableViewer viewer;
     private ArrayList<TableViewerColumn> tableColumns = new ArrayList<TableViewerColumn>();
     private ServerServices manager = new ServerServices();
-    
-    private static final String PERSISTENCE_UNIT_NAME = "todos";
-    private static EntityManagerFactory factory;
 
     private void createDoubleSelector()
     {
@@ -147,26 +137,6 @@ public class AddressBookView extends ViewPart
 	    }
 	});
 	viewer.addFilter(filter);
-	
-	factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager em = factory.createEntityManager();
-        // read the existing entries and write to console
-        Query q = em.createQuery("select t from Todo t");
-        List<Todo> todoList = q.getResultList();
-        for (Todo todo : todoList) {
-            System.out.println(todo);
-        }
-        System.out.println("Size: " + todoList.size());
-
-        // create new todo
-        em.getTransaction().begin();
-        Todo todo = new Todo();
-        todo.setSummary("This is a test");
-        todo.setDescription("This is a test");
-        em.persist(todo);
-        em.getTransaction().commit();
-
-        em.close();
     }
 
     private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber)

@@ -32,6 +32,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	       // Show ProgressIndicator
 	       configurer.setShowProgressIndicator(true);
 	       
-	       configurer.setTitle("Address Book"); //$NON-NLS-1$
+	       configurer.setTitle("Address Book WildFly"); //$NON-NLS-1$
 	   }
 }

@@ -5,6 +5,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import models.persons.Address;
 import models.persons.Contact;
 import ui.exceptions.ExceptionsDialogs;
@@ -12,8 +16,11 @@ import ui.exceptions.ExceptionsDialogs;
 public class ServerServices
 {
     private ServerManager manager = new ServerManager();
+    private static final String PERSISTENCE_UNIT_NAME = "contacts";
+    private static EntityManagerFactory factory;
+    private EntityManager em = factory.createEntityManager();
 
-    private void applyChangesOnServer(String contact) throws ExceptionsDialogs 
+    private void applyChangesOnServer(String contact) throws ExceptionsDialogs
     {
 	try
 	{
@@ -36,7 +43,7 @@ public class ServerServices
 	    Statement statement = manager.setConnection();
 
 	    ResultSet contacts = statement.executeQuery(
-		    "SELECT *\r\n" + "FROM contact\r\n" + "INNER JOIN address\r\n" + "ON address_fk = addressid;");
+		    "SELECT *\r\n" + "FROM addressbook.contact\r\n" + "INNER JOIN addressbook.address\r\n" + "ON address_fk = addressid;");
 
 	    while (contacts.next())
 	    {
@@ -56,15 +63,27 @@ public class ServerServices
 
     public void addServerContact(Contact contact) throws ExceptionsDialogs
     {
-	String insertContact = "with insert_query as (INSERT INTO public.address(\r\n"
-		+ "country, city, street, postalcode)\r\n" + "	VALUES ('" + contact.getAddress().getCountry() + "', '"
-		+ contact.getAddress().getCity() + "', '" + contact.getAddress().getStreet() + "', '"
-		+ contact.getAddress().getPostal_code() + "')" + "returning addressid) INSERT INTO public.contact(\r\n"
-		+ "firstname, lastname, phonenumber, emailaddress, address_fk)\r\n" + "	VALUES ('"
-		+ contact.getFirstName() + "', '" + contact.getLastName() + "', '" + contact.getPhoneNumber() + "', '"
-		+ contact.getEmailAddress() + "', (SELECT addressid FROM insert_query))";
+	factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 
-	applyChangesOnServer(insertContact);
+	em.getTransaction().begin();
+
+	AddressTable addressElement = new AddressTable();
+	addressElement.setCountry(contact.getAddress().getCountry());
+	addressElement.setCity(contact.getAddress().getCity());
+	addressElement.setStreet(contact.getAddress().getStreet());
+	addressElement.setPostalCode(contact.getAddress().getPostal_code());
+	em.persist(addressElement);
+	
+	ContactTable contactElement = new ContactTable();
+	contactElement.setFirstname(contact.getFirstName());
+	contactElement.setLastName(contact.getLastName());
+	contactElement.setPhoneNumber(contact.getPhoneNumber());
+	contactElement.setEmailAddress(contact.getEmailAddress());
+	contactElement.setAddress(addressElement);
+	em.persist(contactElement);
+
+	em.getTransaction().commit();
+	em.close();
     }
 
     public void editServerContact(Contact contact) throws ExceptionsDialogs
@@ -82,9 +101,10 @@ public class ServerServices
 
     public void deleteServerContact(Contact contact) throws ExceptionsDialogs
     {
-	String deleteContact = "with delete_query as (DELETE FROM public.contact WHERE contactid = " + contact.getId() + ""
-		+ "returning address_fk) DELETE FROM public.address WHERE (addressid) IN (SELECT address_fk FROM delete_query)";
+	ContactTable contactElement = em.find(ContactTable.class, contact.getId());
 
-	applyChangesOnServer(deleteContact);
+	  em.getTransaction().begin();
+	  em.remove(contactElement);
+	  em.getTransaction().commit();
     }
 }

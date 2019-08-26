@@ -21,7 +21,7 @@ import ui.labels.InnerDetailsLabelProvider;
 
 public class AddressBookDetailsView extends ViewPart
 {
-    public static final String ID = "addressbook.view.addressbookdetailsview";
+    public static final String ID = "addressbook.view.addressbookdetailsview_wildfly";
     @Inject
     IWorkbench workbench;
     private TableViewer viewer;
