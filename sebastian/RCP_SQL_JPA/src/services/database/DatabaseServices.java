@@ -21,16 +21,15 @@ import ui.exceptions.MyCustomException;
 
 public class DatabaseServices
 {
-    // private DatabaseConnection dbsConnect = new DatabaseConnection();
     private JpaEntityMgr dbs = new JpaEntityMgr();
-    // private ContactsModel newContact = new ContactsModel();
-
+ 
     public List<ContactsManager> loadFromDatabase() throws MyCustomException
     {
 	List<ContactsManager> localContactsList = new ArrayList<ContactsManager>();
 	try
 	{
 	    Query q = dbs.EntityMgr().createQuery("SELECT c  FROM BookContacts c");
+	    @SuppressWarnings("unchecked")
 	    List<BookContacts> contactsList = q.getResultList();
 	    for (BookContacts contact : contactsList)
 	    {
@@ -75,8 +74,6 @@ public class DatabaseServices
 	    em.getTransaction().commit();
 
 	    em.close();
-
-
 
 	} catch (Exception e)
 	{

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RCPBook_UI_Component
+Bundle-SymbolicName: RCPBook_UI_Component;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: rcpbook.application.ActivatorSQL
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.apache.felix.scr,
+ org.eclipse.equinox.util,
+ org.eclipse.equinox.event
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: RCPBook
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/postgresql-42.2.6.jar,
+ lib/eclipselink.jar,
+ lib/javax.persistence.jar,
+ lib/jboss-client.jar,
+ .,
+ lib/AddressBook_EJB.jar
+
