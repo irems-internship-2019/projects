@@ -183,7 +183,7 @@ public class AddressContactsView extends ViewPart {
 		return selectionAdapter;
 	}
 
-	@Override
+	@Override  
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
