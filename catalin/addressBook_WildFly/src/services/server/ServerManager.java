@@ -1,33 +1,21 @@
 package services.server;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.util.Properties;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import ui.exceptions.ExceptionsDialogs;
 
 public class ServerManager
 {
-    public Statement setConnection() throws ExceptionsDialogs
+    private static final String PERSISTENCE_UNIT_NAME = "contacts";
+    
+    public EntityManager setConnection() throws ExceptionsDialogs
     {
-	try
-	{   FileInputStream files=new FileInputStream("C:\\Users\\Fujitsu\\Documents\\git\\projects\\catalin\\addressBook\\src\\services\\server\\connection.properties"); 
-            Properties properties=new Properties (); 
-            properties.load (files); 
-            String dname= (String) properties.get ("Dname"); 
-            String url= (String) properties.get ("URL"); 
-            String username= (String) properties.get ("Uname"); 
-            String password= (String) properties.get ("password"); 
-            Class.forName(dname);    
-            
-	    Connection connection = DriverManager.getConnection(url, username, password);
-	    Statement statement = connection.createStatement();
-	    return statement;
-	} catch (Exception e)
-	{
-	   throw new ExceptionsDialogs();
-	}
-    }
+	final EntityManagerFactory factory;
+	factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+	EntityManager entityManager = factory.createEntityManager();
+
+	return entityManager;
+}
 }
