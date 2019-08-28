@@ -1,6 +1,5 @@
 package dataBaseManager;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -10,6 +9,8 @@ import javax.persistence.EntityManager;
 
 import javax.persistence.Query;
 
+import com.mylogic.DataBaseService;
+import com.mylogic.DataBaseServiceRemote;
 
 import model.Address;
 import model.AddressTable;
@@ -56,29 +57,48 @@ public class DataBaseServices {
 	}
 
 	public ArrayList<Contact> loadContacts() {
+		return null;
 
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
-		try {
-
-			EntityManager entityManager = manager.enableConnection();
-			Query q = entityManager.createQuery("select t from ContactsTable t");
-			@SuppressWarnings("unchecked")
-			List<ContactsTable> todoList = q.getResultList();
-			for (ContactsTable todo : todoList) {
-				Contact contact = new Contact(todo.getContactid(), todo.getFirstName(),
-						new Address(todo.getAddress().getCountry(), todo.getAddress().getCity(),
-								todo.getAddress().getStreet(), todo.getAddress().getPostalCode()),
-						todo.getLastName(), todo.getPhoneNumber(), todo.getEmailAddress());
-				contacts.add(contact);
-
-			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return contacts;
- }
+//		ArrayList<Contact> contacts = new ArrayList<Contact>();
+//		try {
+//
+//			EntityManager entityManager = manager.enableConnection();
+//			Query q = entityManager.createQuery("select t from ContactsTable t");
+//			@SuppressWarnings("unchecked")
+//			List<ContactsTable> todoList = q.getResultList();
+//			for (ContactsTable todo : todoList) {
+//				Contact contact = new Contact(todo.getContactid(), todo.getFirstName(),
+//						new Address(todo.getAddress().getCountry(), todo.getAddress().getCity(),
+//								todo.getAddress().getStreet(), todo.getAddress().getPostalCode()),
+//						todo.getLastName(), todo.getPhoneNumber(), todo.getEmailAddress());
+//				contacts.add(contact);
+//
+//			}
+//
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//ArrayList<Contact> contacts = null ;
+//		try{   
+//			Properties props = new Properties();
+//	        props.put("java.naming.factory.url.pkgs","org.jboss.ejb.client.naming");
+//	        InitialContext context = new InitialContext(props);
+//	        String appName = "";        	 
+//	        String moduleName = "AddressBookEJB";
+//	        String distinctName = "";        	 
+//	        String beanName = DataBaseService.class.getSimpleName();   
+//	        String interfaceName = DataBaseServiceRemote.class.getName();
+//	        String name = "ejb:" + appName + "/" + moduleName + "/" +  distinctName    + "/" + beanName + "!" + interfaceName;
+// 	       System.out.println(name);
+// 	      DataBaseServiceRemote bean = (DataBaseServiceRemote) context.lookup(name);
+// 	 contacts =bean.loadContacts();
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		return contacts;
+//
+	}
 
 	public void updateContact(Contact contact) {
 

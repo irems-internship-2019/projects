@@ -17,8 +17,10 @@ public class ContactsTable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
-    private int contactid;
-    private String firstname;
+    private long contactid;
+   
+
+	private String firstname;
     private String lastname;
     private String phonenumber;
     private String emailaddress;
@@ -27,6 +29,16 @@ public class ContactsTable
     @JoinColumn(name = "address_fk", referencedColumnName = "addressid")
     private AddressTable address;
 
+    
+    public long getContactid() {
+		return contactid;
+	}
+
+	public void setContactid(long contactid) {
+		this.contactid = contactid;
+	}
+    
+    
     public String getFirstName()
     {
 	return firstname;

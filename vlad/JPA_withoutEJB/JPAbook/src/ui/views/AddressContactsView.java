@@ -2,10 +2,8 @@ package ui.views;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.inject.Inject;
-import javax.naming.InitialContext;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -30,8 +28,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import dataBaseManager.DataBaseServices;
-import database.Services;
-import database.ServicesRemote;
 import model.Contact;
 import ui.comparator.ContactComparator;
 import ui.contactsilter.filter.ContactFilter;
@@ -74,29 +70,6 @@ public class AddressContactsView extends ViewPart {
 		});
 	}
 
-	
-	 private ServicesRemote beanInit()
-	    {
-		 ServicesRemote remote = null;
-
-		 try{   
-				Properties props = new Properties();
-			        props.put("java.naming.factory.url.pkgs","org.jboss.ejb.client.naming");
-			        InitialContext context = new InitialContext(props);
-			        String appName = "";    
-			        String moduleName = "AddressEJB";
-			        String distinctName = "";   
-			        String beanName = Services.class.getSimpleName();    
-			        String interfaceName = ServicesRemote.class.getName();
-			        String name = "ejb:" + appName + "/" + moduleName + "/" +  distinctName    + "/" + beanName + "!" + interfaceName;
-			        remote = (ServicesRemote)context.lookup(name);
-			        
-		 }catch(Exception e){
-				e.printStackTrace();
-			}
-		 return remote;
-	    }
-	
 	@Override
 	public void createPartControl(Composite parent) {
 		GridLayout layout = new GridLayout(2, false);
@@ -110,6 +83,7 @@ public class AddressContactsView extends ViewPart {
 		comparator = new ContactComparator();
 		viewer.setComparator(comparator);
 		
+		dataManager.loadContacts();
 
 		searchText.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent ke) {
@@ -133,10 +107,7 @@ public class AddressContactsView extends ViewPart {
 		viewer.setContentProvider(new ArrayContentProvider());
 		getSite().setSelectionProvider(viewer);
 
-		ServicesRemote beanRemote = beanInit();
-		
-		viewer.setInput(beanRemote.loadContatcs());
-		
+		viewer.setInput(dataManager.loadContacts());
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
@@ -201,8 +172,8 @@ public class AddressContactsView extends ViewPart {
 	}
 
 	public void refresh() {
-	//	viewer.setInput(dataManager.loadContacts());
-		
+		viewer.setInput(dataManager.loadContacts());
+		//viewer.refresh();
 
 	}
 

@@ -2,7 +2,7 @@ package model;
 
 public class Contact {
 
-	private int id;
+	private long id;
 	private String firstName;
 	private String lastName;
 	private Address adress;
@@ -14,8 +14,8 @@ public class Contact {
 
 	}
 
-	public Contact(String firstName, Address adress, String lastName, String phoneNumber, String emailAdress) {
-		this.id = contactCounter++;
+	public Contact(long id,String firstName, Address adress, String lastName, String phoneNumber, String emailAdress) {
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
@@ -24,7 +24,7 @@ public class Contact {
 	}
 
 	public String getId() {
-		return Integer.toString(id);
+		return Long.toString(id);
 	}
 
 	public String getFirstName() {
@@ -52,7 +52,7 @@ public class Contact {
 		return adress;
 	}
 
-	public int getIdInt() {
+	public long getIdInt() {
 		// TODO Auto-generated method stub
 		return id;
 	}

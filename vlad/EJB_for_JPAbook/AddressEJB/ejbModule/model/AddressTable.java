@@ -16,7 +16,7 @@ public class AddressTable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
-    private int addressid;
+    private long addressid;
     private String country;
     private String city;
     private String street;
