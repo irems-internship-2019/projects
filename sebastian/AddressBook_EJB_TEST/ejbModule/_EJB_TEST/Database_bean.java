@@ -56,17 +56,8 @@ public class Database_bean implements Database_beanRemote {
 		List<ContactsManager> localContactsList = new ArrayList<ContactsManager>();
 		try
 		{
-			CriteriaBuilder cb = dbs.EntityMgr().getCriteriaBuilder();
-		    CriteriaQuery<BookContacts> cq = cb.createQuery(BookContacts.class);
-		    Root<BookContacts> rootEntry = cq.from(BookContacts.class);
-		    CriteriaQuery<BookContacts> all = cq.select(rootEntry);
-		 
-		    TypedQuery<BookContacts> allQuery = dbs.EntityMgr().createQuery(all);
-			
-			
-	      // Query q = dbs.EntityMgr().createQuery("SELECT c FROM BookContacts c");
-		  // List<BookContacts> contactsList = q.getResultList();
-		    List<BookContacts> contactsList = allQuery.getResultList();
+		Query q = dbs.EntityMgr().createQuery("SELECT c FROM BookContacts c inner join c.address");
+		  List<BookContacts> contactsList = q.getResultList();
 		    for (BookContacts contact : contactsList)
 		    {
 			ContactsManager newCont = new ContactsManager(contact.getContacts_id(), contact.getFirst_name(),
