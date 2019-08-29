@@ -9,6 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import model.contacts.AddressManager;
 import model.contacts.ContactsManager;
@@ -28,9 +32,17 @@ public class DatabaseServices
 	List<ContactsManager> localContactsList = new ArrayList<ContactsManager>();
 	try
 	{
-	    Query q = dbs.EntityMgr().createQuery("SELECT c  FROM BookContacts c");
-	    @SuppressWarnings("unchecked")
-	    List<BookContacts> contactsList = q.getResultList();
+	    CriteriaBuilder cb = dbs.EntityMgr().getCriteriaBuilder();
+	    CriteriaQuery<BookContacts> cq = cb.createQuery(BookContacts.class);
+	    Root<BookContacts> rootEntry = cq.from(BookContacts.class);
+	    CriteriaQuery<BookContacts> all = cq.select(rootEntry);
+	 
+	    TypedQuery<BookContacts> allQuery = dbs.EntityMgr().createQuery(all);
+	    List<BookContacts> contactsList = allQuery.getResultList();
+	    
+//	    Query q = dbs.EntityMgr().createQuery("SELECT c  FROM BookContacts c");
+//	    @SuppressWarnings("unchecked")
+//	    List<BookContacts> contactsList = q.getResultList();
 	    for (BookContacts contact : contactsList)
 	    {
 		ContactsManager newCont = new ContactsManager(contact.getContacts_id(), contact.getFirst_name(),
