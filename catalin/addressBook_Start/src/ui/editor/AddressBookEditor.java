@@ -22,7 +22,6 @@ import models.persons.Address;
 import models.persons.Contact;
 import services.regex.Regex;
 import services.server.ServerServices;  
-import ui.exceptions.ExceptionsDialogs;
 import ui.views.AddressBookView;
 
 public class AddressBookEditor extends EditorPart

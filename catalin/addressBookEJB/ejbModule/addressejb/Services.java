@@ -22,6 +22,7 @@ import services.server.ServerManager;
 public class Services implements ServicesRemote {
 	 private ServerManager manager = new ServerManager();
 
+	 @Override
 	 public ArrayList<Contact> getServerContacts()
 	    {
 		ArrayList<Contact> contactElements = new ArrayList<Contact>();
@@ -29,9 +30,9 @@ public class Services implements ServicesRemote {
 		{
 		    EntityManager entityManger = manager.setConnection();
 
-		    Query q = entityManger.createQuery("select c from ContactTable c");
-		    List<ContactTable> contactElemnets = q.getResultList();
-		    for (ContactTable contactElement : contactElemnets)
+		    Query q = entityManger.createQuery("SELECT c FROM ContactTable c");
+		    List<ContactTable> contacts = q.getResultList();
+		    for (ContactTable contactElement : contacts)
 		    {
 			Contact contact = new Contact(contactElement.getContactid(), contactElement.getFirstName(),
 				contactElement.getLastName(),
@@ -46,6 +47,7 @@ public class Services implements ServicesRemote {
 		return contactElements;
 	    }
 	 
+	 @Override
 	 public void addServerContact(Contact contact)
 	    {
 		EntityManager entityManger = manager.setConnection();
@@ -71,6 +73,7 @@ public class Services implements ServicesRemote {
 		entityManger.close();
 	    }
 	 
+	 @Override
 	 public void editServerContact(Contact contact)
 	    {
 		EntityManager entityManger = manager.setConnection();
@@ -91,6 +94,7 @@ public class Services implements ServicesRemote {
 		entityManger.getTransaction().commit();
 	    }
 	 
+	 @Override
 	 public void deleteServerContact(Contact contact)
 	    {
 		EntityManager entityManger = manager.setConnection();

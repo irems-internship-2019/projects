@@ -12,16 +12,17 @@ import models.persons.Contact;
 public class ServerServices
 {
    private ServerManager manager = new ServerManager();
-       public ArrayList<Contact> getServerContacts() 
-   {
+    
+    public ArrayList<Contact> getServerContacts() 
+    {
 	ArrayList<Contact> contactElements = new ArrayList<Contact>();
 	try
 	{
 	    EntityManager entityManger = manager.setConnection();
 
-	    Query q = entityManger.createQuery("select c from ContactTable c");
-	    List<ContactTable> contactElemnets = q.getResultList();
-	    for (ContactTable contactElement : contactElemnets)
+	    Query q = entityManger.createQuery("SELECT c FROM ContactTable c");
+	    List<ContactTable> contacts = q.getResultList();
+	    for (ContactTable contactElement : contacts)
 	    {
 		Contact contact = new Contact(contactElement.getContactid(), contactElement.getFirstName(),
 			contactElement.getLastName(),
@@ -34,7 +35,7 @@ public class ServerServices
 	{
 	}
 	return contactElements;
-  }
+    }
 
     public void addServerContact(Contact contact)
     {
@@ -54,7 +55,7 @@ public class ServerServices
 	contactElement.setLastName(contact.getLastName());
 	contactElement.setPhoneNumber(contact.getPhoneNumber());
 	contactElement.setEmailAddress(contact.getEmailAddress());
-contactElement.setAddress(addressElement);
+	contactElement.setAddress(addressElement);
 	entityManger.persist(contactElement);
 	entityManger.getTransaction().commit();
 

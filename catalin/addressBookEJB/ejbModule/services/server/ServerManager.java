@@ -8,10 +8,10 @@ import javax.persistence.Persistence;
 public class ServerManager
 {
     private static final String PERSISTENCE_UNIT_NAME = "contacts";
-    
+    private static EntityManagerFactory factory;
     public EntityManager setConnection()
     {
-	final EntityManagerFactory factory;
+	
 	factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	EntityManager entityManager = factory.createEntityManager();
 
