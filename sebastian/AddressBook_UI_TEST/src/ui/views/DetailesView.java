@@ -16,8 +16,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
-import model.contacts.ContactsManager;
+//import model.contacts.ContactsManager;
 import model.enums.DetailesEnum;
+import services.database.BookContacts;
 import ui.commands.Delete;
 import ui.lableProviders.DetailesLabelProvider;
 
@@ -42,9 +43,9 @@ public class DetailesView extends ViewPart
 	detailesUI(parent);
     }
 
-    public void setInput(ContactsManager contact)
+    public void setInput(BookContacts contact)
     {
-	List<ContactsManager> addresses = new ArrayList<ContactsManager>();
+	List<BookContacts> addresses = new ArrayList<BookContacts>();
 
 	addresses.add(contact);
 	detailesViewer.setInput(addresses);

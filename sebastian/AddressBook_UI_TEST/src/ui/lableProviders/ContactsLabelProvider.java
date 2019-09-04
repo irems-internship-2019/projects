@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.graphics.Image;
 
-import model.contacts.ContactsManager;
+import services.database.BookContacts;
 
 
 
@@ -61,10 +61,10 @@ public class ContactsLabelProvider implements ITableLabelProvider
 	@Override
 	public String getColumnText(Object element, int columnIndex)
 	{
-	    if (element instanceof ContactsManager)
+	    if (element instanceof BookContacts)
 	    {
 
-		ContactsManager contactMgr = (ContactsManager) element;
+		BookContacts contactMgr = (BookContacts) element;
 
 		switch (tableCollums.get(columnIndex).getColumn().getText())
 		    {
@@ -73,16 +73,16 @@ public class ContactsLabelProvider implements ITableLabelProvider
 			return contactMgr.getID();
 		    
 		    case "First Name":
-			return contactMgr.getFirstName();
+			return contactMgr.getFirst_name();
 		    
 		    case "Last Name":
-			return contactMgr.getLastName();
+			return contactMgr.getLast_name();
 		    
 		    case "Street":
 			return contactMgr.getAddress().getStreet();
 		    
 		    case "Phone Number":
-			return contactMgr.getPhone();
+			return contactMgr.getPhone_number();
 			
 		    case "Email":
 			return contactMgr.getEmail();

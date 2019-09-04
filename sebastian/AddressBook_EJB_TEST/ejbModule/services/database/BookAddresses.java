@@ -1,5 +1,7 @@
 package services.database;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +12,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bookAddresses", schema = "addressbook")
-public class BookAddresses
+public class BookAddresses implements Serializable
 {
+
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
@@ -24,6 +29,14 @@ public class BookAddresses
     @OneToOne(mappedBy = "address")
     private BookContacts contact;
     
+    public BookAddresses() {}
+    public BookAddresses(String country, String city, String street, String postal_code)
+	{
+		this.country = country;
+		this.city =city;
+		this.street = street;
+		this.postal_code = postal_code;
+	}
 
     @Override
     public String toString()

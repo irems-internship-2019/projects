@@ -3,7 +3,7 @@ package ui.utilities;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import model.contacts.ContactsManager;
+import services.database.BookContacts;
 
 public class ContactsFilter extends ViewerFilter
 {
@@ -25,18 +25,18 @@ public class ContactsFilter extends ViewerFilter
 	    return true;
 	}
 
-	ContactsManager p = (ContactsManager) element;
+	BookContacts p = (BookContacts) element;
 	if (p != null && p.getID().matches(searchString))
 	{
 	    return true;
 	}
 
-	if (p != null && p.getFirstName().matches(searchString))
+	if (p != null && p.getFirst_name().matches(searchString))
 	{
 	    return true;
 	}
 
-	if (p != null && p.getLastName().matches(searchString))
+	if (p != null && p.getLast_name().matches(searchString))
 	{
 	    return true;
 	}
@@ -46,7 +46,7 @@ public class ContactsFilter extends ViewerFilter
 	    return true;
 	}
 
-	if (p != null && p.getPhone().matches(searchString))
+	if (p != null && p.getPhone_number().matches(searchString))
 	{
 	    return true;
 	}

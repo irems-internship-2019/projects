@@ -4,7 +4,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
-import model.contacts.ContactsManager;
+import services.database.BookContacts;
 
 public class MyViewerComparator extends ViewerComparator
 {
@@ -40,8 +40,8 @@ public class MyViewerComparator extends ViewerComparator
     @Override
     public int compare(Viewer viewer, Object e1, Object e2)
     {
-	ContactsManager p1 = (ContactsManager) e1;
-	ContactsManager p2 = (ContactsManager) e2;
+	BookContacts p1 = (BookContacts) e1;
+	BookContacts p2 = (BookContacts) e2;
 	int rc = 0;
 	switch (propertyIndex)
 	    {
@@ -55,16 +55,16 @@ public class MyViewerComparator extends ViewerComparator
 		    rc = (-1);
 		break;
 	    case 1:
-		rc = p1.getFirstName().compareTo(p2.getFirstName());
+		rc = p1.getFirst_name().compareTo(p2.getFirst_name());
 		break;
 	    case 2:
-		rc = p1.getLastName().compareTo(p2.getLastName());
+		rc = p1.getLast_name().compareTo(p2.getLast_name());
 		break;
 	    case 3:
 		rc = p1.getAddress().getStreet().compareTo(p2.getAddress().getStreet());
 		break;
 	    case 4:
-		rc = p1.getPhone().compareTo(p2.getPhone());
+		rc = p1.getLast_name().compareTo(p2.getLast_name());
 		break;
 	    case 5:
 		rc = p1.getEmail().compareTo(p2.getEmail());

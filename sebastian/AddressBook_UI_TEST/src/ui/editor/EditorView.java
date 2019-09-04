@@ -21,11 +21,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import ejb_Handler.DatabaseHandler;
-import model.contacts.AddressManager;
-import model.contacts.ContactsManager;
+//import model.contacts.AddressManager;
+//import model.contacts.ContactsManager;
 //import model.contacts.ContactsModel;
 import model.enums.EditorLabelEnum;
 import model.enums.ErrorsEnum;
+import services.database.BookAddresses;
+import services.database.BookContacts;
 //import services.database.DatabaseServices;
 import services.exceptions.MyCustomException;
 import services.exceptions.MyUncheckedCustomExceptions;
@@ -40,7 +42,7 @@ public class EditorView extends EditorPart
     private boolean dirty = false;
 
     // private ContactsModel newContact = new ContactsModel();
-    public ContactsManager contact;
+    public BookContacts contact;
     private Text[] textNames = new Text[8];
     private RegexValidation regex = new RegexValidation();
 
@@ -177,16 +179,16 @@ public class EditorView extends EditorPart
     private void editContact() throws MyCustomException
     {
 
-	contact.setFirstName(textNames[0].getText());
-	contact.setLastName(textNames[1].getText());
+	contact.setFirst_name(textNames[0].getText());
+	contact.setLast_name(textNames[1].getText());
 	contact.getAddress().setCountry(textNames[2].getText());
 	contact.getAddress().setCity(textNames[3].getText());
 	contact.getAddress().setStreet(textNames[4].getText());
-	contact.getAddress().setPostalCode(textNames[5].getText());
+	contact.getAddress().setPostal_code(textNames[5].getText());
 
 	/* #########################-REGEX-################################# */
 	if (regex.validatePhoneNumber(textNames[6].getText()))
-	    contact.setPhoneNumber(textNames[6].getText());
+	    contact.setPhone_number(textNames[6].getText());
 	else
 	    return;
 
@@ -206,9 +208,9 @@ public class EditorView extends EditorPart
 
     private void newContact() throws MyCustomException
     {
-	ContactsManager newCont;
-	newCont = new ContactsManager(/* this dont matter */0, textNames[0].getText(), textNames[1].getText(),
-		new AddressManager(textNames[2].getText(), textNames[3].getText(), textNames[4].getText(),
+	BookContacts newCont;
+	newCont = new BookContacts( /* this dont matter */0l, textNames[0].getText(), textNames[1].getText(),
+		new BookAddresses(textNames[2].getText(), textNames[3].getText(), textNames[4].getText(),
 			textNames[5].getText()),
 		textNames[6].getText(), textNames[7].getText());
 
@@ -224,13 +226,13 @@ public class EditorView extends EditorPart
 
 	if (contact != null)
 	{
-	    textNames[0].setText(contact.getFirstName());
-	    textNames[1].setText(contact.getLastName());
+	    textNames[0].setText(contact.getFirst_name());
+	    textNames[1].setText(contact.getLast_name());
 	    textNames[2].setText(contact.getAddress().getCountry());
 	    textNames[3].setText(contact.getAddress().getCity());
 	    textNames[4].setText(contact.getAddress().getStreet());
-	    textNames[5].setText(contact.getAddress().getPostalCode());
-	    textNames[6].setText(contact.getPhone());
+	    textNames[5].setText(contact.getAddress().getPostal_code());
+	    textNames[6].setText(contact.getPhone_number());
 	    textNames[7].setText(contact.getEmail());
 	} else
 	{
@@ -241,12 +243,12 @@ public class EditorView extends EditorPart
 	}
     }
 
-    public void setModel(ContactsManager model)
+    public void setModel(BookContacts model)
     {
 	this.contact = model;
     }
 
-    public static void openEditor(ContactsManager model)
+    public static void openEditor(BookContacts model)
     {
 	AddressBookNewContactImput input = new AddressBookNewContactImput();
 
@@ -271,7 +273,7 @@ public class EditorView extends EditorPart
 	}
     }
 
-    public void setModelAndWidget(ContactsManager model)
+    public void setModelAndWidget(BookContacts model)
     {
 	setModel(model);
 	updateWidgets();

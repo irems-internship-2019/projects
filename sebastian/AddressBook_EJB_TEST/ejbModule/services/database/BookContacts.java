@@ -1,5 +1,7 @@
 package services.database;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,8 +14,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bookContacts", schema = "addressbook")
-public class BookContacts
+public class BookContacts implements Serializable
 {
+  
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
@@ -23,9 +28,24 @@ public class BookContacts
     private String phone_number;
     private String email;
     
-    @OneToOne(fetch=FetchType.LAZY)
+     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="address_fk",referencedColumnName = "address_id")
     private BookAddresses address;
+    
+     public BookContacts() {}
+     
+    public BookContacts(Long contact_id,String first_name, String last_name, BookAddresses address, String phone_number, String email)
+	{
+	        this.contact_id = contact_id;
+		this.first_name = first_name;
+		this.last_name =last_name;
+		this.address = address;
+		this.phone_number = phone_number;
+		this.email = email;
+	}
+    
+    
+   
 
     @Override
     public String toString()
@@ -91,6 +111,15 @@ public class BookContacts
     public void setAddress(BookAddresses address)
     {
         this.address = address;
+    }
+    
+    public long getLongID()
+  {
+	return contact_id;
+  }
+    
+    public String getID() {
+	return Long.toString(contact_id);
     }
 
 }

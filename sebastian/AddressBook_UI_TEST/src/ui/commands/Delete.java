@@ -10,10 +10,11 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 import ejb_Handler.DatabaseHandler;
-import model.contacts.ContactsManager;
+//import model.contacts.ContactsManager;
 //import model.contacts.ContactsModel;
 //import services.database.DatabaseServices;
 import ui.editor.EditorView;
+import services.database.BookContacts;
 import services.exceptions.MyCustomException;
 import ui.views.ContactsView;
 import ui.views.DetailesView;
@@ -23,7 +24,7 @@ public class Delete implements IViewActionDelegate
    //ContactsModel contact = new ContactsModel();
     // ViewerTools vTools = new ViewerTools();
     private ContactsView view;
-    private static ContactsManager earlyContac;
+    private static BookContacts earlyContac;
    // private DatabaseServices dbs = new DatabaseServices();
    private DatabaseHandler bean = new DatabaseHandler();
     //private CreateDatabaseHashMap map = new CreateDatabaseHashMap();
@@ -34,7 +35,7 @@ public class Delete implements IViewActionDelegate
 	this.view = (ContactsView) view;
     }
 
-    public void earlySelection(ContactsManager earlyContact)
+    public void earlySelection(BookContacts earlyContact)
     {
 	earlyContac = earlyContact;
     }
@@ -48,7 +49,7 @@ public class Delete implements IViewActionDelegate
 
 	if (delete)
 	{
-	    ContactsManager deletableContact = view.getSelectedItem();
+	    BookContacts deletableContact = view.getSelectedItem();
 	    if (deletableContact != null)
 	    {
 		try

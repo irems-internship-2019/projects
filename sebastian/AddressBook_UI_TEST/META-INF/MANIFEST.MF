@@ -15,7 +15,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/postgresql-42.2.6.jar,
  lib/javax.persistence.jar,
  lib/jboss-client.jar,
- lib/AddressBook_EJB_TEST.jar,
  lib/eclipselink.jar,
+ lib/AddressBook_EJB_TEST2.jar,
  .
 

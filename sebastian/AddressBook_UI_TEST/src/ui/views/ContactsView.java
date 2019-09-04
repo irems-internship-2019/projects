@@ -31,9 +31,10 @@ import org.eclipse.ui.part.ViewPart;
 
 //import _EJB_TEST.Database_bean;
 import ejb_Handler.DatabaseHandler;
+import services.database.BookContacts;
 import services.exceptions.MyCustomException;
 import services.exceptions.MyUncheckedCustomExceptions;
-import model.contacts.ContactsManager;
+//import model.contacts.ContactsManager;
 //import model.contacts.ContactsModel;
 import model.enums.ContactEnum;
 import model.enums.ErrorsEnum;
@@ -196,7 +197,7 @@ public class ContactsView extends ViewPart
 	    public void doubleClick(DoubleClickEvent event)
 	    {
 		IStructuredSelection selection = tableViewer.getStructuredSelection();
-		ContactsManager firstElement = (ContactsManager) selection.getFirstElement();
+		BookContacts firstElement = (BookContacts) selection.getFirstElement();
 
 //		DetailesModel address = new DetailesModel();
 //		address.addNewEntry(firstElement);
@@ -230,10 +231,10 @@ public class ContactsView extends ViewPart
     {
     }
 
-    public ContactsManager getSelectedItem()
+    public BookContacts getSelectedItem()
     {
 	final StructuredSelection selection = (StructuredSelection) tableViewer.getSelection();
-	final ContactsManager selectedContact = (ContactsManager) selection.getFirstElement();
+	final BookContacts selectedContact = (BookContacts) selection.getFirstElement();
 
 	return selectedContact;
     }
