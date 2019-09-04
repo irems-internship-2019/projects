@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AddressBookapi_start
-Bundle-SymbolicName: AddressBookapi_start;singleton:=true
+Bundle-Name: AddressBookapi_startMaven
+Bundle-SymbolicName: AddressBookapi_startMaven;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: addressbook.Activator
 Require-Bundle: org.eclipse.ui,
@@ -17,4 +17,4 @@ Bundle-ClassPath: lib/postgresql-42.2.6.jar,
  lib/eclipselink.jar,
  lib/javax.persistence.jar,
  lib/jboss-client.jar,
- lib/EJBAddressBook.jar
+ lib/AddressBook_EJBMaven.jar

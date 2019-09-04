@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 
 public class ServerManager
 {
-    private static final String PERSISTENCE_UNIT_NAME = "contacts";
+    private static final String PERSISTENCE_UNIT_NAME = "Contacts";
     private static EntityManagerFactory factory;
     public EntityManager setConnection()
     {
