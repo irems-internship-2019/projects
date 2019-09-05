@@ -8,18 +8,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator_TEST extends AbstractUIPlugin {
+public class Activator_MAVEN extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "RCPBook_UI_TEST"; //$NON-NLS-1$
 
 	// The shared instance
-	private static Activator_TEST plugin;
+	private static Activator_MAVEN plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator_TEST() {
+	public Activator_MAVEN() {
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class Activator_TEST extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator_TEST getDefault() {
+	public static Activator_MAVEN getDefault() {
 		return plugin;
 	}
 

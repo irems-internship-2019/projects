@@ -1,0 +1,12 @@
+_EJB_TEST\Database_bean.class
+model\enums\ContactEnum.class
+model\enums\EditorLabelEnum.class
+_EJB_TEST\Database_beanRemote.class
+services\database\JpaEntityMgr.class
+model\enums\DetailesEnum.class
+services\database\BookAddresses.class
+services\exceptions\MyUncheckedCustomExceptions.class
+model\enums\ErrorsEnum.class
+services\exceptions\MyCustomException.class
+services\exceptions\MyCustomException$1.class
+services\database\BookContacts.class

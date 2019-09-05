@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
  */
 
 //this class is for SQL2
-public class Application_TEST implements IApplication {
+public class Application_MAVEN implements IApplication {
 
 	@Override
 	public Object start(IApplicationContext context) {
