@@ -44,7 +44,7 @@ public class AddressBookView extends ViewPart
 {
     public static final String ID = "addressbook.view.addressbookview";
     @Inject
-    IWorkbench workbench;
+    IWorkbench workbench; 
     private ContactComparator comparator;
     private TableViewer viewer;
     private ArrayList<TableViewerColumn> tableColumns = new ArrayList<TableViewerColumn>();
