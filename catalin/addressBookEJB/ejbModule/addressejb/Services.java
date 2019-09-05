@@ -24,7 +24,7 @@ public class Services implements ServicesRemote {
 	 @SuppressWarnings("unchecked")
 		public List<Contact> getServerContacts() 
 	    {
-	    	 List<Contact> localContacts = new ArrayList<Contact>();;
+	    	 List<Contact> localContacts = new ArrayList<Contact>();
 		try
 		{
 		    EntityManager entityManger = manager.setConnection();
