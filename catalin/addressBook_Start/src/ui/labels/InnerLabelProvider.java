@@ -63,7 +63,7 @@ public class InnerLabelProvider implements ITableLabelProvider
 	    switch (tableDetails.get(columnIndex).getColumn().getText())
 	    {
 	    case "ID":
-		return Long.toString(contact.getId());
+		return Long.toString(contact.getContactid());
 
 	    case "First Name":
 		return contact.getFirstName();

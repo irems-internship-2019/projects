@@ -1,5 +1,9 @@
 package ui.actions;
 
+import java.util.Properties;
+
+import javax.naming.InitialContext;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -9,8 +13,9 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
+import addressejb.Services;
+import addressejb.ServicesRemote;
 import models.persons.Contact;
-import services.server.ServerServices;
 import ui.editor.AddressBookEditor;
 import ui.views.AddressBookDetailsView;
 import ui.views.AddressBookView;
@@ -19,6 +24,27 @@ public class DeleteAction implements IViewActionDelegate
 {
     private AddressBookView view;
 
+    private ServicesRemote createBean()
+    {
+	ServicesRemote bean = null;
+	try{   
+	Properties props = new Properties();
+        props.put("java.naming.factory.url.pkgs","org.jboss.ejb.client.naming");
+        InitialContext context = new InitialContext(props);
+
+        String appName = "";        	 
+        String moduleName = "EJBAddressBook";
+        String distinctName = "";        	 
+        String beanName = Services.class.getSimpleName();        	 
+        String interfaceName = ServicesRemote.class.getName();
+        String name = "ejb:" + appName + "/" + moduleName + "/" +  distinctName    + "/" + beanName + "!" + interfaceName;
+        bean = (ServicesRemote)context.lookup(name);
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return bean;
+    }
+    
     @Override
     public void init(IViewPart view)
     {
@@ -28,7 +54,7 @@ public class DeleteAction implements IViewActionDelegate
     @Override
     public void run(IAction action)
     {
-	ServerServices manager = new ServerServices();
+	ServicesRemote beanElement = createBean();
 	
 	boolean openQuestion = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), "Delete",
 		"Do you want to remove?");
@@ -41,16 +67,16 @@ public class DeleteAction implements IViewActionDelegate
 		    .findView(AddressBookDetailsView.ID);
 
 	    Contact deletableContact = view.getSelectedItem(); 
-	    manager.deleteServerContact(deletableContact);
+	    beanElement.deleteServerContact(deletableContact);
 	    view.refresh();
 
 	    if (editor != null && editor.getModel() != null)
 	    {
-		if(editor.getModel().getId() == deletableContact.getId())
+		if(editor.getModel().getContactid() == deletableContact.getContactid())
 		activePage.setEditorAreaVisible(false);
 	    }
 
-	    if (addressBookDetailsView != null && addressBookDetailsView.getDetailsViewContact().get(0).getId() == deletableContact.getId())
+	    if (addressBookDetailsView != null && addressBookDetailsView.getDetailsViewContact().get(0).getContactid() == deletableContact.getContactid())
 		activePage.hideView(addressBookDetailsView);
 	}
     }

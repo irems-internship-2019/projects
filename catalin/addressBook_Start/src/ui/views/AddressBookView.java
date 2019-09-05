@@ -34,7 +34,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import addressejb.Services;
 import addressejb.ServicesRemote;
-import services.server.ServerServices; 
 import models.enums.AddressBookEnum;
 import models.persons.Contact;
 import ui.comparator.ContactComparator;
@@ -49,28 +48,27 @@ public class AddressBookView extends ViewPart
     private ContactComparator comparator;
     private TableViewer viewer;
     private ArrayList<TableViewerColumn> tableColumns = new ArrayList<TableViewerColumn>();
-    private ServerServices manager = new ServerServices();
     
-//    private ServicesRemote createBean()
-//    {
-//	ServicesRemote bean = null;
-//	try{   
-//	Properties props = new Properties();
-//        props.put("java.naming.factory.url.pkgs","org.jboss.ejb.client.naming");
-//        InitialContext context = new InitialContext(props);
-//
-//        String appName = "";        	 
-//        String moduleName = "AddressBookEJB";
-//        String distinctName = "";        	 
-//        String beanName = Services.class.getSimpleName();        	 
-//        String interfaceName = ServicesRemote.class.getName();
-//        String name = "ejb:" + appName + "/" + moduleName + "/" +  distinctName    + "/" + beanName + "!" + interfaceName;
-//        bean = (ServicesRemote)context.lookup(name);
-//	}catch(Exception e){
-//		e.printStackTrace();
-//	}
-//	return bean;
-//    }
+    private ServicesRemote createBean()
+    {
+	ServicesRemote bean = null;
+	try{   
+	Properties props = new Properties();
+        props.put("java.naming.factory.url.pkgs","org.jboss.ejb.client.naming");
+        InitialContext context = new InitialContext(props);
+
+        String appName = "";        	 
+        String moduleName = "EJBAddressBook";
+        String distinctName = "";        	 
+        String beanName = Services.class.getSimpleName();        	 
+        String interfaceName = ServicesRemote.class.getName();
+        String name = "ejb:" + appName + "/" + moduleName + "/" +  distinctName    + "/" + beanName + "!" + interfaceName;
+        bean = (ServicesRemote)context.lookup(name);
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return bean;
+    }
     
     private void createDoubleSelector()
     {
@@ -106,7 +104,7 @@ public class AddressBookView extends ViewPart
 
     private void createViewer(Composite parent)
     {
-//	ServicesRemote beanElement = createBean();
+	ServicesRemote beanElement = createBean();
 	
 	viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 	final Table table = viewer.getTable();
@@ -115,7 +113,7 @@ public class AddressBookView extends ViewPart
 
 	viewer.setContentProvider(new ArrayContentProvider());
 
-	viewer.setInput(manager.getServerContacts());
+	viewer.setInput(beanElement.getServerContacts());
 
 	getSite().setSelectionProvider(viewer);
 
@@ -217,7 +215,8 @@ public class AddressBookView extends ViewPart
 
     public void refresh()
     {
-	viewer.setInput(manager.getServerContacts());
+	ServicesRemote beanElement = createBean();
+	viewer.setInput(beanElement.getServerContacts());
 	viewer.refresh();
     }
 

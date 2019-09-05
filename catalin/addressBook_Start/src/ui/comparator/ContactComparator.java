@@ -46,7 +46,7 @@ public class ContactComparator extends ViewerComparator
 	switch (propertyIndex)
 	{
 	case 0:
-	    result = Long.compare(person1.getId(), person2.getId());
+	    result = Long.compare(person1.getContactid(), person2.getContactid());
 	    break;
 	case 1:
 	    result = person1.getFirstName().compareToIgnoreCase(person2.getFirstName());

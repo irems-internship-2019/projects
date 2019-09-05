@@ -10,10 +10,12 @@ import javax.persistence.Query;
 
 import models.persons.Address;
 import models.persons.Contact;
+import services.server.AddressTable;
+import services.server.ContactTable;
 import services.server.ServerManager;
 
 /**
- * Session Bean implementation class Services
+ * Session Bean implementation class Servicess
  */
 @Stateless
 @LocalBean
@@ -21,31 +23,28 @@ public class Services implements ServicesRemote {
 	 private ServerManager manager = new ServerManager();
 
 	 @Override
-	 @SuppressWarnings("unchecked")
-		public List<Contact> getServerContacts() 
+	 public ArrayList<Contact> getServerContacts()
 	    {
-	    	 List<Contact> localContacts = new ArrayList<Contact>();;
+		ArrayList<Contact> contactElements = new ArrayList<Contact>();
 		try
 		{
 		    EntityManager entityManger = manager.setConnection();
 
-		    Query q = entityManger.createQuery("SELECT c FROM Contact c");
-		    List<Contact> contacts = q.getResultList();
-		    for (Contact contact : contacts)
+		    Query q = entityManger.createQuery("SELECT c FROM ContactTable c");
+		    List<ContactTable> contacts = q.getResultList();
+		    for (ContactTable contactElement : contacts)
 		    {
-
-		    	Contact newContact = new Contact(contact.getContactid(), contact.getFirstName(),
-				contact.getLastName(),
-				new Address(contact.getAddress().getCountry(), contact.getAddress().getCity(),
-					contact.getAddress().getStreet(), contact.getAddress().getPostalCode()),
-				contact.getPhoneNumber(), contact.getEmailAddress());
-
-		    	localContacts.add(newContact);
-		    } 
+			Contact contact = new Contact(contactElement.getContactid(), contactElement.getFirstName(),
+				contactElement.getLastName(),
+				new Address(contactElement.getAddress().getCountry(), contactElement.getAddress().getCity(),
+					contactElement.getAddress().getStreet(), contactElement.getAddress().getPostalCode()),
+				contactElement.getPhoneNumber(), contactElement.getEmailAddress());
+			contactElements.add(contact);
+		    }
 		} catch (Exception e)
 		{
 		}
-		  return localContacts;
+		return contactElements;
 	    }
 	 
 	 @Override
@@ -54,13 +53,13 @@ public class Services implements ServicesRemote {
 		EntityManager entityManger = manager.setConnection();
 
 		entityManger.getTransaction().begin();
-		Contact contactElement = new Contact();
-		Address addressElement = new Address();
+		ContactTable contactElement = new ContactTable();
+		AddressTable addressElement = new AddressTable();
 
 		addressElement.setCountry(contact.getAddress().getCountry());
 		addressElement.setCity(contact.getAddress().getCity());
 		addressElement.setStreet(contact.getAddress().getStreet());
-		addressElement.setPostalCode(contact.getAddress().getPostalCode());
+		addressElement.setPostalCode(contact.getAddress().getPostal_code());
 		entityManger.persist(addressElement);
 
 		contactElement.setFirstname(contact.getFirstName());
@@ -79,7 +78,7 @@ public class Services implements ServicesRemote {
 	    {
 		EntityManager entityManger = manager.setConnection();
 
-		Contact contactElement = entityManger.find(Contact.class, contact.getContactid());
+		ContactTable contactElement = entityManger.find(ContactTable.class, contact.getId());
 
 		entityManger.getTransaction().begin();
 
@@ -90,7 +89,7 @@ public class Services implements ServicesRemote {
 		contactElement.getAddress().setCountry(contact.getAddress().getCountry());
 		contactElement.getAddress().setCity(contact.getAddress().getCity());
 		contactElement.getAddress().setStreet(contact.getAddress().getStreet());
-		contactElement.getAddress().setPostalCode(contact.getAddress().getPostalCode());
+		contactElement.getAddress().setPostalCode(contact.getAddress().getPostal_code());
 
 		entityManger.getTransaction().commit();
 	    }
@@ -100,7 +99,7 @@ public class Services implements ServicesRemote {
 	    {
 		EntityManager entityManger = manager.setConnection();
 
-		Contact contactElement = entityManger.find(Contact.class, contact.getContactid());
+		ContactTable contactElement = entityManger.find(ContactTable.class, contact.getId());
 
 		entityManger.getTransaction().begin();
 		entityManger.remove(contactElement);

@@ -1,22 +1,47 @@
 package models.persons;
 
-public class Address
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "address", schema = "jpabook")
+public class Address implements Serializable
 {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
+    private long addressid;
     private String country;
     private String city;
     private String street;
-    private String postal_code;
+    private String postalcode;
+    
+    @OneToOne(mappedBy = "address")
+    private Contact contact;
+      
+    public Address(String country, String city, String street, String postalcode) {
+		this.country = country;
+		this.city = city;
+		this.street = street;
+		this.postalcode = postalcode;
+	}
 
-    public Address(String country, String city, String street, String postal_code)
-    {
-	super();
-	this.country = country;
-	this.city = city;
-	this.street = street;
-	this.postal_code = postal_code;
-    }
+	public Address() {
+		// TODO Auto-generated constructor stub
+	}
 
-    public String getCountry()
+	public String getCountry()
     {
 	return country;
     }
@@ -46,13 +71,13 @@ public class Address
 	this.street = street;
     }
 
-    public String getPostal_code()
+    public String getPostalCode()
     {
-	return postal_code;
+	return postalcode;
     }
 
-    public void setPostal_code(String postal_code)
+    public void setPostalCode(String postalcode)
     {
-	this.postal_code = postal_code;
+	this.postalcode = postalcode;
     }
 }

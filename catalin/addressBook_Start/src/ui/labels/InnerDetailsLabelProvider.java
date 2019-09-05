@@ -63,7 +63,7 @@ public class InnerDetailsLabelProvider implements ITableLabelProvider
 	    switch (tableDetails.get(columnIndex).getColumn().getText())
 	    {
 	    case "ID":
-		return Long.toString(contact.getId());
+		return Long.toString(contact.getContactid());
 
 	    case "First Name":
 		return contact.getFirstName();
@@ -81,7 +81,7 @@ public class InnerDetailsLabelProvider implements ITableLabelProvider
 		return contact.getAddress().getStreet();
 
 	    case "Postal Code":
-		return contact.getAddress().getPostal_code();
+		return contact.getAddress().getPostalCode();
 
 	    default:
 		throw new IllegalArgumentException("Case not implemented!!");

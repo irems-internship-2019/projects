@@ -1,5 +1,9 @@
 package ui.editor;
 
+import java.util.Properties;
+
+import javax.naming.InitialContext;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -18,10 +22,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
+import addressejb.Services;
+import addressejb.ServicesRemote;
 import models.persons.Address;
 import models.persons.Contact;
-import services.regex.Regex;
-import services.server.ServerServices;  
+import services.regex.Regex; 
 import ui.views.AddressBookView;
 
 public class AddressBookEditor extends EditorPart
@@ -40,7 +45,6 @@ public class AddressBookEditor extends EditorPart
 
     private Contact contact;
     private Contact person;
-    private ServerServices manager = new ServerServices();
 
     public static void openEditor(Contact model)
     {
@@ -102,6 +106,27 @@ public class AddressBookEditor extends EditorPart
 
 	listenerForAllText();
     }
+    
+    private ServicesRemote createBean()
+    {
+	ServicesRemote bean = null;
+	try{   
+	Properties props = new Properties();
+        props.put("java.naming.factory.url.pkgs","org.jboss.ejb.client.naming");
+        InitialContext context = new InitialContext(props);
+
+        String appName = "";        	 
+        String moduleName = "EJBAddressBook";
+        String distinctName = "";        	 
+        String beanName = Services.class.getSimpleName();        	 
+        String interfaceName = ServicesRemote.class.getName();
+        String name = "ejb:" + appName + "/" + moduleName + "/" +  distinctName    + "/" + beanName + "!" + interfaceName;
+        bean = (ServicesRemote)context.lookup(name);
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return bean;
+    }
 
     private void createLabel(Composite parent, String element)
     {
@@ -150,7 +175,7 @@ public class AddressBookEditor extends EditorPart
 	    textCountry.setText(contact.getAddress().getCountry());
 	    textCity.setText(contact.getAddress().getCity());
 	    textStreet.setText(contact.getAddress().getStreet());
-	    textPostalCode.setText(contact.getAddress().getPostal_code());
+	    textPostalCode.setText(contact.getAddress().getPostalCode());
 	    textPhoneNumber.setText(contact.getPhoneNumber());
 	    textEmail.setText(contact.getEmailAddress());
 	    setDirty(false);
@@ -195,11 +220,12 @@ public class AddressBookEditor extends EditorPart
 
     private void addContact()
     {
+	ServicesRemote beanElement = createBean();
 	checkRegex();
 
 	person = setContact();
 
-	manager.addServerContact(person);
+	beanElement.addServerContact(person);
 	refreshView();
 
 	setDirty(false);
@@ -207,12 +233,13 @@ public class AddressBookEditor extends EditorPart
 
     private void editContact()
     {
+	ServicesRemote beanElement = createBean();
 	checkRegex();
 
 	person = setContact();
-	person.setId(contact.getId());
+	person.setContactid(contact.getContactid());
 
-	manager.editServerContact(person);
+	beanElement.editServerContact(person);
 	refreshView();
 	
 	setDirty(false);

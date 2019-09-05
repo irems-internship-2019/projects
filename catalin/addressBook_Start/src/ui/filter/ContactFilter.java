@@ -24,7 +24,7 @@ public class ContactFilter extends ViewerFilter
 	    return true;
 	}
 	Contact person = (Contact) element;
-	if (Long.toString(person.getId()).matches(searchString))
+	if (Long.toString(person.getContactid()).matches(searchString))
 	{
 	    return true;
 	}
