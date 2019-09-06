@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'javax:javaee-api:7.0'
+}
+
+// Default would be src/main/java
+sourceSets.main.java.srcDirs = ["ejbModule"]
+
+jar {
+    baseName = 'GradleEJBAdrressBook'
+    
+    destinationDir file('../GradleAddressBook_Client/lib/')
+}
+

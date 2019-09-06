@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AddressBookGradle_start
+Bundle-SymbolicName: AddressBookGradle_start;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: addressbook.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.apache.felix.scr,
+ org.eclipse.equinox.util,
+ org.eclipse.equinox.event
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: AddressBook
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ lib/jboss-client.jar,
+ lib/GradleEJBAdrressBook.jar
