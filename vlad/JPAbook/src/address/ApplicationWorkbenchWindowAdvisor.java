@@ -32,6 +32,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	       configurer.setShowFastViewBars(true);
 	       // Show ProgressIndicator
 	       configurer.setShowProgressIndicator(true);
-		configurer.setTitle("RCP JPA");
+		configurer.setTitle("RCP Wildfly Gradle JPA");
 	}
 }

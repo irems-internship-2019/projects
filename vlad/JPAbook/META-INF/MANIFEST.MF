@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JPAadress
-Bundle-SymbolicName: JPAadress;singleton:=true
+Bundle-Name: JPAadressGradle
+Bundle-SymbolicName: JPAadressGradle;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: address.Activator
 Require-Bundle: org.eclipse.ui,
@@ -18,5 +18,5 @@ Bundle-ClassPath: lib/postgresql-42.2.6.jar,
  lib/eclipselink.jar,
  lib/javax.persistence.jar,
  lib/jboss-client.jar,
- lib/AddressEJB.jar,
+ lib/person-ejb-client.jar,
  .

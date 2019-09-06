@@ -1,0 +1,8 @@
+database\ServicesRemote.class
+model\Contact.class
+model\DataBaseManager.class
+database\Services.class
+model\ContactProvider.class
+model\AddressTable.class
+model\Address.class
+model\ContactsTable.class
