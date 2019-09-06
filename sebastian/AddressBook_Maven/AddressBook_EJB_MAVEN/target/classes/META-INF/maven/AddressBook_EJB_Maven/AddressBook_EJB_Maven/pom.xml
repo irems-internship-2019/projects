@@ -286,8 +286,7 @@
 	</build>
 	<parent>
 		<groupId>MultiModule</groupId>
-		<artifactId>MultiModuleProject</artifactId>
+		<artifactId>MultiModuleProject2</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>C:\Users\Paul\Desktop\java\RCP_SQL_WORKSPACE\MultiModuleProject</relativePath>
 	</parent>
 </project>

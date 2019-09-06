@@ -2,15 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>MultiModule</groupId>
-  <artifactId>MultiModuleProject</artifactId>
+  <artifactId>MultiModuleProject2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-  	<module>
-  		../../../../Documents/internship/sebastian/AddressBook_Maven/AddressBook_Client_Maven
-  	</module>
-  	<module>
-  		../../../../Documents/internship/sebastian/AddressBook_Maven/AddressBook_EJB_MAVEN
-  	</module>
+  	<module>../AddressBook_Client_Maven</module>
+  	<module>../AddressBook_EJB_MAVEN</module>
   </modules>
 </project>
