@@ -288,6 +288,6 @@
 		<groupId>MultiModule</groupId>
 		<artifactId>MultiModuleProject</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>C:\Users\Paul\Documents\internship\sebastian\AddressBook_Maven\MultiModuleThing</relativePath>
+		<relativePath>C:\Users\Paul\Desktop\java\RCP_SQL_WORKSPACE\MultiModuleProject</relativePath>
 	</parent>
 </project>

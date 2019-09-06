@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+repositories {
+      mavenCentral()
+}
+
+sourceSets.main.java.srcDirs = ["ejbModule"]
+
+dependencies {
+   compile 'javax:javaee-api:7.0'
+}
+
+jar {
+
+    baseName = 'AddressBook_EJB_Gradle' 
+    destinationDir file('../AddressBook_Client_Gradle/lib/')
+
+}
